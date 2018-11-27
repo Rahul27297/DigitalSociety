@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Login</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <div class="row">
+    <div class="col" text-center>
+      <img [src]="societyLogo"/>
+    </div>
+  </div>
+  <div class="row" text-center>
+    <ion-label class="societyName">{{societyName}}</ion-label>
+  </div>
+  <form [formGroup]="login" (ngSubmit)="loginForm()">
+    <ion-item>
+      <ion-label floating>Login</ion-label>
+      <ion-input type="text" formControlName="userName"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Password</ion-label>
+      <ion-input type="password" formControlName="password"></ion-input>
+    </ion-item>
+    <div text-center class="submitBtn">
+    <button ion-button type="submit" [disabled]="!login.valid">Submit</button>
+  </div>
+  </form>
+  <div class="row">
+      <ion-label class="footer">Powered by DigitalSociety</ion-label>
+    </div>
+</ion-content>

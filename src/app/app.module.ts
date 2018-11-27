@@ -1,9 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
-
+import { IonicStorageModule } from '@ionic/storage';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
+import { LoginPage } from '../pages/login/login';
 import { BookingsPage } from '../pages/bookings/bookings';
 import { ProfilePage } from '../pages/profile/profile';
 import { LogoutPage } from '../pages/logout/logout';
@@ -18,6 +19,7 @@ import { SimplyBookClient } from '../providers/simplybook/client';
     MyApp,
     HomePage,
     BookingsPage,
+    LoginPage,
     ProfilePage,
     LogoutPage
   ],
@@ -25,11 +27,13 @@ import { SimplyBookClient } from '../providers/simplybook/client';
     BrowserModule,
     HttpModule,
     IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot(),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     HomePage,
+    LoginPage,
     BookingsPage,
     ProfilePage,
     LogoutPage
