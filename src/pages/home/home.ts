@@ -1,25 +1,24 @@
-import { Component, ApplicationRef } from '@angular/core';
-import { NavController, ToastController} from 'ionic-angular';
-//import { Network } from '@ionic-native/network';
+import { Component } from '@angular/core';
+import { NavController } from 'ionic-angular';
+
+import { Network } from '@ionic-native/network';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
-//import { HttpClient } from '@angular/common/http';
 import { SimplyBookClient } from '../../providers/simplybook/client';
-import { AlertController } from 'ionic-angular';
+import { AlertController } from 'ionic-angular'
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
-
 export class HomePage {
   public societyName:any;
   public societyLogo:any;
   private login:FormGroup; 
   public appmodule:SimplyBookClient;
-  constructor(public navCtrl: NavController, private appref: ApplicationRef, public http: Http, private formBuilder: FormBuilder, private alertCtrl: AlertController) {
-
+  constructor(public navCtrl: NavController, public http: Http, private formBuilder: FormBuilder, private alertCtrl: AlertController) {
+    console.log("App here11");
     let url = "http://digitalsociety.pythonanywhere.com/getSocietyDetails?societyId=1";
     this.http.get(url).map(res => res.json()).subscribe(data => {
       this.societyName = data.displayName;
@@ -29,7 +28,6 @@ export class HomePage {
       userName: ['', Validators.required],
       password: ['', Validators.required],
     });
-    //alert(client);
     this.appmodule = new SimplyBookClient();
   }
 
@@ -59,4 +57,6 @@ export class HomePage {
 
     invalidLoginAlert.present();
   }
+
+
 }
