@@ -13,7 +13,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Network } from '@ionic-native/network';
 import { SimplyBookClient } from '../providers/simplybook/client';
-
+import { NoticesPage } from '../pages/notices/notices';
 @NgModule({
   declarations: [
     MyApp,
@@ -21,6 +21,7 @@ import { SimplyBookClient } from '../providers/simplybook/client';
     BookingsPage,
     LoginPage,
     ProfilePage,
+    NoticesPage,
     LogoutPage
   ],
   imports: [
@@ -36,6 +37,7 @@ import { SimplyBookClient } from '../providers/simplybook/client';
     LoginPage,
     BookingsPage,
     ProfilePage,
+    NoticesPage,
     LogoutPage
   ],
   providers: [
