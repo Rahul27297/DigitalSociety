@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Slides } from 'ionic-angular';
-
+import { NoticesPage } from '../notices/notices'
+import { FacilitiesPage } from '../facilities/facilities';
 /**
  * Generated class for the HomePage page.
  *
@@ -16,19 +17,19 @@ import { IonicPage, NavController, NavParams, Slides } from 'ionic-angular';
 export class HomePage {
   @ViewChild(Slides) slides: Slides;
 
-  slideOptions = {
-    autoplay: 1000,
-    loop: true
-  };
-
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
-  ngAfterViewInit(){
-    this.slides.startAutoplay();
-  }
   ionViewDidLoad() {
     console.log('ionViewDidLoad HomePage');
+  }
+
+  facilities(){
+
+  }
+
+  notices(){
+    this.navCtrl.push(NoticesPage);
   }
 
 }

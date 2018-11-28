@@ -12,16 +12,16 @@ ion-grid{
     color: black;
 }
 
-.card-background-page {
 
     ion-card {
       position: relative;
       text-align: center;
+      height: 100%;
     }
   
     .card-title {
       position: absolute;
-      top: 36%;
+      top: 30%;
       font-size: 2.0em;
       width: 100%;
       font-weight: bold;
@@ -31,13 +31,18 @@ ion-grid{
     .card-subtitle {
       font-size: 1.0em;
       position: absolute;
-      top: 52%;
+      top: 60%;
       width: 100%;
       color: #fff;
     }
   
-  }
 
   .societyProvisions{
-      height: 25%;
+      background: url("../../assets/imgs/tabletennis.jpg");
+      background-size: cover;
   }
+
+  .notices{
+    background: url("../../assets/imgs/notices.jpg");
+    background-size: cover;
+}
