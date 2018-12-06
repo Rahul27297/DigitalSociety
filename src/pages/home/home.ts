@@ -25,7 +25,7 @@ export class HomePage {
   }
 
   facilities(){
-
+    this.navCtrl.push(FacilitiesPage);
   }
 
   notices(){

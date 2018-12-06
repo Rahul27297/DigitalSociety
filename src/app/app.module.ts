@@ -14,6 +14,16 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Network } from '@ionic-native/network';
 import { SimplyBookClient } from '../providers/simplybook/client';
 import { NoticesPage } from '../pages/notices/notices';
+import { FacilitiesPage } from '../pages/facilities/facilities';
+import { NoticePage } from '../pages/notice/notice';
+import { FileTransfer } from '@ionic-native/file-transfer';
+import { File } from '@ionic-native/file';
+import { DatePicker } from '@ionic-native/date-picker';
+import { NbfacilityPage } from '../pages/nbfacility/nbfacility';
+import { BfacilityPage } from '../pages/bfacility/bfacility';
+import { CalendarPage } from '../pages/calendar/calendar';
+import { BookingConfirmationPage } from '../pages/booking-confirmation/booking-confirmation';
+
 @NgModule({
   declarations: [
     MyApp,
@@ -21,8 +31,14 @@ import { NoticesPage } from '../pages/notices/notices';
     BookingsPage,
     LoginPage,
     ProfilePage,
+    FacilitiesPage,
     NoticesPage,
-    LogoutPage
+    NoticePage,
+    CalendarPage,
+    NbfacilityPage,
+    BfacilityPage,
+    BookingConfirmationPage,
+    LogoutPage,
   ],
   imports: [
     BrowserModule,
@@ -38,13 +54,22 @@ import { NoticesPage } from '../pages/notices/notices';
     BookingsPage,
     ProfilePage,
     NoticesPage,
+    FacilitiesPage,
+    NoticePage,
+    NbfacilityPage,
+    BookingConfirmationPage,
+    BfacilityPage,
+    CalendarPage,
     LogoutPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     Network,
+    DatePicker,
     SimplyBookClient,
+    FileTransfer,
+    File,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

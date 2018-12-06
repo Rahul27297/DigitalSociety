@@ -16,6 +16,36 @@
 </ion-header>
 
 
-<ion-content padding>
-Profile
+<ion-content >
+  <ion-card>
+    <ion-card-header class="header" style="text-align: center">
+      <ion-grid>
+        <ion-row style="text-align: center">
+          {{clientName}}
+      </ion-row>
+      </ion-grid>
+      </ion-card-header>
+
+    <ion-card-content class="description">
+      <ion-grid>
+        <ion-row>
+          Flat Number: {{Flat}}
+        </ion-row>
+        <ion-row>
+            Contact Number: {{clientPhone}}
+          </ion-row>
+          <ion-row>
+              Email: {{clientEmail}}
+            </ion-row>
+            <ion-row>
+                Address: {{clientAddress}}
+              </ion-row>
+      </ion-grid>
+
+      <ion-row>
+        For any changes regarding the above information, please contact society administration.
+      </ion-row>
+    </ion-card-content>
+    
+  </ion-card>
 </ion-content>
