@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header style="padding: 0px">
   <ion-navbar>
     <ion-title>
       {{this.facility.name}} Booking
@@ -6,7 +6,8 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content >
+  <div style="padding: 8px;">
   <div class="calendar-header">
     <ion-row class="calendar-month">
       <ion-col col-8>{{calendar.currentMonth}} {{calendar.currentYear}}</ion-col>
@@ -27,7 +28,7 @@
       <ion-row class="calendar-date">
         <ion-col col-1 *ngFor="let lastDay of calendar.daysInLastMonth" class="last-month">{{lastDay}}</ion-col>
         <ion-col col-1 *ngFor="let day of calendar.daysInThisMonth" (click)=dateSelected(day,calendar.currentMonth,calendar.currentYear)>
-          <span class="currentDate" *ngIf="currentDate === day; else otherDate">{{day}}</span>
+          <span class="currentDate" *ngIf="currentDate === day; else otherDate" style="color: 0064b7">{{day}}</span>
           <ng-template #otherDate class="otherDate">{{day}}</ng-template>
         </ion-col>
         <ion-col col-1 *ngFor="let nextDay of calendar.daysInNextMonth" class="next-month" >{{nextDay}}</ion-col>
@@ -38,17 +39,18 @@
   <div>
     <ion-grid>
       <ion-row>
-        <ion-label>Available Time Slots</ion-label>
+        <ion-label style="font-size: 18px">Available Time Slots</ion-label>
       </ion-row>
       <ion-row>
         <ion-col col-4 *ngFor="let slot of slotsArray">
-          <button ion-button *ngIf="slot === selectedSlotTime; else otherslots"  (click)=slotSelected(slot)>{{slot}}</button>
-          <ng-template #otherslots><button ion-button outline (click)=slotSelected(slot)>{{slot}}</button></ng-template>
+          <button ion-button *ngIf="slot === selectedSlotTime; else otherslots" class="slotButton" (click)=slotSelected(slot)>{{slot}}</button>
+          <ng-template #otherslots><button ion-button outline (click)=slotSelected(slot) class="slotButton">{{slot}}</button></ng-template>
         </ion-col>
       </ion-row>
     </ion-grid>
   </div>
     <ion-fab right bottom>
-    <button ion-button icon-end round color="primary" style="width: 100%" (click)=proceedBook()>Book<ion-icon name="arrow-dropright"></ion-icon></button>
+    <button ion-button icon-end round class="proceedBookBtn" (click)=proceedBook()>Book<ion-icon name="arrow-dropright"></ion-icon></button>
   </ion-fab>
+</div>
 </ion-content>

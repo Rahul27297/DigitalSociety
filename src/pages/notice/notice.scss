@@ -8,10 +8,12 @@
     
 }
 
-.header{
+.noticeheader{
     text-align: left;
     padding: 16px 16px 0px 16px;
     font-size: 24px;
+    color: #0064b7;
+    white-space: pre-line
 }
 
 .date{
@@ -20,7 +22,7 @@
     font-size: 20px; 
 }
 
-.description{
+.noticedescription{
     text-align: justify;
     font-size: 18px;
 }
