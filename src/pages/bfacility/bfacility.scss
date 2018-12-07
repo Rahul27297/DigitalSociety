@@ -20,24 +20,21 @@ padding: 5px;
 }
 .currentDate {
 font-weight: bold;
-background-color:  red;
+background-color:  #0064b7;
+color: white;
 border-radius: 30px;
 }
 .calendar-header {
-background-color: #1a732d;
+background-color: #0064b7;
 color: #FFFFFF;
-}
-.event-bullet {
-margin: 2px auto;
-height: 5px;
-width: 5px;
-background-color: green;
-border-radius: 30px;
+font-size: 18px;
+padding-top: 4px;
+padding-bottom: 4px;
 }
 .selected-date {
   font-weight: bold;
   background-color:  blue;
-  border-radius: 30px;
+  border-radius: 50px;
 }
 .unselected-date {
 border: none;
@@ -56,18 +53,24 @@ margin: 0;
 }
 .calendar-weekday {
 font-weight: bold;
-border-bottom: solid 1px #1a732d;
-background-color: #26ab56;
+border-bottom: solid 1px #0064b7;
+background-color: #0091ea;
+font-size: 18px;
 }
 .calendar-date {
-border-top: solid 1px #1a732d;
-border-bottom: solid 1px #1a732d;
+border-top: solid 1px #0064b7;
+border-bottom: solid 1px #0064b7;
+font-size: 18px;
 }
 }
 
-.timeslotcard{
-  text-align: center;
-  width: 100%;
+.slotButton{
+  font-size: 18px;
+  margin: 0px;
+  padding: 0px;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  margin-bottom: 0.5em;
 }
 
 .transparent-slot{
@@ -78,3 +81,8 @@ border-bottom: solid 1px #1a732d;
   background-color: #1568f8
 }
 
+.proceedBookBtn{
+  width: 100%; 
+  font-size:18px; 
+  background-color: #0064b7;
+}

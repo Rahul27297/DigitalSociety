@@ -48,7 +48,7 @@ ion-grid{
 }
 
 .toolbar-background-md{
-    background-color: #311b92;
+    background-color: #0091ea;
 }
 
 .toolbar-title-md{
@@ -58,5 +58,20 @@ ion-grid{
 }
 
 .bar-button-menutoggle-md ion-icon{
-     font-size: 24px;
+    font-size: 24px;
+}
+
+.header{
+    padding: 0px;
+}
+
+ion-header{
+    background-color: #0091ea; 
+    padding: 0px;
+}
+
+ion-navbar{
+    background-color: #0091ea;
+    padding-left: 4px;
+    color: white
 }

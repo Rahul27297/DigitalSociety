@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { CalendarPage } from '../calendar/calendar';
 import { SimplyBookClient } from '../../providers/simplybook/client';
 import { BookingConfirmationPage } from '../booking-confirmation/booking-confirmation';
+import { LoadingController } from 'ionic-angular';
 /**
  * Generated class for the BfacilityPage page.
  *
@@ -25,25 +26,36 @@ export class BfacilityPage {
 	public slotsArray: Array<{time: string}>;
 	public selectedSlot: any;
 	public selectedSlotTime:any;
-    constructor(private navController:NavController, private navParams:NavParams) {
+	private loader: any;
+    constructor(private navController:NavController, private navParams:NavParams, private loadingCtrl: LoadingController) {
+		this.calendar = new CalendarPage();
 		this.selectedSlot = "transparent";
 		this.todayDate = new Date();
 		this.currentDate = this.todayDate.getDate();
-		this.calendar = new CalendarPage();
-		console.log(this.currentDate);
+		//console.log(this.currentDate);
 		this.facility = this.navParams.get('facility');
-		console.log(this.facility);
+		//console.log(this.facility);
+	}
+	
+	setup(){
 		this.simplyBookClient = new SimplyBookClient();
 		//this.currentDate = this.simplyBookClient.client.getFirstWorkingDay();
 		let slots = this.simplyBookClient.client.getStartTimeMatrix(this.todayDate,this.todayDate,this.facility.id,1,1);
 		console.log(slots);
 		this.slotsArray = Object.getOwnPropertyDescriptor(slots,Object.keys(slots)[0]).value;
-    }
-
-	ionViewDidLoad(){
-		
 	}
 
+	ionViewDidLoad(){
+		this.loader = this.loadingCtrl.create({
+			content: "Please wait..."
+		});
+		this.loader.present();
+	}
+
+	ionViewDidEnter(){
+		this.setup();
+		this.loader.dismiss();
+	}
 	hello(){
 		console.log("hello");
 	}
@@ -54,7 +66,7 @@ export class BfacilityPage {
 
 	slotSelected(slot){
 		console.log(slot);
-		this.selectedSlot = "#448aff";
+		this.selectedSlot = "#0091ea";
 		this.selectedSlotTime = slot;
 	}
 
