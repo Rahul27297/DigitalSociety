@@ -10,6 +10,7 @@ import { LoginPage } from '../pages/login/login';
 import { Storage } from '@ionic/storage';
 import { AlertController } from 'ionic-angular';
 import { ToastController } from 'ionic-angular';
+import { LoadingController } from 'ionic-angular';
 
 @Component({
   templateUrl: 'app.html'
@@ -20,8 +21,8 @@ export class MyApp {
   rootPage: any;
 
   pages: Array<{title: string, component: any}>;
-
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, private alertCtrl: AlertController, private toastCtrl: ToastController) {
+  private loader: any;
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, private alertCtrl: AlertController, private toastCtrl: ToastController, private loadingCtrl: LoadingController) {
     this.checkLogin();
     this.initializeApp();
 
@@ -74,7 +75,12 @@ export class MyApp {
       buttons: [{
         text: "Yes",
         handler: () => {
+          this.loader = this.loadingCtrl.create({
+            content: "Please wait..."
+          });
+          this.loader.present();
           this.storage.remove('Info');
+          this.loader.dismiss();
           this.toastCtrl.create({
             message: 'Logged Out Successfully',
             duration: 2000,

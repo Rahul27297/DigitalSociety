@@ -71,7 +71,7 @@ export class BfacilityPage {
 	}
 
 	proceedBook(){
-		let date = this.calendar.date.getFullYear().toString() + "-" + this.calendar.date.getMonth().toString() + "-" +this.currentDate.toString();
+		let date = this.calendar.date.getFullYear().toString() + "-" + (this.calendar.date.getMonth()+1).toString() + "-" +this.currentDate.toString();
 		console.log("booking date" + date);
 		this.navController.push(BookingConfirmationPage, {
 			facilityId: this.facility.id,
