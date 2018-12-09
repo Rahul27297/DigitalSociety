@@ -4,6 +4,7 @@ import { Storage } from '@ionic/storage';
 import { AlertController } from 'ionic-angular';
 import { SimplyBookClient } from "../../providers/simplybook/client";
 import { BfacilityPage } from '../bfacility/bfacility';
+import { LoadingController } from 'ionic-angular';
 /**
  * Generated class for the BookingConfirmationPage page.
  *
@@ -28,7 +29,7 @@ export class BookingConfirmationPage {
   private tnc:any;
   private simplyBookClient: SimplyBookClient;
   private clientData: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams,  private storage: Storage, private alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,  private storage: Storage, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
     this.simplyBookClient = new SimplyBookClient();
     this.tnc = false;
     this.storage.get('Info').then((val) => {

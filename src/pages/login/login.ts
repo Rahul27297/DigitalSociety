@@ -9,6 +9,7 @@ import { SimplyBookClient } from '../../providers/simplybook/client';
 import { AlertController } from 'ionic-angular'
 import { ToastController } from 'ionic-angular';
 import { HomePage } from '../home/home';
+import { LoadingController } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -21,7 +22,8 @@ export class LoginPage {
   private login:FormGroup; 
   public appmodule:SimplyBookClient;
   private clientinfo:any;
-  constructor(public navCtrl: NavController, private toastCtrl: ToastController, private storage: Storage, public http: Http, private formBuilder: FormBuilder, private alertCtrl: AlertController) {
+  private loader: any;
+  constructor(public navCtrl: NavController, private toastCtrl: ToastController, private storage: Storage, public http: Http, private formBuilder: FormBuilder, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
     let url = "http://digitalsociety.pythonanywhere.com/getSocietyDetails?societyId=1";
     this.http.get(url).map(res => res.json()).subscribe(data => {
       this.societyName = data.displayName;
@@ -36,15 +38,21 @@ export class LoginPage {
   }
 
   loginForm(){
+    this.loader = this.loadingCtrl.create({
+      content: "Please wait..."
+    });
+    this.loader.present();
     let userName = this.login.value.userName;
     let password = this.login.value.password;
     let invalidLoginCredsMessage = "Either the Email or Password provided was incorrect. Please try again.";
     //let serverErrorMessage = "Unable to connect to Server. Please try later";
     this.clientinfo = this.appmodule.client.getClientInfoByLoginPassword(userName,password);
     if(this.clientinfo.code == -32065){
+      this.loader.dismiss();
       this.invalidLoginAlert(invalidLoginCredsMessage);
     }
     else{//login considered successful --> Server can be down, this case has not been considered here
+      this.loader.dismiss();
       this.toastCtrl.create({
         message: 'Login Successful',
         duration: 2000,
