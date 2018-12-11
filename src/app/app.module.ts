@@ -12,6 +12,7 @@ import { HttpModule } from '@angular/http';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Network } from '@ionic-native/network';
+import { Keyboard } from '@ionic-native/keyboard';
 import { SimplyBookClient } from '../providers/simplybook/client';
 import { NoticesPage } from '../pages/notices/notices';
 import { FacilitiesPage } from '../pages/facilities/facilities';
@@ -22,6 +23,7 @@ import { DatePicker } from '@ionic-native/date-picker';
 import { NbfacilityPage } from '../pages/nbfacility/nbfacility';
 import { BfacilityPage } from '../pages/bfacility/bfacility';
 import { CalendarPage } from '../pages/calendar/calendar';
+import { NoNetworkPage } from '../pages/no-network/no-network';
 import { BookingConfirmationPage } from '../pages/booking-confirmation/booking-confirmation';
 
 @NgModule({
@@ -38,12 +40,13 @@ import { BookingConfirmationPage } from '../pages/booking-confirmation/booking-c
     NbfacilityPage,
     BfacilityPage,
     BookingConfirmationPage,
+    NoNetworkPage,
     LogoutPage,
   ],
   imports: [
     BrowserModule,
     HttpModule,
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp ),
     IonicStorageModule.forRoot(),
   ],
   bootstrap: [IonicApp],
@@ -60,12 +63,14 @@ import { BookingConfirmationPage } from '../pages/booking-confirmation/booking-c
     BookingConfirmationPage,
     BfacilityPage,
     CalendarPage,
+    NoNetworkPage,
     LogoutPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     Network,
+    Keyboard,
     DatePicker,
     SimplyBookClient,
     FileTransfer,
