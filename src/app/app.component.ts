@@ -11,6 +11,8 @@ import { Storage } from '@ionic/storage';
 import { AlertController } from 'ionic-angular';
 import { ToastController } from 'ionic-angular';
 import { LoadingController } from 'ionic-angular';
+import { Network } from '@ionic-native/network';
+import { NoNetworkPage } from '../pages/no-network/no-network';
 
 @Component({
   templateUrl: 'app.html'
@@ -22,9 +24,26 @@ export class MyApp {
 
   pages: Array<{title: string, component: any}>;
   private loader: any;
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, private alertCtrl: AlertController, private toastCtrl: ToastController, private loadingCtrl: LoadingController) {
+  private logoutAlert: any;
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, private alertCtrl: AlertController, private toastCtrl: ToastController, private loadingCtrl: LoadingController, private network: Network) {
     this.checkLogin();
     this.initializeApp();
+
+    this.network.onConnect().subscribe(()=>{
+      this.toastCtrl.create({
+        message: "Network Connected",
+        duration: 3000,
+      }).present();
+      this.rootPage = HomePage;
+    })
+ 
+    this.network.onDisconnect().subscribe(()=>{
+      this.toastCtrl.create({
+        message: "Network Disconnected",
+        duration: 3000,
+      }).present();
+      this.rootPage = NoNetworkPage;
+    })
 
     // used for an example of ngFor and navigation
     this.pages = [
@@ -33,6 +52,21 @@ export class MyApp {
       { title: 'Profile', component: ProfilePage },
       { title: 'Logout', component: LogoutPage }
     ];
+    this.logoutAlert = this.alertCtrl.create({
+      title: "Logout",
+      subTitle: "Are you sure you want to logout of Sankul App?",
+      buttons: [{
+        text: "Yes",
+        handler: () => {
+          this.displayLoader();
+        }
+      },
+    {
+      text: "No",
+      role: "cancel" 
+    }]
+    });
+
 
   }
 
@@ -68,31 +102,29 @@ export class MyApp {
     }
   }
 
+  performLogoutOperation(){
+  this.storage.remove('Info');
+  this.rootPage = LoginPage;
+  this.toastCtrl.create({
+    message: 'Logged Out Successfully',
+    duration: 2000,
+    position: 'bottom'
+  }).present();
+  this.loader.dismiss();
+  console.log(this.rootPage);
+  }
+
+  displayLoader(){
+    this.loader = this.loadingCtrl.create({
+      content: "Please wait..."
+    });
+    this.loader.present();
+    setTimeout(() => {
+      this.performLogoutOperation();
+    }, 1000);
+  }
+
   logout(){
-    this.alertCtrl.create({
-      title: "Logout",
-      subTitle: "Are you sure you want to logout of Sankul App?",
-      buttons: [{
-        text: "Yes",
-        handler: () => {
-          this.loader = this.loadingCtrl.create({
-            content: "Please wait..."
-          });
-          this.loader.present();
-          this.storage.remove('Info');
-          this.loader.dismiss();
-          this.toastCtrl.create({
-            message: 'Logged Out Successfully',
-            duration: 2000,
-            position: 'bottom'
-          }).present();
-          this.rootPage = LoginPage;
-        }
-      },
-    {
-      text: "No",
-      role: "cancel" 
-    }]
-    }).present();
+    this.logoutAlert.present();
   }
 }

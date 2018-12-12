@@ -5,11 +5,19 @@ ion-grid{
 
 .sliders{
     height: 40%;
+    max-height: 250px;
 }
 
-.slide{
-    background-color: grey;
-    color: black;
+.slide1{
+    background: url('https://images.pexels.com/photos/938965/pexels-photo-938965.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.slide2{
+    background: url('https://images.pexels.com/photos/9816/pexels-photo-9816.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 
@@ -70,4 +78,10 @@ ion-navbar{
     background-color: #0091ea;
     padding-left: 4px;
     color: white
+}
+
+.facilitiesImage{
+    height: 100%;
+    width: 100%;
+    min-width: 100%;
 }

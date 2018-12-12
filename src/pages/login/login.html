@@ -1,19 +1,20 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Login</ion-title>
+    <ion-title style="padding-left: 5%">Sankul Login</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding> 
+  <div style="margin-top: 15%;">
   <div class="row">
-    <div class="col" text-center>
-      <img [src]="societyLogo"/>
+    <div class="col" text-center >
+      <img [src]="societyLogo" style="border-radius: 10px;"/>
     </div>
   </div>
   <div class="row" text-center>
     <ion-label class="societyName">{{societyName}}</ion-label>
   </div>
-  <form [formGroup]="login" (ngSubmit)="loginForm()">
+  <form [formGroup]="login">
     <ion-item>
       <ion-label floating>Login</ion-label>
       <ion-input type="text" formControlName="userName"></ion-input>
@@ -23,10 +24,8 @@
       <ion-input type="password" formControlName="password"></ion-input>
     </ion-item>
     <div text-center class="submitBtn">
-    <button ion-button type="submit" [disabled]="!login.valid">Submit</button>
+    <button ion-button large type="submit" [disabled]="!login.valid" (click)=displayLoader()>Submit</button>
   </div>
   </form>
-  <div class="row">
-      <ion-label class="footer">Powered by DigitalSociety</ion-label>
-    </div>
+  </div>
 </ion-content>

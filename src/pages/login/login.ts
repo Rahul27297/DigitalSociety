@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, IonicPage } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { Network } from '@ionic-native/network';
+import { Keyboard } from '@ionic-native/keyboard';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
@@ -23,7 +24,8 @@ export class LoginPage {
   public appmodule:SimplyBookClient;
   private clientinfo:any;
   private loader: any;
-  constructor(public navCtrl: NavController, private toastCtrl: ToastController, private storage: Storage, public http: Http, private formBuilder: FormBuilder, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, private toastCtrl: ToastController, private storage: Storage, public http: Http, private formBuilder: FormBuilder, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private keyboard: Keyboard) {
+    //this.keyboard.disableScroll(true);
     let url = "http://digitalsociety.pythonanywhere.com/getSocietyDetails?societyId=1";
     this.http.get(url).map(res => res.json()).subscribe(data => {
       this.societyName = data.displayName;
@@ -34,14 +36,20 @@ export class LoginPage {
       password: ['', Validators.required],
     });
     this.appmodule = new SimplyBookClient();
-  
-  }
-
-  loginForm(){
     this.loader = this.loadingCtrl.create({
       content: "Please wait..."
     });
+  }
+
+  displayLoader(){
     this.loader.present();
+    setTimeout(() => {
+      this.loginForm();
+    }, 1000);
+  }
+
+
+  loginForm(){
     let userName = this.login.value.userName;
     let password = this.login.value.password;
     let invalidLoginCredsMessage = "Either the Email or Password provided was incorrect. Please try again.";
