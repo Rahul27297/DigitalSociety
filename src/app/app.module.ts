@@ -25,6 +25,7 @@ import { BfacilityPage } from '../pages/bfacility/bfacility';
 import { CalendarPage } from '../pages/calendar/calendar';
 import { NoNetworkPage } from '../pages/no-network/no-network';
 import { BookingConfirmationPage } from '../pages/booking-confirmation/booking-confirmation';
+import { SignupPage } from '../pages/signup/signup';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { BookingConfirmationPage } from '../pages/booking-confirmation/booking-c
     BfacilityPage,
     BookingConfirmationPage,
     NoNetworkPage,
+    SignupPage,
     LogoutPage,
   ],
   imports: [
@@ -64,6 +66,7 @@ import { BookingConfirmationPage } from '../pages/booking-confirmation/booking-c
     BfacilityPage,
     CalendarPage,
     NoNetworkPage,
+    SignupPage,
     LogoutPage
   ],
   providers: [

@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title style="padding-left: 5%">Sankul Signup</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <div style="margin-top: 5%;">
+    <div class="row">
+      <div class="col" text-center>
+        <img [src]="societyLogo" style="border-radius: 10px;" />
+      </div>
+    </div>
+    <div class="row" text-center>
+      <ion-label class="societyName">{{societyName}}</ion-label>
+    </div>
+    <form [formGroup]="login">
+      <ion-item>
+        <ion-label floating>UserName (Email)</ion-label>
+        <ion-input type="text" *ngIf="disableFields == 'no'; else disableduserName" formControlName="userName"></ion-input>
+        <ng-template #disableduserName><ion-input type="text" disabled value = "{{userName}}"></ion-input></ng-template>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Flat Number (ex. C401)</ion-label>
+        <ion-input type="text" formControlName="flatNumber" *ngIf="disableFields == 'no'; else disabledflatNumber"></ion-input>
+        <ng-template #disabledflatNumber><ion-input type="text" disabled value = "{{flatNumber}}"></ion-input></ng-template>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>One Time Code</ion-label>
+        <ion-input type="text" formControlName="oneTimeCode" *ngIf="disableFields == 'no'; else disabledoneTimeCode"></ion-input>
+        <ng-template #disabledoneTimeCode><ion-input type="text" disabled value = "{{oneTimeCode}}"></ion-input></ng-template>
+      </ion-item>
+      <div text-center class="submitBtn" *ngIf="visibility == 'none'; else showotherfields">
+        <button ion-button large type="submit" [disabled]="!login.valid" (click)="displayLoader('otp')">Verify OTP</button>
+      </div>
+      <ng-template #showotherfields>
+        <ion-item>
+          <ion-label floating>Name</ion-label>
+          <ion-input type="text" formControlName="Name"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label floating>Password</ion-label>
+          <ion-input type="password" formControlName="Password"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label floating>Re-Type Password</ion-label>
+          <ion-input type="password" formControlName="rePassword"></ion-input>
+        </ion-item>
+        <div text-center class="submitBtn">
+          <button ion-button large type="submit" [disabled]="!login.valid" (click)='displayLoader("full")'>Submit</button>
+        </div>
+      </ng-template>
+    </form>
+    <div>
+      <ion-label class="signuplabel" (click)=loadLoginPage()>Already a User? Login</ion-label>
+    </div>
+  </div>
+</ion-content>

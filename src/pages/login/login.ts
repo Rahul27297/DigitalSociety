@@ -11,6 +11,7 @@ import { AlertController } from 'ionic-angular'
 import { ToastController } from 'ionic-angular';
 import { HomePage } from '../home/home';
 import { LoadingController } from 'ionic-angular';
+import { SignupPage } from '../signup/signup';
 
 @IonicPage()
 @Component({
@@ -36,12 +37,12 @@ export class LoginPage {
       password: ['', Validators.required],
     });
     this.appmodule = new SimplyBookClient();
-    this.loader = this.loadingCtrl.create({
-      content: "Please wait..."
-    });
   }
 
   displayLoader(){
+    this.loader = this.loadingCtrl.create({
+      content: "Please wait..."
+    });
     this.loader.present();
     setTimeout(() => {
       this.loginForm();
@@ -81,6 +82,10 @@ export class LoginPage {
       buttons: ['Dismiss'],
     });
     invalidLoginAlert.present();
+  }
+
+  loadSignupPage(){
+    this.navCtrl.push(SignupPage);
   }
 
 
