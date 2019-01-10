@@ -1,0 +1,20 @@
+page-intro {
+  .swiper-pagination-bullet-active {
+    background: #0091ea;
+  }
+
+  .logos{
+      font-size: 72px;
+      color: #0091ea;
+      border: 1px solid #0091ea;
+      padding: 5%;
+      border-radius: 60%;
+      text-align: center;
+  }
+
+  .skipBtn{
+      height: 10%;
+      font-size: 24px;
+      margin: 0px;
+  }
+}

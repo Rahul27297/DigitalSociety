@@ -26,6 +26,7 @@ import { CalendarPage } from '../pages/calendar/calendar';
 import { NoNetworkPage } from '../pages/no-network/no-network';
 import { BookingConfirmationPage } from '../pages/booking-confirmation/booking-confirmation';
 import { SignupPage } from '../pages/signup/signup';
+import { IntroPage } from '../pages/intro/intro';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { SignupPage } from '../pages/signup/signup';
     NoNetworkPage,
     SignupPage,
     LogoutPage,
+    IntroPage
   ],
   imports: [
     BrowserModule,
@@ -67,7 +69,8 @@ import { SignupPage } from '../pages/signup/signup';
     CalendarPage,
     NoNetworkPage,
     SignupPage,
-    LogoutPage
+    LogoutPage,
+    IntroPage
   ],
   providers: [
     StatusBar,
