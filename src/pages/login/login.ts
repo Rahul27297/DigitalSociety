@@ -61,6 +61,7 @@ export class LoginPage {
       this.invalidLoginAlert(invalidLoginCredsMessage);
     }
     else{//login considered successful --> Server can be down, this case has not been considered here
+      this.storage.set('Password', password);
       this.loader.dismiss();
       this.toastCtrl.create({
         message: 'Login Successful',
@@ -68,6 +69,7 @@ export class LoginPage {
         position: 'bottom'
       }).present();
       this.storage.set('Info',this.clientinfo);
+      console.log(this.clientinfo);
       this.navCtrl.setRoot(HomePage);
     }
     /*else{

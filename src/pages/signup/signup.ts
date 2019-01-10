@@ -73,7 +73,7 @@ export class SignupPage {
 
   verifyOtp(){
     this.userName = this.login.value.userName;
-    this.oneTimeCode = "+91" + this.login.value.oneTimeCode;
+    this.oneTimeCode = this.login.value.oneTimeCode;
     this.flatNumber = this.login.value.flatNumber;
     this.client = this.simplyBookAdmin.admin.getClientList(this.userName,1);
     
@@ -89,7 +89,7 @@ export class SignupPage {
       let clientId = this.client[0].id;
       this.clientObject = this.simplyBookAdmin.admin.getClient(parseInt(clientId));
       console.log(this.clientObject);
-      if(this.userName === this.clientObject.email && this.flatNumber === this.clientObject.address1 && this.oneTimeCode === this.clientObject.phone){
+      if(this.userName === this.clientObject.email && this.flatNumber === this.clientObject.address1 && this.oneTimeCode === this.clientObject.address2){
       this.loader.dismiss();
       this.alertCtrl.create({
         title: "OTP verified successfully. Please fill in further entries.",
@@ -118,14 +118,15 @@ export class SignupPage {
   signUp(){
     //this.userName = this.login.value.userName;
     this.Name = this.login.value.Name;
-    //this.contactNumber = "+91" + this.login.value.contactNumber;
+    this.contactNumber = this.login.value.contactNumber;
+    this.contactNumber = "+91" + this.contactNumber;
     //this.flatNumber = this.login.value.flatNumber;
     //this.oneTimeCode = this.login.value.oneTimeCode;
     this.Password = this.login.value.Password;
     this.rePassword = this.login.value.rePassword;
     if(this.rePassword === this.Password){
       let client = this.simplyBookAdmin.admin.getClientList(this.userName,1);
-        if(this.Name === this.clientObject.name){
+        if(this.Name === this.clientObject.name ){
           this.simplyBookAdmin.admin.changeClientPassword(parseInt(this.client[0].id), this.Password, false);
           this.loader.dismiss();
           this.alertCtrl.create({

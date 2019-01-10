@@ -29,19 +29,23 @@ export class BookingConfirmationPage {
   private tnc:any;
   private simplyBookClient: SimplyBookClient;
   private clientData: any;
+  private clientPassword: any;
   constructor(public navCtrl: NavController, public navParams: NavParams,  private storage: Storage, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
     this.simplyBookClient = new SimplyBookClient();
     this.tnc = false;
+    this.storage.get('Password').then((val) => {
+      this.clientPassword = val;
+    });
+    console.log(this.clientPassword);
     this.storage.get('Info').then((val) => {
       this.clientName = val.name;
       this.clientPhone = val.phone;
       this.clientEmail = val.email;
       this.clientData = {
-        name: this.clientName,
-        email: this.clientEmail,
-        phone: this.clientPhone
-      }
-      console.log(this.clientData);
+        client_login: this.clientEmail,
+        client_password: this.clientPassword
+      };
+      console.log("clientData " + this.clientName + this.clientEmail + this.clientPhone);
     });
     this.facilityId = this.navParams.get("facilityId");
     this.facilityName = this.navParams.get("facilityName");

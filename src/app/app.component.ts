@@ -13,6 +13,7 @@ import { ToastController } from 'ionic-angular';
 import { LoadingController } from 'ionic-angular';
 import { Network } from '@ionic-native/network';
 import { NoNetworkPage } from '../pages/no-network/no-network';
+import { IntroPage } from '../pages/intro/intro';
 
 @Component({
   templateUrl: 'app.html'
@@ -26,6 +27,7 @@ export class MyApp {
   private loader: any;
   private logoutAlert: any;
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, private alertCtrl: AlertController, private toastCtrl: ToastController, private loadingCtrl: LoadingController, private network: Network) {
+    //this.checkInstall();
     this.checkLogin();
     this.initializeApp();
 
@@ -66,8 +68,16 @@ export class MyApp {
       role: "cancel" 
     }]
     });
+  }
 
-
+  checkInstall(){
+    console.log("checkInstall");
+    this.storage.get('IntroDone').then((val) => {
+      //if(val == null){
+        this.rootPage = IntroPage;
+        this.storage.set('IntroDone', "Yes");
+      //}
+    });
   }
 
   checkLogin(){
