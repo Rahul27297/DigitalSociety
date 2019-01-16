@@ -17,7 +17,7 @@ import { SimplyBookClient } from '../providers/simplybook/client';
 import { NoticesPage } from '../pages/notices/notices';
 import { FacilitiesPage } from '../pages/facilities/facilities';
 import { NoticePage } from '../pages/notice/notice';
-import { FileTransfer } from '@ionic-native/file-transfer';
+import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 import { File } from '@ionic-native/file';
 import { DatePicker } from '@ionic-native/date-picker';
 import { NbfacilityPage } from '../pages/nbfacility/nbfacility';
@@ -27,6 +27,10 @@ import { NoNetworkPage } from '../pages/no-network/no-network';
 import { BookingConfirmationPage } from '../pages/booking-confirmation/booking-confirmation';
 import { SignupPage } from '../pages/signup/signup';
 import { IntroPage } from '../pages/intro/intro';
+import { FCM } from '@ionic-native/fcm';
+import { ComplaintsPage } from '../pages/complaints/complaints';
+import { NewcomplaintPage } from '../pages/newcomplaint/newcomplaint';
+import { Camera } from '@ionic-native/camera';
 
 @NgModule({
   declarations: [
@@ -45,7 +49,9 @@ import { IntroPage } from '../pages/intro/intro';
     NoNetworkPage,
     SignupPage,
     LogoutPage,
-    IntroPage
+    IntroPage,
+    ComplaintsPage,
+    NewcomplaintPage
   ],
   imports: [
     BrowserModule,
@@ -70,7 +76,9 @@ import { IntroPage } from '../pages/intro/intro';
     NoNetworkPage,
     SignupPage,
     LogoutPage,
-    IntroPage
+    IntroPage,
+    ComplaintsPage,
+    NewcomplaintPage
   ],
   providers: [
     StatusBar,
@@ -80,7 +88,10 @@ import { IntroPage } from '../pages/intro/intro';
     DatePicker,
     SimplyBookClient,
     FileTransfer,
+    FileTransferObject,
     File,
+    Camera,
+    FCM,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

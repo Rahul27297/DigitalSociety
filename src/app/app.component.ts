@@ -14,6 +14,7 @@ import { LoadingController } from 'ionic-angular';
 import { Network } from '@ionic-native/network';
 import { NoNetworkPage } from '../pages/no-network/no-network';
 import { IntroPage } from '../pages/intro/intro';
+import { FCM } from '@ionic-native/fcm';
 
 @Component({
   templateUrl: 'app.html'
@@ -26,11 +27,11 @@ export class MyApp {
   pages: Array<{title: string, component: any}>;
   private loader: any;
   private logoutAlert: any;
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, private alertCtrl: AlertController, private toastCtrl: ToastController, private loadingCtrl: LoadingController, private network: Network) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, private alertCtrl: AlertController, private toastCtrl: ToastController, private loadingCtrl: LoadingController, private network: Network, private fcm : FCM) {
     //this.checkInstall();
     this.checkLogin();
     this.initializeApp();
-
+    this.fcm.subscribeToTopic('complaints');
     this.network.onConnect().subscribe(()=>{
       this.toastCtrl.create({
         message: "Network Connected",
