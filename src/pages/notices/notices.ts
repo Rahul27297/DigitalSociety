@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Http } from '@angular/http';
-import { NoticePage } from '../notice/notice'; 
+import { NoticePage } from '../notice/notice';
 import { LoadingController } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 import 'rxjs/add/operator/map';
 /**
  * Generated class for the NoticesPage page.
@@ -17,57 +18,52 @@ import 'rxjs/add/operator/map';
   templateUrl: 'notices.html',
 })
 export class NoticesPage {
-  public notices: any;
-  public noticesArray: Array<{subject: any, date: any, searchid: any}>;
-  public noticesArchivedArray: Array<{subject: any, date: any, searchid: any}>;
+  public recentNotices: any;
+  public archivedNotices: any;
+  public noticesArray: Array<{ subject: any, date: any, searchid: any }>;
+  public noticesArchivedArray: Array<{ subject: any, date: any, searchid: any }>;
   public noticeIds: any;
   private loader: any;
   noticesTab: string = "recentNotices";
-  constructor(public navCtrl: NavController, public navParams: NavParams, private http: Http, private loadingCtrl: LoadingController) {
-    
+  private societyId: any;
+  constructor(public navCtrl: NavController, public navParams: NavParams, private http: Http, private loadingCtrl: LoadingController, private storage: Storage) {
+    this.societyId = navParams.get('societyId');
+
   }
 
-  setup(){
-    let url = "http://digitalsociety.pythonanywhere.com/getRecentNotices?societyId=1";
+  setup() {
+    let url = "https://upgraded-server.herokuapp.com/getNoticesBySocietyId?society_id=" + this.societyId;
     let tempnotice;
+    let buffer;
     this.http.get(url).map(res => res.json()).subscribe(data => {
-      this.notices = data;
-      console.log(this.notices);
-      this.noticesArray = [];
-      this.noticeIds = Object.keys(this.notices);
-      console.log(this.noticeIds);
-      for(let i = 0; i < this.notices.length; i++){
-        tempnotice = Object.getOwnPropertyDescriptor(this.notices,this.noticeIds[i]).value;
-        tempnotice = Object.getOwnPropertyDescriptor(tempnotice,Object.keys(tempnotice)[0]).value;
-        console.log(tempnotice);
-        this.noticesArray.push({
-          subject: tempnotice.subject,
-          date: tempnotice.date,
-          searchid: tempnotice.key_for_search
-        });
-      }
-      //console.log(key);
-      //console.log(Object.getOwnPropertyDescriptor(this.notices,key).value);
-      //console.log(this.noticesArray);
-    });
-    url = "http://digitalsociety.pythonanywhere.com/getArchivedNotices?societyId=1";
-    this.http.get(url).map(res => res.json()).subscribe(data => {
-      this.notices = data;
-      console.log(this.notices);
-      this.noticesArchivedArray = [];
-      this.noticeIds = Object.keys(this.notices);
-      console.log(this.noticeIds);
-      for(let i = 0; i < this.notices.length; i++){
-        tempnotice = Object.getOwnPropertyDescriptor(this.notices,this.noticeIds[i]).value;
-        tempnotice = Object.getOwnPropertyDescriptor(tempnotice,Object.keys(tempnotice)[0]).value;
-        console.log(tempnotice);
-        this.noticesArchivedArray.push({
-          subject: tempnotice.subject,
-          date: tempnotice.date,
-          searchid: tempnotice.key_for_search
-        });
+      buffer = Object.getOwnPropertyDescriptor(data, "data").value;
+      let success = Object.getOwnPropertyDescriptor(buffer, "flag").value;
+      if (success) {
+        this.recentNotices = Object.getOwnPropertyDescriptor(buffer, "recent").value;
+
+        this.noticesArray = [];
+        for (let i = 0; i < this.recentNotices.length; i++) {
+          tempnotice = this.recentNotices[i];
+          this.noticesArray.push({
+            subject: tempnotice.notice_title,
+            date: tempnotice.date + " " + tempnotice.time,
+            searchid: i
+          });
+        }
+        this.noticesArchivedArray = [];
+        this.archivedNotices = Object.getOwnPropertyDescriptor(buffer, "archived").value;
+        for (let i = 0; i < this.archivedNotices.length; i++) {
+          tempnotice = this.archivedNotices[i];
+          this.noticesArchivedArray.push({
+            subject: tempnotice.notice_title,
+            date: tempnotice.date + " " + tempnotice.time,
+            searchid: i
+          });
+        }
+        console.log(this.archivedNotices);
       }
     });
+
   }
 
   ionViewDidLoad() {
@@ -78,15 +74,22 @@ export class NoticesPage {
     this.loader.present();
   }
 
-  ionViewDidEnter(){
+  ionViewDidEnter() {
     this.setup();
     this.loader.dismiss();
   }
 
-  getNotice(searchkey){
-    this.navCtrl.push(NoticePage,{
-      searchid: searchkey
-    });
+  getNotice(searchkey, type) {
+    if (type === "archived") {
+      this.navCtrl.push(NoticePage, {
+        notice: this.archivedNotices[searchkey]
+      });
+    }
+    else if (type === "recent") {
+      this.navCtrl.push(NoticePage, {
+        notice: this.recentNotices[searchkey]
+      });
+    }
   }
 
 }

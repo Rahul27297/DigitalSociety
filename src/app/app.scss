@@ -25,3 +25,20 @@ hr{
 *{
   font-family: sans-serif;
 }
+
+.toolbar-ios{
+  background-color: #0064b7;
+}
+
+ion-app.ios{
+  background-color: #0064b7;
+}
+
+$colors: (
+  primary:    #ffd600,
+  secondary:  #fffde7,
+  danger:     #f53d3d,
+  light:      #ffff5a,
+  dark:       #c7cc00,
+  black:      #222
+);

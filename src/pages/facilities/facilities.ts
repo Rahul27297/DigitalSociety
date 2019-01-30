@@ -25,8 +25,9 @@ export class FacilitiesPage {
   private loading: any;
   private facilityids: any;
   private facilitiesArray: Array<{name: String, bookable: any, url: String, description: String, id: any}>;
+  private societyId :any;
   constructor(public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController) {
-    
+    this.societyId = navParams.get('societyId');
   }
 
   getEventList(){
@@ -53,6 +54,11 @@ export class FacilitiesPage {
     }
   }
 
+  temp(){
+    let data = this.simplyBookClient.client.getUnitList();
+    console.log("data: " + Object.keys((Object.getOwnPropertyDescriptor(data,"3").value)));
+  }
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad FacilitiesPage');
     this.loading = this.loadingCtrl.create({
@@ -64,18 +70,21 @@ export class FacilitiesPage {
   ionViewDidEnter(){
     console.log('ionViewDidLoad FacilitiesPag111e');
     this.getEventList();
+    this.temp();
     this.loading.dismiss();
   }
 
   facilitySelected(item){
     if(item.bookable == "0"){
       this.navCtrl.push(NbfacilityPage,{
-        facility: item
+        facility: item,
+        societyId: this.societyId
       });
     }
     else if(item.bookable == "1"){
       this.navCtrl.push(BfacilityPage,{
-        facility: item
+        facility: item,
+        societyId: this.societyId
       });
     }
   }

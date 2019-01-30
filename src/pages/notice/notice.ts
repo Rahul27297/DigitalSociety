@@ -25,17 +25,12 @@ export class NoticePage {
   private date: any;
   private attachment: any;
   constructor(public navCtrl: NavController, public navParams: NavParams, public http: Http,private file: File, private transfer: FileTransfer, private toastCtrl: ToastController) {
-    this.noticeKey = this.navParams.get('searchid');
-    let url = "http://digitalsociety.pythonanywhere.com/getNotice?societyId=1&keyForSearch="+this.noticeKey;
-    this.http.get(url).map(res => res.json()).subscribe(data => {
-      let noticeId = Object.keys(data);
-      this.notice = Object.getOwnPropertyDescriptor(data,noticeId[0]).value;
-      this.subject = this.notice.subject;
-      this.date = this.notice.date;
-      this.description = this.notice.description;
-      this.attachment = this.notice.attachment;
-      console.log(this.attachment);
-    });
+    this.notice = this.navParams.get('notice');
+    console.log(this.notice);
+      this.subject = this.notice.notice_title;
+      this.date = this.notice.date + " " + this.notice.time;
+      this.description = this.notice.notice_description;
+      this.attachment = this.notice.notice_url;
     
   }
 
@@ -44,7 +39,7 @@ export class NoticePage {
   }
 
   downloadAttachment(){
-    let attach;
+    /*let attach;
     let url = "http://digitalsociety.pythonanywhere.com/getDownloadUrl?societyId=1&attachment="+this.attachment;
     this.http.get(url).map(res => res.json()).subscribe(data => {
       attach = data.download_url;
@@ -59,7 +54,7 @@ export class NoticePage {
     }, (error) => {
 
     });
-    });
+    });*/
     
   }
 

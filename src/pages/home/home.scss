@@ -52,17 +52,19 @@ ion-grid{
 }
 
 .toolbar-background-md{
-    background-color: #0091ea;
+    //background-color: #0091ea;
+    background-color: color($colors, primary);
 }
 
 .toolbar-title-md{
     padding-left: 0px;
-    color: white; 
+    color: color($colors, black); 
     font-size: 24px;
 }
 
 .bar-button-menutoggle-md ion-icon{
     font-size: 24px;
+    color: color($colors, black);
 }
 
 .header{
@@ -70,14 +72,13 @@ ion-grid{
 }
 
 ion-header{
-    background-color: #0091ea; 
+    
     padding: 0px;
 }
 
 ion-navbar{
-    background-color: #0091ea;
+    
     padding-left: 4px;
-    color: white
 }
 
 .facilitiesImage{

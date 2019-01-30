@@ -27,18 +27,25 @@
           </ion-slides>
     </ion-col>
   </ion-row>
-  <ion-row style="height: 25%">
+  <ion-row style="height: 25%" *ngIf="this.hasFacilities === true">
     <ion-card class="societyProvisions" (click)="facilities()">
         <img src={{facilitiesImage}} class="facilitiesImage"/>
       <div class="card-title">Facilities</div>
       <div class="card-subtitle">Enjoy the best of sports and entertainment</div>
     </ion-card>
   </ion-row>
-  <ion-row style="height: 25%;margin-top: 8px">
+  <ion-row style="height: 25%;margin-top: 8px" *ngIf="this.hasNotices === true">
     <ion-card class="notices" (click)="notices()">
         <img src={{noticesImage}} class="facilitiesImage"/>
       <div class="card-title">Notices</div>
       <div class="card-subtitle">Stay notified with the changes in you society</div>
+    </ion-card>
+  </ion-row>
+  <ion-row style="height: 25%;margin-top: 8px" *ngIf="this.hasComplaints === true">
+    <ion-card class="notices" (click)="complaints()">
+        <img src={{complaintsImage}} class="facilitiesImage"/>
+      <div class="card-title">Complaints</div>
+      <div class="card-subtitle">Let us know about your issues</div>
     </ion-card>
   </ion-row>
   </ion-grid>

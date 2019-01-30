@@ -7,7 +7,7 @@
 <ion-header style="padding: 0">
 
   <ion-navbar>
-    <ion-title>notices</ion-title>
+    <ion-title>Notices</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -27,14 +27,14 @@
       <div [ngSwitch]="noticesTab">
 
         <ion-list *ngSwitchCase="'recentNotices'">
-            <ion-card *ngFor="let item of noticesArray" (click)=getNotice(item.searchid)>
+            <ion-card *ngFor="let item of noticesArray" (click)="getNotice(item.searchid,'recent')">
               <ion-row style="height: 80%; overflow-wrap: break-word">
                 <ion-item style="padding-left: 8px">
-                  <ion-label class="noticeSubjectText">{{item.subject}}</ion-label>
+                  <ion-label class="noticeSubjectText" style="overflow-wrap: break-word; white-space: normal">{{item.subject}}</ion-label>
                 </ion-item>
               </ion-row>
               <ion-row style="padding-left: 4px;">
-                <ion-col col-5>
+                <ion-col col-8>
                   <ion-row>
                   <ion-icon name="calendar" style="margin-right: 4px; vertical-align: bottom; font-size: 16px"></ion-icon>
                 <ion-label style="margin: 0px; font-size:16px; text-align: left">{{item.date}}</ion-label>
@@ -46,14 +46,14 @@
         </ion-list>
 
         <ion-list *ngSwitchCase="'archivedNotices'">
-            <ion-card *ngFor="let item of noticesArchivedArray" (click)=getNotice(item.searchid)>
+            <ion-card *ngFor="let item of noticesArchivedArray" (click)="getNotice(item.searchid,'archived')">
                 <ion-row style="height: 80%; overflow-wrap: break-word">
                   <ion-item style="padding-left: 8px">
                     <ion-label class="noticeSubjectText">{{item.subject}}</ion-label>
                   </ion-item>
                 </ion-row>
                 <ion-row style="padding-left: 4px;">
-                  <ion-col col-5>
+                  <ion-col col-8>
                     <ion-row>
                     <ion-icon name="calendar" style="margin-right: 4px; vertical-align: bottom; font-size: 16px"></ion-icon>
                   <ion-label style="margin: 0px; font-size:16px; text-align: left">{{item.date}}</ion-label>

@@ -5,6 +5,7 @@ import { Http } from '@angular/http';
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { LoadingController } from 'ionic-angular';
 import { AlertController } from 'ionic-angular'
+import { Storage } from '@ionic/storage';
 import { LoginPage } from '../login/login';
 /**
  * Generated class for the SignupPage page.
@@ -35,7 +36,7 @@ export class SignupPage {
     private client: any;
     private clientObject: any;
     private disableFields: any = "no";
-  constructor(public navCtrl: NavController, public navParams: NavParams, public http: Http, private formBuilder: FormBuilder, private loadingCtrl: LoadingController, private alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public http: Http, private formBuilder: FormBuilder, private loadingCtrl: LoadingController, private alertCtrl: AlertController, private storage: Storage) {
     console.log('ionViewDidLoad SignupPage');
     this.loader = this.loadingCtrl.create({
       content: " Please wait..."
@@ -75,12 +76,20 @@ export class SignupPage {
     this.userName = this.login.value.userName;
     this.oneTimeCode = this.login.value.oneTimeCode;
     this.flatNumber = this.login.value.flatNumber;
+    let url = "https://upgraded-server.herokuapp.com/getMemberSocietyIdByMemberEmail?member_email=" + this.userName;
+    this.http.get(url).map(res => res.json()).subscribe(data => {
+      //need error handling here for api
+      let success = Object.getOwnPropertyDescriptor(data,"flag").value;
+      if(success){
+        console.log("success:" + success);
+        let societyId = Object.getOwnPropertyDescriptor(data,"society_id").value;
+        //this.storage.set("societyId", societyId);
+      }
+    });
     this.client = this.simplyBookAdmin.admin.getClientList(this.userName,1);
-    
-    console.log(this.client);
     if(this.client.length === 0){
       this.alertCtrl.create({
-        title: "The entered Email is not associated with Sankul Society",
+        title: "The entered email is not registered. Please try again. If issue persists, please contact society admin",
         buttons: ['Dismiss']
       }).present();
       this.loader.dismiss();
