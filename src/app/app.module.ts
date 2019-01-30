@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
-import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { IonicApp, IonicErrorHandler, IonicModule, NavParams, NavController } from 'ionic-angular';
 import { IonicStorageModule } from '@ionic/storage';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -31,6 +31,10 @@ import { FCM } from '@ionic-native/fcm';
 import { ComplaintsPage } from '../pages/complaints/complaints';
 import { NewcomplaintPage } from '../pages/newcomplaint/newcomplaint';
 import { Camera } from '@ionic-native/camera';
+import { ConstantsProvider } from '../providers/constants/constants';
+import { ToastsProvider } from '../providers/toasts/toasts';
+import { LoadersProvider } from '../providers/loaders/loaders';
+import { FirebaseProvider } from '../providers/firebase/firebase';
 
 @NgModule({
   declarations: [
@@ -92,7 +96,11 @@ import { Camera } from '@ionic-native/camera';
     File,
     Camera,
     FCM,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    ConstantsProvider,
+    ToastsProvider,
+    LoadersProvider,
+    FirebaseProvider
   ]
 })
 export class AppModule {

@@ -30,6 +30,7 @@ export class BookingConfirmationPage {
   private simplyBookClient: SimplyBookClient;
   private clientData: any;
   private clientPassword: any;
+  private societyId: any;
   constructor(public navCtrl: NavController, public navParams: NavParams,  private storage: Storage, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
     this.simplyBookClient = new SimplyBookClient();
     this.tnc = false;
@@ -51,6 +52,7 @@ export class BookingConfirmationPage {
     this.facilityName = this.navParams.get("facilityName");
     this.startTime = this.navParams.get("startTime");
     this.startDate = this.navParams.get("startDate");
+    this.societyId = this.navParams.get('societyId');
     console.log(this.startDate);
     console.log(this.startTime);
   }
@@ -77,7 +79,7 @@ export class BookingConfirmationPage {
         buttons:[{
           text: "Yes",
           handler: () => {
-            booking = this.simplyBookClient.client.book(this.facilityId, 1, this.startDate, this.startTime, this.clientData, null , 1);
+            booking = this.simplyBookClient.client.book(this.facilityId, this.societyId + 3, this.startDate, this.startTime, this.clientData, null , 1);
             console.log(this.simplyBookClient.client.book(this.facilityId, 1, this.startDate, this.startTime, this.clientData, null , 1));
             console.log(Object.keys(booking));
             if(Object.keys(booking)[1] == "bookings"){

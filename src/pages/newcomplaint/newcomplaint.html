@@ -15,25 +15,25 @@
 
 <ion-content class="complaint-form">
   <form [formGroup]="complaintForm" class="complaint-form">
-    <ion-item>
-      <ion-label floating>Title</ion-label>
+    <ion-item class="complaints-item">
+      <ion-label floating class="complaints-label">Title</ion-label>
       <ion-input type="text" formControlName="complaintTitle"></ion-input>
     </ion-item>
-    <ion-item>
-      <ion-label floating>Description</ion-label>
+    <ion-item class="complaints-item" >
+      <ion-label floating class="complaints-label">Description</ion-label>
       <ion-textarea type="text" formControlName="complaintDescription" ></ion-textarea>
     </ion-item>
-    <ion-item>
-      <ion-label floating>Location</ion-label>
+    <ion-item class="complaints-item">
+      <ion-label floating class="complaints-label">Location</ion-label>
       <ion-input type="text" formControlName="complaintLocation"></ion-input>
     </ion-item>
-    <ion-item>
-      <h4>Image Preview</h4>
-      <img [src]="this.imageURI" height="300px" width="300px"/>
-    </ion-item>
-    <button ion-button class="primary" (click)=getImage()>Upload Image</button>
-    <div text-center class="submitBtn" *ngIf="visibility == 'none'; else showotherfields">
-      <button ion-button large type="submit" [disabled]="!login.valid">Register Complaint</button>
+    <div class="complaints-item" *ngIf="imageObtained != false">
+      <ion-label>Image Preview</ion-label>
+      <img [src]="this.imageURI"style = "min-height:30%px; min-width:100%"/>
+    </div>
+    <button *ngIf="imageObtained === false" ion-button class="primary" style="margin-top: 16px;" (click)=presentActionSheet()>Attach Image</button>
+    <div text-center>
+      <button ion-button large type="submit" [disabled]="!complaintForm.valid" (click)=registerComplaint() style="margin-top: 16px;">Register Complaint</button>
     </div>
   </form>
 </ion-content>

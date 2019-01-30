@@ -4,8 +4,8 @@ import { NoticesPage } from '../notices/notices'
 import { FacilitiesPage } from '../facilities/facilities';
 import { Http } from '@angular/http';
 import { LoadingController } from 'ionic-angular';
-import { ComplaintsPage } from '../complaints/complaints';
-
+import { NewcomplaintPage } from '../newcomplaint/newcomplaint';
+import { Storage } from '@ionic/storage';
 /**
  * Generated class for the HomePage page.
  *
@@ -24,39 +24,61 @@ export class HomePage {
   private noticesImage: any;
   private complaintsImage: any;
   private loader: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams, private http: Http, private loadingCtrl: LoadingController) {
-    let url = "https://digitalsociety.pythonanywhere.com/getDownloadUrlImages";
-    this.http.get(url).map(res => res.json()).subscribe(data => {
-      this.noticesImage = data.download_url_notices_logo;
-      this.facilitiesImage = data.download_url_facilities_logo;
-      this.complaintsImage = "https://www.pexels.com/photo/brown-paper-lot-on-floor-near-brown-wall-1411426/";
-      console.log(this.noticesImage);
-      this.loader.dismiss();
-    });
+  private societyId: any;
+  private societyInfo: any;
+  private hasFacilities: boolean;
+  private hasNotices: boolean;
+  private hasComplaints: boolean;
+  constructor(public navCtrl: NavController, public navParams: NavParams, private http: Http, private loadingCtrl: LoadingController, private storage: Storage) {
+    this.societyId = this.navParams.get('societyId');
+    this.societyInfo = this.navParams.get('societyInfo');
+    this.setUpHomeScreen();
   }
 
-  ionViewDidEnter(){
-    console.log('ionViewDidEnter HomePage');
+  setUpHomeScreen() {
+    if (this.societyInfo != null) {
+      this.hasFacilities = this.societyInfo.society.facilities.is_feature_available;
+      this.hasComplaints = this.societyInfo.society.complaints.is_feature_available;
+      this.hasNotices = this.societyInfo.society.notices.is_feature_available;
+      if (this.hasFacilities) {
+        this.facilitiesImage = this.societyInfo.download_urls.facilities_image_download_url;
+      }
+      if (this.hasComplaints) {
+        this.complaintsImage = this.societyInfo.download_urls.complaints_image_download_url;
+      }
+      if (this.hasNotices) {
+        this.noticesImage = this.societyInfo.download_urls.notices_image_download_url;
+      }
+    }
+  }
+
+  ionViewDidEnter() {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad HomePage');
     this.loader = this.loadingCtrl.create({
       content: "Please wait..."
     });
-    this.loader.present();
+    //this.loader.present();
   }
 
-  facilities(){
-    this.navCtrl.push(FacilitiesPage);
+  facilities() {
+    this.navCtrl.push(FacilitiesPage, {
+      societyId: this.societyId
+    });
   }
 
-  notices(){
-    this.navCtrl.push(NoticesPage);
+  notices() {
+    this.navCtrl.push(NoticesPage, {
+      societyId: this.societyId
+    });
   }
 
-  complaints(){
-    this.navCtrl.push(ComplaintsPage);
+  complaints() {
+    this.navCtrl.push(NewcomplaintPage, {
+      societyId: this.societyId,
+      societyInfo: this.societyInfo
+    });
   }
 
 }

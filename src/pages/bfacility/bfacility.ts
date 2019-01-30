@@ -4,6 +4,7 @@ import { CalendarPage } from '../calendar/calendar';
 import { SimplyBookClient } from '../../providers/simplybook/client';
 import { BookingConfirmationPage } from '../booking-confirmation/booking-confirmation';
 import { LoadingController } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 /**
  * Generated class for the BfacilityPage page.
  *
@@ -27,7 +28,9 @@ export class BfacilityPage {
 	public selectedSlot: any;
 	public selectedSlotTime:any;
 	private loader: any;
-    constructor(private navController:NavController, private navParams:NavParams, private loadingCtrl: LoadingController) {
+	private societyId: any;
+    constructor(private navController:NavController, private navParams:NavParams, private loadingCtrl: LoadingController, private storage: Storage) {
+		this.societyId = navParams.get('societyId');
 		this.calendar = new CalendarPage();
 		this.selectedSlot = "transparent";
 		this.todayDate = new Date();
@@ -40,7 +43,7 @@ export class BfacilityPage {
 	setup(){
 		this.simplyBookClient = new SimplyBookClient();
 		//this.currentDate = this.simplyBookClient.client.getFirstWorkingDay();
-		let slots = this.simplyBookClient.client.getStartTimeMatrix(this.todayDate,this.todayDate,this.facility.id,1,1);
+		let slots = this.simplyBookClient.client.getStartTimeMatrix(this.todayDate,this.todayDate,this.facility.id,this.societyId + 3,1);
 		console.log(slots);
 		this.slotsArray = Object.getOwnPropertyDescriptor(slots,Object.keys(slots)[0]).value;
 	}
@@ -53,6 +56,7 @@ export class BfacilityPage {
 	}
 
 	ionViewDidEnter(){
+		
 		this.setup();
 		this.loader.dismiss();
 	}
@@ -77,7 +81,8 @@ export class BfacilityPage {
 			facilityId: this.facility.id,
 			facilityName: this.facility.name,
 			startDate: date,
-			startTime: this.selectedSlotTime
+			startTime: this.selectedSlotTime,
+			societyId: this.societyId
 		});
 	}
 
@@ -85,7 +90,7 @@ export class BfacilityPage {
 		this.currentDate = day;
 		console.log(day+month+year);
 		let date = new Date(this.calendar.date.getFullYear(),this.calendar.date.getMonth(),day);
-		let slots = this.simplyBookClient.client.getStartTimeMatrix(date,date,this.facility.id,1,1);
+		let slots = this.simplyBookClient.client.getStartTimeMatrix(date,date,this.facility.id,this.societyId + 3,1);
 		console.log(slots);
 		this.slotsArray = Object.getOwnPropertyDescriptor(slots,Object.keys(slots)[0]).value;
 	}
