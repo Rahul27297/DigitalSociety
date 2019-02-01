@@ -28,7 +28,6 @@ export class NoticesPage {
   private societyId: any;
   constructor(public navCtrl: NavController, public navParams: NavParams, private http: Http, private loadingCtrl: LoadingController, private storage: Storage) {
     this.societyId = navParams.get('societyId');
-
   }
 
   setup() {
@@ -60,23 +59,23 @@ export class NoticesPage {
             searchid: i
           });
         }
-        console.log(this.archivedNotices);
       }
     });
 
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad NoticesPage');
     this.loader = this.loadingCtrl.create({
       content: "Please wait..."
     });
     this.loader.present();
+    setTimeout(() => {
+      this.setup();
+      this.loader.dismiss();
+    }, 50);
   }
 
   ionViewDidEnter() {
-    this.setup();
-    this.loader.dismiss();
   }
 
   getNotice(searchkey, type) {

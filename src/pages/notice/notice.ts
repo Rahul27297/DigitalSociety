@@ -39,8 +39,8 @@ export class NoticePage {
   }
 
   downloadAttachment(){
-    /*let attach;
-    let url = "http://digitalsociety.pythonanywhere.com/getDownloadUrl?societyId=1&attachment="+this.attachment;
+    let attach;
+    let url = this.attachment;
     this.http.get(url).map(res => res.json()).subscribe(data => {
       attach = data.download_url;
       console.log(attach);
@@ -54,7 +54,7 @@ export class NoticePage {
     }, (error) => {
 
     });
-    });*/
+    });
     
   }
 

@@ -54,24 +54,21 @@ export class FacilitiesPage {
     }
   }
 
-  temp(){
-    let data = this.simplyBookClient.client.getUnitList();
-    console.log("data: " + Object.keys((Object.getOwnPropertyDescriptor(data,"3").value)));
-  }
-
   ionViewDidLoad() {
     console.log('ionViewDidLoad FacilitiesPage');
     this.loading = this.loadingCtrl.create({
       content:'Please wait...'
     });
     this.loading.present();
+    setTimeout(() => {
+      this.getEventList();
+      this.loading.dismiss();   
+    }, 100);
   }
 
   ionViewDidEnter(){
     console.log('ionViewDidLoad FacilitiesPag111e');
-    this.getEventList();
-    this.temp();
-    this.loading.dismiss();
+    //this.getEventList();
   }
 
   facilitySelected(item){
