@@ -18,6 +18,13 @@ img{
     text-align: center;
 }
 
+.signupBtns{
+    background-color: color($colors, primary);
+    color: white;
+    width: 50%;
+    font-size: 18px;
+}
+
 .signuplabel{
     color: blue;
     width: 100%;

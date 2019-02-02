@@ -1,18 +1,44 @@
 .nbfacilityName{
     font-size: 24px;
-    margin-top: 8px;
-    color: #0091ea;
+    margin-top: 16px;
+    text-align: left;
+    padding-left: 24px;
+    color: color($colors, primary-dark);
 }
 
 .nbfacilityTime{
     font-size: 18px;
     margin-top: 0px;
-    color: #0091ea;
+    text-align: left;
+    color: color($colors, primary-dark);
 }
 
 .nbfacilityImageRow{
-    max-height: 50%;
+    max-height: 40%;
     min-height: 30%;
+}
+
+.nbfacility-grid{
+    padding-left: 0px;
+    padding-right: 0px; 
+    padding-top: 0px; 
+    text-align: left;
+    padding-bottom: 16px;
+}
+
+.nbfacility-card{
+    z-index: 5;
+}
+
+.separator{
+    height: 1px;
+    background-color: color($colors, secondary-dark);
+    margin-left: 8px;
+    margin-right: 8px; 
+}
+
+.nbfacility-header{
+    padding-left: 16px;
 }
 
 .nbfacilityDescription{
@@ -23,6 +49,10 @@
 .nbfacilityImage{
     max-width: 100%;
     width: 10000px;
-    height: 250px;
+    max-height: 200px;
     object-fit: cover;
+}
+
+.clock{
+    font-size: 18px;
 }

@@ -17,41 +17,39 @@
   <ion-card >
     <ion-card-header class="bookingConfirmationHeader">
       Booking Confirmation
-      <hr style="background-color: #0064b7">
+      <div class="separator"></div>
     </ion-card-header>
     <ion-card-content class="bookingConfirmationContent">
       <ion-grid>
         <ion-row>
-            Name<div style="color: #0064b7;">: {{clientName}}</div>
+            Name<div>: {{clientName}}</div>
         </ion-row>
         <hr>
         <ion-row>
-          Phone<div style="color: #0064b7;">: {{clientPhone}}</div>
+          Phone<div >: {{clientPhone}}</div>
         </ion-row>
         <hr>
         <ion-row>
-          Facility<div style="color: #0064b7;">: {{facilityName}}</div>
+          Facility<div >: {{facilityName}}</div>
         </ion-row>
         <hr>
         <ion-row>
-          Date<div style="color: #0064b7;">: {{startDate}}</div>
+          Date<div >: {{startDate}}</div>
         </ion-row>
         <hr>
         <ion-row>
-          Time<div style="color: #0064b7;">: {{startTime}}</div>
+          Time<div>: {{startTime}}</div>
         </ion-row>
         <ion-row >
           <ion-item>
-              <ion-label style="font-size: 18px;">Accept Terms & Conditions</ion-label>
+              <ion-label class="tncaccept-text">Accept Terms & Conditions</ion-label>
               <ion-checkbox color="dark" checked="false" (click)="tncCheckBox()" style="margin-right: 4px;"></ion-checkbox>
             </ion-item>
         </ion-row>
         <ion-row>
-          <ion-fab bottom left>
-            <button ion-button icon-start (click)="confirmBooking()" class="bookingBtns" style="margin-bottom: 8px;"><ion-icon name="checkmark-circle"></ion-icon>Confirm Booking</button>
-          
-            <button ion-button icon-start (click)="cancelBooking()" class="bookingBtns"><ion-icon name="close-circle" ></ion-icon>Cancel Booking</button>
-            </ion-fab>
+            <button ion-button icon-start (click)="confirmBooking()" class="bookingBtns" style="margin-bottom: 8px; margin-right: 8px"><ion-icon name="checkmark-circle"></ion-icon>Confirm</button>
+  
+            <button ion-button icon-start (click)="cancelBooking()" class="bookingBtns" style="margin-left: 8px;"><ion-icon name="close-circle" ></ion-icon>Cancel</button>
           </ion-row>
       </ion-grid>
     </ion-card-content>

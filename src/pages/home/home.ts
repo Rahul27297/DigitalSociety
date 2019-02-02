@@ -29,9 +29,11 @@ export class HomePage {
   private hasFacilities: boolean;
   private hasNotices: boolean;
   private hasComplaints: boolean;
+  private societyName: any;
   constructor(public navCtrl: NavController, public navParams: NavParams, private http: Http, private loadingCtrl: LoadingController, private storage: Storage) {
     this.societyId = this.navParams.get('societyId');
     this.societyInfo = this.navParams.get('societyInfo');
+    this.societyName = this.societyInfo.society.display_name;
     this.setUpHomeScreen();
   }
 

@@ -70,7 +70,7 @@ export class BfacilityPage {
 
 	slotSelected(slot){
 		console.log(slot);
-		this.selectedSlot = "#0091ea";
+		this.selectedSlot = "color($colors, primary-dark)";
 		this.selectedSlotTime = slot;
 	}
 

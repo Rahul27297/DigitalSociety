@@ -10,8 +10,9 @@
   <div style="padding: 8px;">
   <div class="calendar-header">
     <ion-row class="calendar-month">
+      <ion-col col-2 (click)="calendar.goToPreviousMonth()"><ion-icon name="arrow-dropleft"></ion-icon></ion-col>
       <ion-col col-8>{{calendar.currentMonth}} {{calendar.currentYear}}</ion-col>
-      <ion-col col-2 (click)="calendar.goToNextMonth()"><ion-icon name="arrow-forward"></ion-icon></ion-col>
+      <ion-col col-2 (click)="calendar.goToNextMonth()"><ion-icon name="arrow-dropright"></ion-icon></ion-col>
     </ion-row>
   </div>
   <div class="calendar-body">
@@ -43,14 +44,14 @@
       </ion-row>
       <ion-row>
         <ion-col col-4 *ngFor="let slot of slotsArray">
-          <button ion-button *ngIf="slot === selectedSlotTime; else otherslots" class="slotButton" (click)=slotSelected(slot)>{{slot}}</button>
+          <button ion-button *ngIf="slot === selectedSlotTime; else otherslots" class="selected-slot" (click)=slotSelected(slot)>{{slot}}</button>
           <ng-template #otherslots><button ion-button outline (click)=slotSelected(slot) class="slotButton">{{slot}}</button></ng-template>
         </ion-col>
       </ion-row>
     </ion-grid>
   </div>
-    <ion-fab right bottom>
-    <button ion-button icon-end round class="proceedBookBtn" (click)=proceedBook()>Book<ion-icon name="arrow-dropright"></ion-icon></button>
-  </ion-fab>
+    <div text-center>
+    <button ion-button icon-end class="proceedBookBtn" (click)=proceedBook()>Book<ion-icon name="arrow-dropright"></ion-icon></button>
+  </div>
 </div>
 </ion-content>

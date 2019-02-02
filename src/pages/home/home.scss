@@ -8,6 +8,10 @@ ion-grid{
     max-height: 250px;
 }
 
+.companylogo-image-login{
+    
+}
+
 .slide1{
     background: url('https://images.pexels.com/photos/938965/pexels-photo-938965.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');
     background-size: cover;
@@ -51,35 +55,6 @@ ion-grid{
   .notices{
 }
 
-.toolbar-background-md{
-    //background-color: #0091ea;
-    background-color: color($colors, primary);
-}
-
-.toolbar-title-md{
-    padding-left: 0px;
-    color: color($colors, black); 
-    font-size: 24px;
-}
-
-.bar-button-menutoggle-md ion-icon{
-    font-size: 24px;
-    color: color($colors, black);
-}
-
-.header{
-    padding: 0px;
-}
-
-ion-header{
-    
-    padding: 0px;
-}
-
-ion-navbar{
-    
-    padding-left: 4px;
-}
 
 .facilitiesImage{
     height: 100%;
