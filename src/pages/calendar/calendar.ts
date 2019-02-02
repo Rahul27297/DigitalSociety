@@ -72,6 +72,13 @@ export class CalendarPage {
     this.getDaysOfMonth();
   }
 
+  goToPreviousMonth() {
+    this.date = new Date(this.date.getFullYear(), this.date.getMonth(), 0);
+    this.getDaysOfMonth();
+  }
+
+  
+
   goToLastMonth() {
     this.date = new Date(this.date.getFullYear(), this.date.getMonth(), 0);
     this.getDaysOfMonth();

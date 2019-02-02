@@ -14,25 +14,28 @@
 
 
 <ion-content>
-  <ion-card>
-      <ion-grid style="padding-left: 0px; padding-right: 0px">
-        <ion-row>
-      <ion-label class="nbfacilityName">{{facilityName}}</ion-label>
-    </ion-row>
-    <ion-row>
-      <ion-label class="nbfacilityTime"><ion-icon name="clock" style="margin-right: 4px;"></ion-icon>06:00AM - 10:00PM</ion-label>
-    </ion-row>
-    <ion-row class="nbfacilityImageRow">
-    <img class="nbfacilityImage" src={{facilityImage}}>
-  </ion-row>
-  <ion-row>
-    <ion-card-content class="nbfacilityDescription">
-      {{facilityDescription}}
-    </ion-card-content>
-  </ion-row>
-  
-    
-  </ion-grid>
+  <ion-card class="nbfacility-card">
+    <ion-grid class="nbfacility-grid">
+      <ion-row class="nbfacilityImageRow">
+        <img class="nbfacilityImage" src={{facilityImage}}>
+      </ion-row>
+      <ion-row class="nbfacility-header">
+        <ion-label class="nbfacilityName">{{facilityName}}</ion-label>
+      </ion-row>
+      <ion-row class="nbfacility-header">
+
+        <ion-label class="nbfacilityTime">
+          <ion-icon name="clock" style="margin-right: 8px;"></ion-icon>06:00AM - 10:00PM</ion-label>
+      </ion-row>
+      <div class="separator"></div>
+      <ion-row>
+        <ion-card-content class="nbfacilityDescription">
+          {{facilityDescription}}
+        </ion-card-content>
+      </ion-row>
+
+
+    </ion-grid>
   </ion-card>
 
 </ion-content>

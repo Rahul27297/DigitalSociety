@@ -1,18 +1,10 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title style="padding-left: 5%">Gully Login</ion-title>
-  </ion-navbar>
-</ion-header>
 
 <ion-content padding> 
   <div style="margin-top: 15%;">
   <div class="row">
     <div class="col" text-center >
-      <img [src]="societyLogo" style="border-radius: 10px;"/>
+      <img src="../../assets/imgs/login-logo.png" class="companylogo-image-login"/>
     </div>
-  </div>
-  <div class="row" text-center>
-    <ion-label class="societyName">{{societyName}}</ion-label>
   </div>
   <form [formGroup]="login">
     <ion-item>
@@ -24,7 +16,7 @@
       <ion-input type="password" formControlName="password"></ion-input>
     </ion-item>
     <div text-center class="submitBtn">
-    <button ion-button large type="submit" [disabled]="!login.valid" (click)=displayLoader()>Submit</button>
+    <button ion-button large class="loginbtn" type="submit" [disabled]="!login.valid" (click)=displayLoader()>Login</button>
   </div>
   </form>
   <div>

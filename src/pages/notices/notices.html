@@ -13,55 +13,55 @@
 </ion-header>
 
 <ion-content style="padding:8px">
-    <div>
-        <ion-segment [(ngModel)]="noticesTab" >
-          <ion-segment-button value="recentNotices" class="segmentButtons" style="font-size: 18px">
-            Recent Notices
-          </ion-segment-button>
-          <ion-segment-button value="archivedNotices" class="segmentButtons" style="font-size: 18px">
-            Archived Notices
-          </ion-segment-button>
-        </ion-segment>
-      </div>
+  <div>
+    <ion-segment [(ngModel)]="noticesTab" style="padding-top: 8px;">
+      <ion-segment-button value="recentNotices" class="segmentButtons" style="font-size: 18px">
+        Recent
+      </ion-segment-button>
+      <ion-segment-button value="archivedNotices" class="segmentButtons" style="font-size: 18px">
+        Archived
+      </ion-segment-button>
+    </ion-segment>
+  </div>
 
-      <div [ngSwitch]="noticesTab">
+  <div [ngSwitch]="noticesTab">
 
-        <ion-list *ngSwitchCase="'recentNotices'">
-            <ion-card *ngFor="let item of noticesArray" (click)="getNotice(item.searchid,'recent')">
-              <ion-row style="height: 80%; overflow-wrap: break-word">
-                <ion-item style="padding-left: 8px">
-                  <ion-label class="noticeSubjectText" style="overflow-wrap: break-word; white-space: normal">{{item.subject}}</ion-label>
-                </ion-item>
-              </ion-row>
-              <ion-row style="padding-left: 4px;">
-                <ion-col col-8>
-                  <ion-row>
-                  <ion-icon name="calendar" style="margin-right: 4px; vertical-align: bottom; font-size: 16px"></ion-icon>
-                <ion-label style="margin: 0px; font-size:16px; text-align: left">{{item.date}}</ion-label>
-              </ion-row>
-              </ion-col>
-              </ion-row>
-              
-              </ion-card>
-        </ion-list>
+    <ion-list *ngSwitchCase="'recentNotices'">
+      <ion-card *ngFor="let item of noticesArray" (click)="getNotice(item.searchid,'recent')">
+        <ion-row>
+          <ion-item>
+            <ion-label class="noticeSubjectText">{{item.subject}}</ion-label>
+          </ion-item>
+        </ion-row>
+        <ion-row>
+          <ion-col col-10 style="padding-top: 0px;">
+            <ion-row>
+              <ion-icon name="calendar" class="noticedate-icon"></ion-icon>
+              <ion-label class="noticedate-text">{{item.date}}</ion-label>
+            </ion-row>
+          </ion-col>
+        </ion-row>
 
-        <ion-list *ngSwitchCase="'archivedNotices'">
-            <ion-card *ngFor="let item of noticesArchivedArray" (click)="getNotice(item.searchid,'archived')">
-                <ion-row style="height: 80%; overflow-wrap: break-word">
-                  <ion-item style="padding-left: 8px">
-                    <ion-label class="noticeSubjectText">{{item.subject}}</ion-label>
-                  </ion-item>
-                </ion-row>
-                <ion-row style="padding-left: 4px;">
-                  <ion-col col-8>
-                    <ion-row>
-                    <ion-icon name="calendar" style="margin-right: 4px; vertical-align: bottom; font-size: 16px"></ion-icon>
-                  <ion-label style="margin: 0px; font-size:16px; text-align: left">{{item.date}}</ion-label>
-                </ion-row>
-                </ion-col>
-                </ion-row>
-                
-                </ion-card>
-        </ion-list>
-      </div>
+      </ion-card>
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'archivedNotices'">
+      <ion-card *ngFor="let item of noticesArchivedArray" (click)="getNotice(item.searchid,'archived')">
+        <ion-row>
+          <ion-item>
+            <ion-label class="noticeSubjectText">{{item.subject}}</ion-label>
+          </ion-item>
+        </ion-row>
+        <ion-row>
+          <ion-col col-10 style="padding-top: 0px;">
+            <ion-row>
+              <ion-icon name="calendar" class="noticedate-icon"></ion-icon>
+              <ion-label class="noticedate-text">{{item.date}}</ion-label>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+
+      </ion-card>
+    </ion-list>
+  </div>
 </ion-content>

@@ -1,5 +1,5 @@
 .complaint-form{
-    padding-top: 0px;
+    padding-top: 8px;
     padding-left: 8px;
     padding-right: 16px;
     padding-bottom: 8px;
@@ -11,4 +11,18 @@
 
 .complaints-label{
     padding-left: 4px;
+}
+
+.complaintType-select{
+    min-width: 80%;
+    font-size: 18px;
+    padding-left: 8px;  
+    color: color($colors,primary-dark);
+}
+
+.complaint-buttons{
+    background-color: color($colors,primary);
+    color: white;
+    min-width: 50%;
+    font-size: 18px;
 }

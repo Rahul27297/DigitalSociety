@@ -31,34 +31,36 @@ export class BookingConfirmationPage {
   private clientData: any;
   private clientPassword: any;
   private societyId: any;
+  private loader: any;
   constructor(public navCtrl: NavController, public navParams: NavParams,  private storage: Storage, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
     this.simplyBookClient = new SimplyBookClient();
     this.tnc = false;
     this.storage.get('Password').then((val) => {
       this.clientPassword = val;
+      this.storage.get('Info').then((val) => {
+        this.clientName = val.name;
+        this.clientPhone = val.phone;
+        this.clientEmail = val.email;
+        this.clientData = {
+          client_login: this.clientEmail,
+          client_password: this.clientPassword
+        };
+        this.facilityId = this.navParams.get("facilityId");
+        this.facilityName = this.navParams.get("facilityName");
+        this.startTime = this.navParams.get("startTime");
+        this.startDate = this.navParams.get("startDate");
+        this.societyId = this.navParams.get('societyId');
+        this.loader.dismiss();
+      });
     });
-    console.log(this.clientPassword);
-    this.storage.get('Info').then((val) => {
-      this.clientName = val.name;
-      this.clientPhone = val.phone;
-      this.clientEmail = val.email;
-      this.clientData = {
-        client_login: this.clientEmail,
-        client_password: this.clientPassword
-      };
-      console.log("clientData " + this.clientName + this.clientEmail + this.clientPhone);
-    });
-    this.facilityId = this.navParams.get("facilityId");
-    this.facilityName = this.navParams.get("facilityName");
-    this.startTime = this.navParams.get("startTime");
-    this.startDate = this.navParams.get("startDate");
-    this.societyId = this.navParams.get('societyId');
-    console.log(this.startDate);
-    console.log(this.startTime);
+    
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad BookingConfirmationPage');
+    this.loader = this.loadingCtrl.create({
+      content: "Please wait..."
+    });
+    this.loader.present();
   }
 
   tncCheckBox(){

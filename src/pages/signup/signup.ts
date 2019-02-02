@@ -109,7 +109,6 @@ export class SignupPage {
       this.login = this.formBuilder.group({
         Password: ['', Validators.required],
         rePassword: ['', Validators.required],
-        Name: ['', Validators.required]
       });
     }
     else{
@@ -125,33 +124,17 @@ export class SignupPage {
   }
 
   signUp(){
-    //this.userName = this.login.value.userName;
-    this.Name = this.login.value.Name;
-    this.contactNumber = this.login.value.contactNumber;
-    this.contactNumber = "+91" + this.contactNumber;
-    //this.flatNumber = this.login.value.flatNumber;
-    //this.oneTimeCode = this.login.value.oneTimeCode;
     this.Password = this.login.value.Password;
     this.rePassword = this.login.value.rePassword;
     if(this.rePassword === this.Password){
       let client = this.simplyBookAdmin.admin.getClientList(this.userName,1);
-        if(this.Name === this.clientObject.name ){
-          this.simplyBookAdmin.admin.changeClientPassword(parseInt(this.client[0].id), this.Password, false);
-          this.loader.dismiss();
-          this.alertCtrl.create({
-            title: "Signed Up Succesfully!. Please Login to continue",
-            buttons: ['Ok']
-          }).present();
-          this.navCtrl.pop();
-        }
-        else{
-          this.alertCtrl.create({
-            title: "The entered details for one or more fields donot match with those registered with Sankul Society",
-            subTitle: "If this issue persists please contact Sankul Administration",
-            buttons: ['Dismiss']
-          }).present();
-          this.loader.dismiss();
-        }
+        this.simplyBookAdmin.admin.changeClientPassword(parseInt(this.client[0].id), this.Password, false);
+        this.loader.dismiss();
+        this.alertCtrl.create({
+          title: "Signed Up Succesfully!. Please Login to continue",
+          buttons: ['Ok']
+        }).present();
+        this.navCtrl.pop();
     }
     else{
       this.loader.dismiss();
@@ -160,7 +143,6 @@ export class SignupPage {
         buttons: ['Dismiss']
       }).present();
     }
-    console.log(this.userName);
   }
 
   ionViewDidEnter(){

@@ -1,19 +1,11 @@
 <ion-header>
   <ion-navbar>
-    <ion-title style="padding-left: 5%">Sankul Signup</ion-title>
+    <ion-title style="padding-left: 5%">Signup</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
   <div style="margin-top: 5%;">
-    <div class="row">
-      <div class="col" text-center>
-        <img [src]="societyLogo" style="border-radius: 10px;" />
-      </div>
-    </div>
-    <div class="row" text-center>
-      <ion-label class="societyName">{{societyName}}</ion-label>
-    </div>
     <form [formGroup]="login">
       <ion-item>
         <ion-label floating>UserName (Email)</ion-label>
@@ -31,17 +23,9 @@
         <ng-template #disabledoneTimeCode><ion-input type="text" disabled value = "{{oneTimeCode}}"></ion-input></ng-template>
       </ion-item>
       <div text-center class="submitBtn" *ngIf="visibility == 'none'; else showotherfields">
-        <button ion-button large type="submit" [disabled]="!login.valid" (click)="displayLoader('otp')">Verify OTP</button>
+        <button ion-button large class="signupBtns" type="submit" [disabled]="!login.valid" (click)="displayLoader('otp')">Verify OTP</button>
       </div>
       <ng-template #showotherfields>
-        <ion-item>
-          <ion-label floating>Name</ion-label>
-          <ion-input type="text" formControlName="Name"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label floating>Contact Number</ion-label>
-          <ion-input type="text" formControlName="contactNumber"></ion-input>
-        </ion-item>
         <ion-item>
           <ion-label floating>Password</ion-label>
           <ion-input type="password" formControlName="Password"></ion-input>
@@ -51,7 +35,7 @@
           <ion-input type="password" formControlName="rePassword"></ion-input>
         </ion-item>
         <div text-center class="submitBtn">
-          <button ion-button large type="submit" [disabled]="!login.valid" (click)='displayLoader("full")'>Submit</button>
+          <button ion-button large  class="signupBtns" type="submit" [disabled]="!login.valid" (click)='displayLoader("full")'>Submit</button>
         </div>
       </ng-template>
     </form>

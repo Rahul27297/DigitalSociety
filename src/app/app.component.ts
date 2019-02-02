@@ -29,10 +29,13 @@ export class MyApp {
 
   rootPage: any;
 
-  pages: Array<{ title: string, component: any }>;
+  pages: Array<{ title: string, component: any, icon_name: any }>;
   private loader: any;
   private logoutAlert: any;
   private societyId: any;
+  private clientName: any; //used for sidemenu
+  private clientAddress: any; //used for sidemenu
+  private societyName: any; //used for sidemenu
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, private alertCtrl: AlertController, private toastCtrl: ToastController, private loadingCtrl: LoadingController, private network: Network, private http: Http) {
     //this.checkInstall();
     firebase.initializeApp(environment.firebase);
@@ -57,10 +60,10 @@ export class MyApp {
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Home', component: HomePage },
-      { title: 'My Bookings', component: BookingsPage },
-      { title: 'Profile', component: ProfilePage },
-      { title: 'Logout', component: LogoutPage }
+      { title: 'Home', component: HomePage, icon_name: "home" },
+      { title: 'My Bookings', component: BookingsPage, icon_name: "list" },
+      { title: 'Profile', component: ProfilePage, icon_name: "person" },
+      { title: 'Logout', component: LogoutPage, icon_name: "log-out" }
     ];
     this.logoutAlert = this.alertCtrl.create({
       title: "Logout",
@@ -96,11 +99,17 @@ export class MyApp {
         this.storage.get("societyId").then((val) => {
           this.societyId = val;
           this.storage.get("societyInfo").then((val) => {
+            this.societyName = val.society.display_name;
             this.nav.push(HomePage, {
               societyInfo: val,
               societyId: this.societyId
             });
           })
+        });
+        //fetching values for sidemenu
+        this.storage.get('Info').then((val) => {
+          this.clientName = val.name;
+          this.clientAddress = val.address1;
         });
         //this.rootPage = HomePage;
       }

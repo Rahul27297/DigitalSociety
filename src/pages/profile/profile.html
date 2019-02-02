@@ -7,45 +7,56 @@
 <ion-header>
 
   <ion-navbar>
-      <button ion-button menuToggle>
-          <ion-icon name="menu"></ion-icon>
-      </button>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
     <ion-title>Profile</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content >
+<ion-content>
   <ion-card>
     <ion-card-header class="header" style="text-align: center">
-      <ion-grid>
-        <ion-row style="text-align: center">
-          {{clientName}}
-      </ion-row>
+      <ion-grid style="padding: 0px">
+        <ion-row  style="padding: 0px">
+          <ion-col col-4 offset-4 style="padding: 0px">
+            <ion-icon name="person" class="profile-icon"></ion-icon>
+          </ion-col>
+        </ion-row>
+        <ion-row class="profilename-text" style="padding: 0px">
+          <ion-col col-12 style="text-align: center" style="padding: 0px">{{clientName}}</ion-col>
+        </ion-row>
+        <div class="separator">
+        </div>
       </ion-grid>
-      </ion-card-header>
+    </ion-card-header>
 
     <ion-card-content class="description">
-      <ion-grid>
-        <ion-row>
-          Flat Number: {{Flat}}
+      <ion-grid class="profiletext">
+        <ion-row style="padding: 0px">
+          <ion-col col-3 style="padding: 0px">Flat Number: </ion-col>
+          <ion-col style="padding: 0px">{{Flat}}</ion-col>
         </ion-row>
-        <ion-row>
-            Contact Number: {{clientPhone}}
+        <ion-row style="padding: 0px">
+          <ion-col col-5 style="padding: 0px">Contact Number: </ion-col>
+          <ion-col style="padding: 0px">{{clientPhone}}</ion-col>
+        </ion-row>
+        <ion-row style="padding: 0px">
+          <ion-col col-5 style="padding: 0px">Email: </ion-col>
+          <ion-col style="padding: 0px">{{clientEmail}}</ion-col>
+        </ion-row>
+        <ion-row style="padding: 0px">
+            <ion-col col-5 style="padding: 0px">Society Name: </ion-col>
+            <ion-col style="padding: 0px">{{societyName}}</ion-col>
           </ion-row>
-          <ion-row>
-              Email: {{clientEmail}}
-            </ion-row>
-            <ion-row>
-                Address: {{clientAddress}}
-              </ion-row>
       </ion-grid>
 
       <ion-row>
         For any changes regarding the above information, please contact society administration.
       </ion-row>
     </ion-card-content>
-    
+
   </ion-card>
 </ion-content>

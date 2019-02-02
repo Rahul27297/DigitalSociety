@@ -16,24 +16,32 @@
 <ion-content class="complaint-form">
   <form [formGroup]="complaintForm" class="complaint-form">
     <ion-item class="complaints-item">
-      <ion-label floating class="complaints-label">Title</ion-label>
-      <ion-input type="text" formControlName="complaintTitle"></ion-input>
-    </ion-item>
-    <ion-item class="complaints-item" >
-      <ion-label floating class="complaints-label">Description</ion-label>
-      <ion-textarea type="text" formControlName="complaintDescription" ></ion-textarea>
+      <ion-label class="complaints-label" style="max-width: 20%; margin-right: 0px;">Type</ion-label>
+          <ion-select formControlName="complaintTitle" class="complaintType-select">
+            <ion-option value="Cleanliness">Cleanliness</ion-option>
+            <ion-option value="Security">Security</ion-option>
+            <ion-option value="Landscape">Landscape</ion-option>
+            <ion-option value="CommonArea">Common area lighting</ion-option>
+            <ion-option value="Others">Others</ion-option>
+          </ion-select>
     </ion-item>
     <ion-item class="complaints-item">
       <ion-label floating class="complaints-label">Location</ion-label>
       <ion-input type="text" formControlName="complaintLocation"></ion-input>
     </ion-item>
+    <ion-item class="complaints-item" >
+      <ion-label floating class="complaints-label">Description</ion-label>
+      <ion-textarea type="text" formControlName="complaintDescription" ></ion-textarea>
+    </ion-item>
     <div class="complaints-item" *ngIf="imageObtained != false">
-      <ion-label>Image Preview</ion-label>
+      <ion-label style="font-size: 18px">Image Preview</ion-label>
       <img [src]="this.imageURI"style = "min-height:30%px; min-width:100%"/>
     </div>
-    <button *ngIf="imageObtained === false" ion-button class="primary" style="margin-top: 16px;" (click)=presentActionSheet()>Attach Image</button>
+    <div text-center *ngIf="imageObtained === false">
+      <button  ion-button class="complaint-buttons" style="margin-top: 16px;" (click)=presentActionSheet()>Upload Image</button>
+    </div>
     <div text-center>
-      <button ion-button large type="submit" [disabled]="!complaintForm.valid" (click)=registerComplaint() style="margin-top: 16px;">Register Complaint</button>
+      <button ion-button large type="submit" [disabled]="!complaintForm.valid" class="complaint-buttons" (click)=registerComplaint() style="margin-top: 16px;">Register Complaint</button>
     </div>
   </form>
 </ion-content>

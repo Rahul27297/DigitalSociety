@@ -41,11 +41,9 @@ export class NoticePage {
   downloadAttachment(){
     let attach;
     let url = this.attachment;
-    this.http.get(url).map(res => res.json()).subscribe(data => {
-      attach = data.download_url;
-      console.log(attach);
+    console.log(url);
       const fileTransfer: FileTransferObject = this.transfer.create();
-    fileTransfer.download(attach,this.file.externalRootDirectory + '/Download/'+ "Noticefile.pdf").then((entry) => {
+    fileTransfer.download(url,this.file.externalRootDirectory + '/Download/'+ "Noticefile.pdf").then((entry) => {
       console.log('download complete: ' + entry.toURL());
       this.toastCtrl.create({
         message: "Download Successful",
@@ -53,7 +51,6 @@ export class NoticePage {
       }).present();
     }, (error) => {
 
-    });
     });
     
   }

@@ -1,16 +1,33 @@
 <ion-menu [content]="content">
   <ion-header>
     <ion-toolbar>
-      <ion-title>Menu</ion-title>
+      <ion-title class="sidemenu-title">Menu</ion-title>
     </ion-toolbar>
   </ion-header>
 
   <ion-content>
-    <ion-list>
-      <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
-        {{p.title}}
-      </button>
-    </ion-list>
+    <ion-grid class="sidemenu">
+      <ion-row class="sidemenu-profile-row">
+        <ion-col col-3 class="sidemenu-icon-border" style="padding: 0px;">
+          <ion-icon name="person" class="sidemenu-profile-icon"></ion-icon>
+        </ion-col>
+        <ion-col col-9 style="padding-left: 8px; padding-right: 4px;">
+          <ion-row style="margin-bottom: 0px">
+            <ion-label class="sidemenu-text" style="margin-bottom: 4px;">{{clientName}}</ion-label>
+          </ion-row>
+          <ion-row>
+              <ion-label class="sidemenu-text" style="margin-top: 0px;">{{societyName}}, {{clientAddress}}</ion-label>
+          </ion-row>
+        </ion-col> 
+      </ion-row>
+      <ion-list>
+          <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)" class="sidemenu-buttons">
+            <ion-icon name={{p.icon_name}} style="margin-right: 4px;"></ion-icon>
+            {{p.title}}
+          </button>
+        </ion-list>
+    </ion-grid>
+    
   </ion-content>
 
 </ion-menu>

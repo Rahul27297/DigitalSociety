@@ -1,6 +1,6 @@
 .bookingConfirmationHeader{
     font-size: 24px;
-    color: #0064b7;
+    color: color($colors, primary);
     padding-bottom: 0px;
 }
 
@@ -10,6 +10,11 @@
 
 .bookingBtns{
     font-size: 20px;
-    width: 80%;
     text-align: center;
+    background-color: color($colors, primary-dark);
+}
+
+.tncaccept-text{
+    font-size: 18px;
+    color: color($colors, primary);
 }
