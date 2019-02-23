@@ -4,10 +4,12 @@ import { LoadingController, ToastController, AlertController } from 'ionic-angul
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { Http } from '@angular/http';
+import { Http } from '@angular/http'; 
 import * as firebase from 'firebase';
-import { environment } from '../../providers/firebase/firebase';
 import { Storage } from '@ionic/storage';
+import { HttpClient } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
+
 /**
  * Generated class for the NewcomplaintPage page.
  *
@@ -37,8 +39,11 @@ export class NewcomplaintPage {
   private societyInfo: any;
   private loader: any;
   private hasAttachment: boolean;
-  constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public loadingCtrl: LoadingController, public toastCtrl: ToastController, private formBuilder: FormBuilder, private actionSheetCtrl: ActionSheetController, private http: Http, private storage: Storage, private alertCtrl: AlertController) {
+  private database = firebase.database();;
+  private httpNew: any;
+  constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public loadingCtrl: LoadingController, public toastCtrl: ToastController, private formBuilder: FormBuilder, private actionSheetCtrl: ActionSheetController, private http: Http, private storage: Storage, private alertCtrl: AlertController, private httpClient: HttpClient) {
     //firebase.initializeApp(environment.firebase);
+    this.http = http;
     this.hasAttachment = false;
     this.societyId = navParams.get('societyId');
     this.societyInfo = navParams.get('societyInfo');
@@ -161,21 +166,103 @@ export class NewcomplaintPage {
     this.complaintTitle = this.complaintForm.value.complaintTitle;
     this.complaintDescription = this.complaintForm.value.complaintDescription;
     this.complaintLocation = this.complaintForm.value.complaintLocation;
-    let url = "https://upgraded-server.herokuapp.com/postComplaint?society_id=" + this.societyId +"&complainant_email=" + this.clientEmail + "&complainant_name=" + this.clientName +"&complaint_title=" + this.complaintTitle + "&complaint_description=" + this.complaintDescription + "&time=" + new Date() + "&date" + new Date() +"&location=" + this.complaintLocation + "&is_attachment_present=" + this.hasAttachment + "&admin_email_ids="+ this.societyInfo.society.admin_email_ids + "&complaint_key=" + this.complaintKey;
-    this.http.get(url).map(res => res.json()).subscribe((val) => {
-      if(val.data.flag && val.data.complaint_state === "COM"){
-        this.loader.dismiss();
-        this.alertCtrl.create({
-          title: "Complaint successfully registered!",
-          buttons: ['Ok']
-        }).present().then(() => {
-          this.navCtrl.popToRoot();
-        });
-      }
-      else{
-        this.loader.dismiss();
-      }
+
+    console.log({
+      "attachment_url": "/complaints/" + this.societyId + "/" + this.complaintKey,
+      "complainant_email": this.clientEmail,
+      "complainant_name": this.clientName,
+      "complaint_description": this.complaintDescription,
+      "complaint_title": this.complaintTitle,
+      "is_attachment_present": this.hasAttachment,
+      "location": this.complaintLocation,
+      "society_id": this.societyId,
+      "time": new Date()
+  })
+    let download_url = null;
+    if(this.imageURI != undefined){
+      download_url = this.imageURI;
+    }
+    firebase.database().ref('complaints/' + this.complaintKey).set({
+        "attachment_url": "/complaints/" + this.societyId + "/" + this.complaintKey,
+        "complainant_email": this.clientEmail,
+        "complainant_name": this.clientName,
+        "complaint_description": this.complaintDescription,
+        "complaint_title": this.complaintTitle,
+        "download_url": download_url,
+        "is_attachment_present": this.hasAttachment,
+        "location": this.complaintLocation,
+        "society_id": this.societyId,
+        "time": new Date()
     });
+    console.log("here1")
+    // itemRef.set({
+    //     "attachment_url": "/complaints/" + this.societyId + "/" + this.complaintKey,
+    //     "complainant_email": this.clientEmail,
+    //     "complainant_name": this.clientName,
+    //     "complaint_description": this.complaintDescription,
+    //     "complaint_title": this.complaintTitle,
+    //     "download_url": this.imageURI,
+    //     "is_attachment_present": this.hasAttachment,
+    //     "location": this.complaintLocation,
+    //     "society_id": this.societyId,
+    //     "time": new Date()
+    // });
+
+    // let url = "https://upgraded-server.herokuapp.com/postComplaint?society_id=" + this.societyId +"&complainant_email=" + this.clientEmail + "&complainant_name=" + this.clientName +"&complaint_title=" + this.complaintTitle + "&complaint_description=" + this.complaintDescription + "&time=" + new Date() + "&date" + new Date() +"&location=" + this.complaintLocation + "&is_attachment_present=" + this.hasAttachment + "&admin_email_ids="+ this.societyInfo.society.admin_email_ids + "&complaint_key=" + this.complaintKey;
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json'
+      })
+    };
+    console.log(this.societyId, typeof(this.societyId))
+    this.httpClient.post("https://gentle-savannah-47625.herokuapp.com/complaints/send",
+    {
+      "attachment_url": "/complaints/" + this.societyId + "/" + this.complaintKey,
+      "complainant_email": this.clientEmail,
+      "complaint_key": this.complaintKey,
+      "complainant_name": this.clientName,
+      "complaint_description": this.complaintDescription,
+      "complaint_title": this.complaintTitle,
+      "download_url": this.imageURI,
+      "is_attachment_present": this.hasAttachment,
+      "location": this.complaintLocation,
+      "society_id": this.societyId,
+      "time": new Date(),
+      "admin_email_ids": this.societyInfo.society.admin_email_ids    // placeholder. in future replaced by this
+    },
+    httpOptions     // Headers
+    )
+    .subscribe(data  => {
+      console.log("POST Request is successful ", data);
+      this.loader.dismiss();
+      this.alertCtrl.create({
+        title: "Complaint successfully registered!",
+        buttons: ['Ok']
+      }).present().then(() => {
+        this.navCtrl.popToRoot();
+      });
+    },
+    error  => {
+      console.log("Error", error);
+    }
+
+    );
+    
+    // this.http.get(url).map(res => res.json()).subscribe((val) => {
+    //   if(val.data.flag && val.data.complaint_state === "COM"){
+    //     this.loader.dismiss();
+    //     this.alertCtrl.create({
+    //       title: "Complaint successfully registered!",
+    //       buttons: ['Ok']
+    //     }).present().then(() => {
+    //       this.navCtrl.popToRoot();
+    //     });
+    //   }
+    //   else{
+    //     this.loader.dismiss();
+    //   }
+    // });
+
   }
 
 }
