@@ -19,11 +19,11 @@ export class FirebaseProvider {
 export const environment = {
   production: false,
   firebase: {
-    apiKey: "AIzaSyDzZ9uUcI4doYZ453JXlfXkuxVZ5fvLw_w",
-    authDomain: "upgraded-server.firebaseapp.com",
-    databaseURL: "https://upgraded-server.firebaseio.com",
-    projectId: "upgraded-server",
-    storageBucket: "upgraded-server.appspot.com",
-    messagingSenderId: "3609552384"
+    apiKey: "AIzaSyBv3L1J2miJU6NkKk6eEa9WrF0jzIK1oOo",
+    authDomain: "digitalsociety-c38fd.firebaseapp.com",
+    databaseURL: "https://digitalsociety-c38fd.firebaseio.com",
+    projectId: "digitalsociety-c38fd",
+    storageBucket: "digitalsociety-c38fd.appspot.com",
+    messagingSenderId: "1066958523521"
   }
 };
