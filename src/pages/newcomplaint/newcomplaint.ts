@@ -54,9 +54,9 @@ export class NewcomplaintPage {
       this.clientEmail = val.email;
       this.clientName = val.name;
     });
+    this.firebaseComplaintStorageRed = firebase.storage().ref();
 
     // old method to get the key
-    // this.firebaseComplaintStorageRed = firebase.storage().ref();
     // let url = "https://upgraded-server.herokuapp.com/getComplaintKey";
     // let success;
     // this.http.get(url).map(res => res.json()).subscribe((data) => {
