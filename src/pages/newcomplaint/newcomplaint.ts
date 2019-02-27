@@ -55,18 +55,6 @@ export class NewcomplaintPage {
       this.clientName = val.name;
     });
     this.firebaseComplaintStorageRed = firebase.storage().ref();
-
-    // old method to get the key
-    // let url = "https://upgraded-server.herokuapp.com/getComplaintKey";
-    // let success;
-    // this.http.get(url).map(res => res.json()).subscribe((data) => {
-    //   let tempresponse = Object.getOwnPropertyDescriptor(data, "data").value
-    //   success = Object.getOwnPropertyDescriptor(tempresponse, "flag").value;
-    //   if (success) {
-    //     this.complaintKey = Object.getOwnPropertyDescriptor(tempresponse,"key").value;
-    //     console.log(this.complaintKey);
-    //   }
-    // });
   }
   presentActionSheet() {
     const actionSheet = this.actionSheetCtrl.create({
@@ -263,6 +251,23 @@ export class NewcomplaintPage {
     //   }
     // });
 
+  } 
+
+  removeImage(){
+    this.hasAttachment = false;
+    this.loader = this.loadingCtrl.create({
+      content: "Please Wait..."
+    });
+    this.loader.present();
+    let imagePathInStorage = "/complaints/" + this.societyId + "/" + this.complaintKey;
+    let imageRef = this.firebaseComplaintStorageRed.child(imagePathInStorage);
+    imageRef.delete().then(function(){
+      console.log("file deleted successfully")
+    }).catch(function(error){
+      console.log(error)
+    })
+    this.loader.dismiss();
+    this.imageObtained = false;
   }
 
 }
