@@ -39,10 +39,8 @@ export class NewcomplaintPage {
   private societyInfo: any;
   private loader: any;
   private hasAttachment: boolean;
-  private database = firebase.database();;
-  private httpNew: any;
   constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public loadingCtrl: LoadingController, public toastCtrl: ToastController, private formBuilder: FormBuilder, private actionSheetCtrl: ActionSheetController, private http: Http, private storage: Storage, private alertCtrl: AlertController, private httpClient: HttpClient) {
-    //firebase.initializeApp(environment.firebase);
+    this.complaintKey = firebase.database().ref("complaints").push().key
     this.http = http;
     this.hasAttachment = false;
     this.societyId = navParams.get('societyId');
@@ -57,19 +55,8 @@ export class NewcomplaintPage {
       this.clientName = val.name;
     });
     this.firebaseComplaintStorageRed = firebase.storage().ref();
-    let url = "https://upgraded-server.herokuapp.com/getComplaintKey";
-    let success;
-    this.http.get(url).map(res => res.json()).subscribe((data) => {
-      let tempresponse = Object.getOwnPropertyDescriptor(data, "data").value
-      success = Object.getOwnPropertyDescriptor(tempresponse, "flag").value;
-      if (success) {
-        this.complaintKey = Object.getOwnPropertyDescriptor(tempresponse,"key").value;
-        console.log(this.complaintKey);
-      }
-    });
   }
-
-  presentActionSheet(){
+  presentActionSheet() {
     const actionSheet = this.actionSheetCtrl.create({
       title: "Select Image Using: ",
       buttons :[
@@ -167,23 +154,34 @@ export class NewcomplaintPage {
     this.complaintDescription = this.complaintForm.value.complaintDescription;
     this.complaintLocation = this.complaintForm.value.complaintLocation;
 
-    console.log({
-      "attachment_url": "/complaints/" + this.societyId + "/" + this.complaintKey,
-      "complainant_email": this.clientEmail,
-      "complainant_name": this.clientName,
-      "complaint_description": this.complaintDescription,
-      "complaint_title": this.complaintTitle,
-      "is_attachment_present": this.hasAttachment,
-      "location": this.complaintLocation,
-      "society_id": this.societyId,
-      "time": new Date()
-  })
+    // console.log({
+    //   "attachment_url": "/complaints/" + this.societyId + "/" + this.complaintKey,
+    //   "complainant_email": this.clientEmail,
+    //   "complainant_name": this.clientName,
+    //   "complaint_description": this.complaintDescription,
+    //   "complaint_title": this.complaintTitle,
+    //   "is_attachment_present": this.hasAttachment,
+    //   "location": this.complaintLocation,
+    //   "society_id": this.societyId,
+    //   "time": new Date()
+    // })
+
     let download_url = null;
-    if(this.imageURI != undefined){
+    let attachment_url = null;
+
+
+    console.log(download_url, attachment_url)
+    if(this.imageURI != undefined) {
+      console.log(download_url, attachment_url)
       download_url = this.imageURI;
+      attachment_url = "/complaints/" + this.societyId + "/" + this.complaintKey
     }
+    // converting epoch time to seconds
+
+    let currentTime = Math.floor(((new Date).getTime())/1000);
+    
     firebase.database().ref('complaints/' + this.complaintKey).set({
-        "attachment_url": "/complaints/" + this.societyId + "/" + this.complaintKey,
+        "attachment_url": attachment_url,
         "complainant_email": this.clientEmail,
         "complainant_name": this.clientName,
         "complaint_description": this.complaintDescription,
@@ -192,23 +190,13 @@ export class NewcomplaintPage {
         "is_attachment_present": this.hasAttachment,
         "location": this.complaintLocation,
         "society_id": this.societyId,
-        "time": new Date()
+        "time": currentTime
     });
-    console.log("here1")
-    // itemRef.set({
-    //     "attachment_url": "/complaints/" + this.societyId + "/" + this.complaintKey,
-    //     "complainant_email": this.clientEmail,
-    //     "complainant_name": this.clientName,
-    //     "complaint_description": this.complaintDescription,
-    //     "complaint_title": this.complaintTitle,
-    //     "download_url": this.imageURI,
-    //     "is_attachment_present": this.hasAttachment,
-    //     "location": this.complaintLocation,
-    //     "society_id": this.societyId,
-    //     "time": new Date()
-    // });
+
 
     // let url = "https://upgraded-server.herokuapp.com/postComplaint?society_id=" + this.societyId +"&complainant_email=" + this.clientEmail + "&complainant_name=" + this.clientName +"&complaint_title=" + this.complaintTitle + "&complaint_description=" + this.complaintDescription + "&time=" + new Date() + "&date" + new Date() +"&location=" + this.complaintLocation + "&is_attachment_present=" + this.hasAttachment + "&admin_email_ids="+ this.societyInfo.society.admin_email_ids + "&complaint_key=" + this.complaintKey;
+
+
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json'
@@ -228,7 +216,7 @@ export class NewcomplaintPage {
       "location": this.complaintLocation,
       "society_id": this.societyId,
       "time": new Date(),
-      "admin_email_ids": this.societyInfo.society.admin_email_ids    // placeholder. in future replaced by this
+      "admin_email_ids": this.societyInfo.society.admin_email_ids
     },
     httpOptions     // Headers
     )
@@ -263,6 +251,23 @@ export class NewcomplaintPage {
     //   }
     // });
 
+  } 
+
+  removeImage(){
+    this.hasAttachment = false;
+    this.loader = this.loadingCtrl.create({
+      content: "Please Wait..."
+    });
+    this.loader.present();
+    let imagePathInStorage = "/complaints/" + this.societyId + "/" + this.complaintKey;
+    let imageRef = this.firebaseComplaintStorageRed.child(imagePathInStorage);
+    imageRef.delete().then(function(){
+      console.log("file deleted successfully")
+    }).catch(function(error){
+      console.log(error)
+    })
+    this.loader.dismiss();
+    this.imageObtained = false;
   }
 
 }

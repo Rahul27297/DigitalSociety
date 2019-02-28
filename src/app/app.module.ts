@@ -34,8 +34,6 @@ import { ConstantsProvider } from '../providers/constants/constants';
 import { ToastsProvider } from '../providers/toasts/toasts';
 import { LoadersProvider } from '../providers/loaders/loaders';
 import { FirebaseProvider } from '../providers/firebase/firebase';
-// import { AngularFireDatabaseModule } from 'angularfire2/database';
-// import { AngularFireModule } from 'angularfire2';
 import { environment } from '../providers/firebase/firebase'
 import { HttpClientModule } from '@angular/common/http';
 
@@ -66,8 +64,6 @@ import { HttpClientModule } from '@angular/common/http';
     HttpModule,
     IonicModule.forRoot(MyApp ),
     IonicStorageModule.forRoot(),
-    // AngularFireModule.initializeApp(environment.firebase),
-    // AngularFireDatabaseModule,
     HttpClientModule
   ],
   bootstrap: [IonicApp],
