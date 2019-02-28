@@ -7,6 +7,7 @@ import { LoadingController } from 'ionic-angular';
 import { AlertController } from 'ionic-angular'
 import { Storage } from '@ionic/storage';
 import { LoginPage } from '../login/login';
+import * as firebase from 'firebase';
 /**
  * Generated class for the SignupPage page.
  *
@@ -42,11 +43,6 @@ export class SignupPage {
       content: " Please wait..."
     });
     this.loader.present();
-    let url = "http://digitalsociety.pythonanywhere.com/getSocietyDetails?societyId=1";
-    this.http.get(url).map(res => res.json()).subscribe(data => {
-      this.societyName = data.displayName;
-      this.societyLogo = data.logo;
-    });
     this.login = this.formBuilder.group({
       userName: ['', Validators.required],
       oneTimeCode: ['', Validators.required],
@@ -73,19 +69,10 @@ export class SignupPage {
   }
 
   verifyOtp(){
-    this.userName = this.login.value.userName;
+    this.userName = (this.login.value.userName).toString();
     this.oneTimeCode = this.login.value.oneTimeCode;
     this.flatNumber = this.login.value.flatNumber;
-    let url = "https://upgraded-server.herokuapp.com/getMemberSocietyIdByMemberEmail?member_email=" + this.userName;
-    this.http.get(url).map(res => res.json()).subscribe(data => {
-      //need error handling here for api
-      let success = Object.getOwnPropertyDescriptor(data,"flag").value;
-      if(success){
-        console.log("success:" + success);
-        let societyId = Object.getOwnPropertyDescriptor(data,"society_id").value;
-        //this.storage.set("societyId", societyId);
-      }
-    });
+
     this.client = this.simplyBookAdmin.admin.getClientList(this.userName,1);
     if(this.client.length === 0){
       this.alertCtrl.create({

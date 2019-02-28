@@ -12,6 +12,7 @@ import { ToastController } from 'ionic-angular';
 import { HomePage } from '../home/home';
 import { LoadingController } from 'ionic-angular';
 import { SignupPage } from '../signup/signup';
+import * as firebase from 'firebase';
 
 @IonicPage()
 @Component({
@@ -26,17 +27,11 @@ export class LoginPage {
   private clientinfo: any;
   private loader: any;
   private societyId: any;
+  private societyInfo: any;
   private societyReady: boolean;
   constructor(public navCtrl: NavController, private toastCtrl: ToastController, private storage: Storage, public http: Http, private formBuilder: FormBuilder, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private keyboard: Keyboard) {
-    //this.keyboard.disableScroll(true);
-    //this.societyId = this.storage.get("societyId");
-    /*let url = "http://digitalsociety.pythonanywhere.com/getSocietyDetails?societyId=1";
-    this.http.get(url).map(res => res.json()).subscribe(data => {
-      this.societyName = data.displayName;
-      this.societyLogo = data.logo;
-    });*/
     this.societyReady = false;
-    this.societyName = "GULLY";
+    this.societyName = "gully";
     this.login = this.formBuilder.group({
       userName: ['', Validators.required],
       password: ['', Validators.required],
@@ -66,35 +61,31 @@ export class LoginPage {
       this.invalidLoginAlert(invalidLoginCredsMessage);
     }
     else {//login considered successful --> Server can be down, this case has not been considered here
-      let url = "https://upgraded-server.herokuapp.com/getMemberSocietyIdByMemberEmail?member_email=" + userName;
-      this.http.get(url).map(res => res.json()).subscribe(data => {
-        //need error handling here for api
-        let success = Object.getOwnPropertyDescriptor(data, "flag").value;
-        if (success) {
-          this.societyId = Object.getOwnPropertyDescriptor(data, "society_id").value;
-          this.storage.set("societyId", this.societyId);
-          url = "https://upgraded-server.herokuapp.com/getSocietyBySocietyId?society_id=" + this.societyId;
-          this.http.get(url).map(res => res.json()).subscribe((val) => {
-            this.storage.set("societyInfo", val).then(() => {
-              this.storage.set('Password', password);
-              this.loader.dismiss();
-              this.toastCtrl.create({
-                message: 'Login Successful',
-                duration: 2000,
-                position: 'bottom'
-              }).present();
-              this.storage.set('Info', this.clientinfo);
-              this.storage.get('societyInfo').then((val) => {
-                this.navCtrl.setRoot(HomePage, {
-                  societyInfo: val
-                });
-              })
-            });
-          });
-        }
+      firebase.database().ref('members').orderByChild('member_email').equalTo("" + userName).once('value',(snapshot) => {
+        let childsnapshotkey = Object.keys(snapshot.val())[0];
+        console.log(childsnapshotkey);
+        this.societyId = Object.getOwnPropertyDescriptor(snapshot.val(), childsnapshotkey).value;
+        this.societyId = this.societyId.society_id;
+        this.storage.set("societyId", this.societyId);
+        console.log("Society Id: " + this.societyId);
+        firebase.database().ref('societies').orderByChild('society_id').equalTo("" + this.societyId).on('value', (societysnapshot) => {
+          console.log("Information Stored");
+            let tempKey = Object.keys(societysnapshot.val())[0];
+            this.societyInfo = Object.getOwnPropertyDescriptor(societysnapshot.val(),tempKey).value;
+            console.log(this.societyInfo);
+            this.storage.set('Password', password);
+            this.loader.dismiss();
+            this.toastCtrl.create({
+              message: 'Login Successful',
+              duration: 2000,
+              position: 'bottom'
+            }).present();
+            this.storage.set('Info', this.clientinfo);
+              this.navCtrl.setRoot(HomePage, {
+                societyInfo: this.societyInfo
+              });
+        });
       });
-
-
     }
     /*else{
       this.invalidLoginAlert(serverErrorMessage);

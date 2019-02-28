@@ -15,25 +15,24 @@ import { Storage } from '@ionic/storage';
   templateUrl: 'profile.html',
 })
 export class ProfilePage {
-  private clientInfo: any;
   private clientName: any;
   private clientPhone: any;
   private clientEmail: any;
-  private clientAddress: any;
   private clientFlat: any;
   private societyName: any;
+  private societyAddress: any;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage) {
+    
     this.storage.get('Info').then( (res) =>{ 
+
       this.clientName = res.name;
       this.clientEmail = res.email;
       this.clientPhone = res.phone;
       //this.clientAddress = res.address2;
       this.clientFlat = res.address1;
-      console.log(this.clientInfo);
-      this.storage.get('societyInfo').then((res) => {
-        this.societyName = res.society.display_name;
-        
-      })
+      this.societyName = this.navParams.get('societyName');
+      this.societyAddress = this.navParams.get('address');
     });
   }
 

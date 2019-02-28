@@ -27,7 +27,6 @@ import { NoNetworkPage } from '../pages/no-network/no-network';
 import { BookingConfirmationPage } from '../pages/booking-confirmation/booking-confirmation';
 import { SignupPage } from '../pages/signup/signup';
 import { IntroPage } from '../pages/intro/intro';
-import { FCM } from '@ionic-native/fcm';
 import { ComplaintsPage } from '../pages/complaints/complaints';
 import { NewcomplaintPage } from '../pages/newcomplaint/newcomplaint';
 import { Camera } from '@ionic-native/camera';
@@ -39,6 +38,7 @@ import { FirebaseProvider } from '../providers/firebase/firebase';
 // import { AngularFireModule } from 'angularfire2';
 import { environment } from '../providers/firebase/firebase'
 import { HttpClientModule } from '@angular/common/http';
+
 
 @NgModule({
   declarations: [
@@ -102,7 +102,6 @@ import { HttpClientModule } from '@angular/common/http';
     FileTransferObject,
     File,
     Camera,
-    FCM,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ConstantsProvider,
     ToastsProvider,

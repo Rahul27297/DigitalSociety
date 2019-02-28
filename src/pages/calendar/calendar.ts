@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
 /**
  * Generated class for the CalendarPage page.
  *
@@ -16,17 +15,21 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 export class CalendarPage {
 
   public date: Date;
-  public daysInThisMonth: any;
+  public daysInThisMonth: Array<number>;
   public daysInLastMonth: any;
   public daysInNextMonth: any;
   public monthNames = ["January","February","March","April","May","June","July","August","Spetember","October","November","December"];
   public currentMonth: any;
   public currentYear: any;
   public currentDate: any;
-
+  public goToNextMonthFlag: boolean;
+  public goToPreviousMonthFlag : boolean;
+  public selectedDate: any;
   constructor() {
     this.date = new Date();
     this.getDaysOfMonth();
+    this.goToNextMonthFlag = true;
+    this.goToPreviousMonthFlag = false;
   }
 
   getDaysOfMonth() {
@@ -68,13 +71,25 @@ export class CalendarPage {
   }
 
   goToNextMonth() {
-    this.date = new Date(this.date.getFullYear(), this.date.getMonth()+2, 0);
-    this.getDaysOfMonth();
+    if(this.goToNextMonthFlag){
+      this.goToNextMonthFlag = false;
+      this.goToPreviousMonthFlag = true;
+      this.date = new Date(this.date.getFullYear(), this.date.getMonth()+2, 0);
+      this.getDaysOfMonth();
+    }
   }
 
   goToPreviousMonth() {
-    this.date = new Date(this.date.getFullYear(), this.date.getMonth(), 0);
-    this.getDaysOfMonth();
+    if(this.goToPreviousMonthFlag){
+      this.goToNextMonthFlag = true;
+      this.goToPreviousMonthFlag = false;
+      this.date = new Date(this.date.getFullYear(), this.date.getMonth(), 0);
+      this.getDaysOfMonth();
+      let d1 = new Date();
+      if(this.selectedDate < d1.getDate() || this.selectedDate > this.daysInThisMonth.length){
+        this.selectedDate = d1.getDate();
+      }
+    }
   }
 
   

@@ -16,8 +16,8 @@
 </ion-header>
 
 
-<ion-content>
-  <ion-card>
+<ion-content style="overflow: hidden; margin-bottom: 16px;">
+  <ion-card style="height: auto; position: unset">
     <ion-card-header class="header" style="text-align: center">
       <ion-grid style="padding: 0px">
         <ion-row  style="padding: 0px">
@@ -36,26 +36,34 @@
     <ion-card-content class="description">
       <ion-grid class="profiletext">
         <ion-row style="padding: 0px">
-          <ion-col col-3 style="padding: 0px">Flat Number: </ion-col>
-          <ion-col style="padding: 0px">{{Flat}}</ion-col>
+          <ion-icon name="home" class="profile-icons"></ion-icon>
+          <ion-col style="padding: 0px; text-align: left">{{clientFlat}}</ion-col>
         </ion-row>
-        <ion-row style="padding: 0px">
-          <ion-col col-5 style="padding: 0px">Contact Number: </ion-col>
-          <ion-col style="padding: 0px">{{clientPhone}}</ion-col>
+        <ion-row class="profile-content-row">
+          <ion-icon name="call" class="profile-icons"></ion-icon>
+          <ion-col style="padding: 0px; text-align: left">{{clientPhone}}</ion-col>
         </ion-row>
-        <ion-row style="padding: 0px">
-          <ion-col col-5 style="padding: 0px">Email: </ion-col>
-          <ion-col style="padding: 0px">{{clientEmail}}</ion-col>
+        <ion-row class="profile-content-row">
+          <ion-icon name="mail" class="profile-icons"></ion-icon>
+          <ion-col style="padding: 0px ; text-align: left">{{clientEmail}}</ion-col>
         </ion-row>
-        <ion-row style="padding: 0px">
-            <ion-col col-5 style="padding: 0px">Society Name: </ion-col>
-            <ion-col style="padding: 0px">{{societyName}}</ion-col>
+        <ion-row class="profile-content-row">
+          
+          <ion-icon name="pin" class="profile-icons"></ion-icon>
+          <ion-row>
+          <ion-col style="padding: 0px">{{societyName}}</ion-col>
+          </ion-row>
+            <hr>
+            <ion-row>
+            <ion-col style="padding: 0px">{{societyAddress}}</ion-col>
+          </ion-row>
+
           </ion-row>
       </ion-grid>
 
-      <ion-row>
+      <ion-footer style="margin-bottom: 8px; font-size: 11px;">
         For any changes regarding the above information, please contact society administration.
-      </ion-row>
+      </ion-footer>
     </ion-card-content>
 
   </ion-card>

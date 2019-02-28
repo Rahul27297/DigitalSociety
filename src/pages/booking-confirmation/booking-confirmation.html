@@ -41,15 +41,20 @@
           Time<div>: {{startTime}}</div>
         </ion-row>
         <ion-row >
+          <ion-col style="padding-right: 0px;">
           <ion-item>
-              <ion-label class="tncaccept-text">Accept Terms & Conditions</ion-label>
+              <ion-label class="tncaccept-text">Accept Terms & Conditions </ion-label>
               <ion-checkbox color="dark" checked="false" (click)="tncCheckBox()" style="margin-right: 4px;"></ion-checkbox>
             </ion-item>
+          </ion-col>
+          <ion-col class="tnc-info-icon">
+            <ion-icon name="information-circle" (click)="displayTnC()"></ion-icon>
+          </ion-col>
         </ion-row>
         <ion-row>
-            <button ion-button icon-start (click)="confirmBooking()" class="bookingBtns" style="margin-bottom: 8px; margin-right: 8px"><ion-icon name="checkmark-circle"></ion-icon>Confirm</button>
+            <button ion-button (click)="confirmBooking()" class="btn" style="margin-bottom: 8px; margin-right: 8px">Confirm</button>
   
-            <button ion-button icon-start (click)="cancelBooking()" class="bookingBtns" style="margin-left: 8px;"><ion-icon name="close-circle" ></ion-icon>Cancel</button>
+            <button ion-button (click)="cancelBooking()" class="btn" style="margin-left: 8px;">Cancel</button>
           </ion-row>
       </ion-grid>
     </ion-card-content>

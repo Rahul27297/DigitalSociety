@@ -9,14 +9,14 @@
       <button ion-button menuToggle class="navbar-button">
           <ion-icon name="menu"></ion-icon>
       </button>
-    <ion-title class="toolbar-title">{{societyName}}</ion-title>
+    <ion-title >{{societyName}}</ion-title>
   </ion-toolbar>
 
 </ion-header>
 
 
 <ion-content>
-<ion-grid style="padding: 0">
+<ion-grid style="padding: 0px; height: 30%;">
   <ion-row class="sliders">
     <ion-col col-12 style="padding:0">
         <ion-slides autoplay="2000" loop="true">
@@ -26,27 +26,22 @@
             </ion-slide>
           </ion-slides>
     </ion-col>
-  </ion-row>
-  <ion-row style="height: 25%" *ngIf="this.hasFacilities === true">
-    <ion-card class="societyProvisions" (click)="facilities()">
-        <img src={{facilitiesImage}} class="facilitiesImage"/>
+  </ion-row >
+</ion-grid>
+    <ion-card *ngIf="this.hasFacilities === true" class="facilitycard" (click)="facilities()">
+        <img src={{facilitiesImage}} class="facilityImage"/>
       <div class="card-title">Facilities</div>
       <div class="card-subtitle">Enjoy the best of sports and entertainment</div>
     </ion-card>
-  </ion-row>
-  <ion-row style="height: 25%;margin-top: 8px" *ngIf="this.hasNotices === true">
-    <ion-card class="notices" (click)="notices()">
-        <img src={{noticesImage}} class="facilitiesImage"/>
+    <ion-card *ngIf="this.hasNotices === true" class="facilitycard" (click)="notices()">
+        <img src={{noticesImage}} class="facilityImage"/>
       <div class="card-title">Notices</div>
       <div class="card-subtitle">Stay notified with the changes in you society</div>
     </ion-card>
-  </ion-row>
-  <ion-row style="height: 25%;margin-top: 8px" *ngIf="this.hasComplaints === true">
-    <ion-card class="notices" (click)="complaints()">
-        <img src={{complaintsImage}} class="facilitiesImage"/>
+    <ion-card *ngIf="this.hasComplaints === true" class="facilitycard" (click)="complaints()">
+        <img src={{complaintsImage}} class="facilityImage"/>
       <div class="card-title">Complaints</div>
       <div class="card-subtitle">Let us know about your issues</div>
     </ion-card>
-  </ion-row>
-  </ion-grid>
+  
 </ion-content>

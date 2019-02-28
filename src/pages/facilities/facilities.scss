@@ -3,21 +3,21 @@
 .facilitycard {
     position: relative;
     text-align: center;
-    height: 20%;
-    max-height: 20%;
+    border-radius: 8px;
+    max-height: 150px;
+    height: 150px;
 }
 
 .facilityImage{
     object-fit: cover;
     max-width: 100%;
-    width: 10000px;
     max-height: 150px;
 }
 
 
 .card-title {
     position: absolute;
-    top: 40%;
+    top: 35%;
     font-size: 2.0em;
     width: 100%;
     font-weight: bold;
@@ -27,7 +27,7 @@
 .card-subtitle {
     font-size: 1.0em;
     position: absolute;
-    top: 52%;
+    top: 62%;
     width: 100%;
     color: #fff;
 }

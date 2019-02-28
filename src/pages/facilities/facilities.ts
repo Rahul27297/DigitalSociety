@@ -5,6 +5,8 @@ import { LoadingController } from 'ionic-angular';
 import { NbfacilityPage } from '../nbfacility/nbfacility';
 import  { CalendarPage } from '../calendar/calendar';
 import { BfacilityPage } from '../bfacility/bfacility';
+import { Http } from '@angular/http';
+import * as firebase from 'firebase';
 /**
  * Generated class for the FacilitiesPage page.
  *
@@ -24,34 +26,30 @@ export class FacilitiesPage {
   private fac: any;
   private loading: any;
   private facilityids: any;
-  private facilitiesArray: Array<{name: String, bookable: any, url: String, description: String, id: any}>;
+  private facilitiesArray: any;
   private societyId :any;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController) {
-    this.societyId = navParams.get('societyId');
+  private societyInfo: any;
+  private firebaseDatabase: any;
+  constructor(public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, public http: Http) {
+    
   }
 
   getEventList(){
     this.simplyBookClient = new SimplyBookClient();
-    this.fac = this.simplyBookClient.client.getEventList();
-    console.log(this.fac);
-    this.facilityids = Object.keys(this.fac);
+    this.societyId = null;
+    this.societyInfo = null;
+    this.societyId = this.navParams.get('societyId');
+    this.societyInfo = this.navParams.get('societyInfo');
+    console.log(this.societyId);
+    console.log(this.societyInfo);
     this.facilitiesArray = [];
-    let tempfacility, facName, bookable;
-    for(let i = 0; i < this.facilityids.length; i++){
-      tempfacility = Object.getOwnPropertyDescriptor(this.fac,this.facilityids[i]).value;
-      console.log(tempfacility);
-      facName = tempfacility.name;
-      facName = facName.substring(1,facName.length);
-      if(tempfacility.name[0] == "0"){ bookable = '0';}
-      else{bookable = '1'}
-      this.facilitiesArray.push({
-        name: facName,
-        bookable: bookable,
-        url: "https://simplybook.me" + tempfacility.picture_path,
-        description: tempfacility.description,
-        id: tempfacility.id
-      });
+    for (let i = 0; i < this.societyInfo.facilities.list.length; i=i+1) {
+      if (this.societyInfo.facilities.list[i] != null) {
+        this.facilitiesArray.push(this.societyInfo.facilities.list[i]);
+      }
     }
+    console.log(this.facilitiesArray);
+
   }
 
   ionViewDidLoad() {
@@ -72,13 +70,13 @@ export class FacilitiesPage {
   }
 
   facilitySelected(item){
-    if(item.bookable == "0"){
+    if(!item.is_bookable){
       this.navCtrl.push(NbfacilityPage,{
         facility: item,
         societyId: this.societyId
       });
     }
-    else if(item.bookable == "1"){
+    else{
       this.navCtrl.push(BfacilityPage,{
         facility: item,
         societyId: this.societyId

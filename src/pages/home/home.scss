@@ -1,10 +1,7 @@
-ion-grid{
-    height: 100%;
-    padding: 0%;
-}
+
 
 .sliders{
-    height: 40%;
+    height: 100%;
     max-height: 250px;
 }
 
@@ -22,42 +19,4 @@ ion-grid{
     background: url('https://images.pexels.com/photos/9816/pexels-photo-9816.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');
     background-size: cover;
     background-repeat: no-repeat;
-}
-
-
-    ion-card {
-      position: relative;
-      text-align: center;
-      height: 100%;
-    }
-  
-    .card-title {
-      position: absolute;
-      top: 30%;
-      font-size: 2.0em;
-      width: 100%;
-      font-weight: bold;
-      color: #fff;
-    }
-  
-    .card-subtitle {
-      font-size: 1.0em;
-      position: absolute;
-      top: 60%;
-      width: 100%;
-      color: #fff;
-    }
-  
-
-  .societyProvisions{
-  }
-
-  .notices{
-}
-
-
-.facilitiesImage{
-    height: 100%;
-    width: 100%;
-    min-width: 100%;
 }
