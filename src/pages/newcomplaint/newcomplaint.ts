@@ -203,9 +203,10 @@ export class NewcomplaintPage {
       })
     };
     console.log(this.societyId, typeof(this.societyId))
+    console.log(this)
     this.httpClient.post("https://gentle-savannah-47625.herokuapp.com/complaints/send",
     {
-      "attachment_url": "/complaints/" + this.societyId + "/" + this.complaintKey,
+     "attachment_url": "/complaints/" + this.societyId + "/" + this.complaintKey,
       "complainant_email": this.clientEmail,
       "complaint_key": this.complaintKey,
       "complainant_name": this.clientName,
@@ -216,7 +217,7 @@ export class NewcomplaintPage {
       "location": this.complaintLocation,
       "society_id": this.societyId,
       "time": new Date(),
-      "admin_email_ids": this.societyInfo.society.admin_email_ids
+      "admin_email_ids": this.societyInfo.admin_email_ids
     },
     httpOptions     // Headers
     )
@@ -268,6 +269,8 @@ export class NewcomplaintPage {
     })
     this.loader.dismiss();
     this.imageObtained = false;
+    this.complaintKey = firebase.database().ref("complaints").push().key
+
   }
 
 }
