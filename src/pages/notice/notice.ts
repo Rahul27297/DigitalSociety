@@ -4,6 +4,7 @@ import { Http } from '@angular/http';
 import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer';
 import { File } from '@ionic-native/file';
 import { ToastController } from 'ionic-angular';
+import * as firebase from 'firebase';
 import 'rxjs/add/operator/map';
 /**
  * Generated class for the NoticePage page.
@@ -39,7 +40,7 @@ export class NoticePage {
   }
 
   downloadAttachment(){
-    let attach;
+    /*let attach;
     let url = this.attachment;
     console.log(url);
       const fileTransfer: FileTransferObject = this.transfer.create();
@@ -52,7 +53,20 @@ export class NoticePage {
     }, (error) => {
 
     });
-    
+    */
+
+   firebase.storage().ref(this.attachment).getDownloadURL().then((url) => {
+    const fileTransfer: FileTransferObject = this.transfer.create();
+    fileTransfer.download(url,this.file.externalRootDirectory + '/Download/'+ "Notice" + this.notice.searchid+".pdf").then((entry) => {
+      console.log('download complete: ' + entry.toURL());
+      this.toastCtrl.create({
+        message: "Download Successful",
+        duration: 2000
+      }).present();
+    }, (error) => {
+      console.log("error");
+    });
+   });
   }
 
 }

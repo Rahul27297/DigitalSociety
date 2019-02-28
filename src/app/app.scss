@@ -34,35 +34,21 @@ $colors: (
 ion-content{
   background-color: #ffffff;
 }
+
 .toolbar{
   padding: 0px;
+}
+
+.toolbar-title-ios{
+  font-size: 20px;
 }
 
 .navbar-button{
   font-size: 48px;
 }
 
-.toolbar-title{
-  font-size: 24px;
-  text-align: center;
-}
-
 .toolbar-background-ios{
   background: color($colors, primary);
-}
-
-.toolbar-ios{
-  padding-top: 4px;
-  min-height: 56px;
-}
-
-.toolbar-ios ion-title{
-  padding-top: 16px;
-  align-items: normal;
-}
-
-ion-title{
-  padding-right: 44px;
 }
 
 .bar-button-default-ios{
@@ -97,6 +83,7 @@ hr{
 
 .sidemenu-buttons{
   font-size: 18px;
+  margin-left: 8px;
 }
 
 .sidemenu{
@@ -110,4 +97,56 @@ hr{
 .sidemenu-profile-icon{
   font-size: 48px;
   padding-top: 16px;
+}
+
+.btn{
+  background-color: color($colors, primary);
+  color: white;
+  font-size: 15px;
+  border-radius: 8px;
+}
+
+ion-item{
+  padding: 0px;
+}
+
+.item-ios{
+  padding-left: 0px;
+}
+
+.item-md{
+  padding-left: 0px;
+}
+
+.form-input-field{
+  font-size: 15px;
+}
+
+
+.back-button-text{
+  display: none;
+}
+
+.input-top-margin{
+  margin-top: 16px;
+}
+
+.segment-ios .segment-button.segment-activated{
+  background-color: color($colors, primary);
+}
+
+.segment-ios .segment-button{
+  border-color: color($colors, primary);
+  color: color($colors, primary);
+}
+
+.segment-md .segment-button.segment-activated{
+  background-color: color($colors, primary);
+  border-color: color($colors, primary);
+  color: white;
+}
+
+.segment-md .segment-button{
+  border-color: color($colors, primary);
+  color: color($colors, primary);
 }

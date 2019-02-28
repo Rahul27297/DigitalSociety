@@ -12,9 +12,9 @@
 
 </ion-header>
 
-<ion-content style="padding:8px">
+<ion-content padding>
   <div>
-    <ion-segment [(ngModel)]="noticesTab" style="padding-top: 8px;">
+    <ion-segment [(ngModel)]="noticesTab">
       <ion-segment-button value="recentNotices" class="segmentButtons" style="font-size: 18px">
         Recent
       </ion-segment-button>
@@ -26,42 +26,43 @@
 
   <div [ngSwitch]="noticesTab">
 
-    <ion-list *ngSwitchCase="'recentNotices'">
-      <ion-card *ngFor="let item of noticesArray" (click)="getNotice(item.searchid,'recent')">
+    <ion-list *ngSwitchCase="'recentNotices'" style="margin-top: 16px;">
+      <ion-grid *ngFor="let item of recentNotices"  (click)="getNotice(item,'recent')" style="padding-top: 8px;margin-bottom: 8px; border-bottom: 1px solid #ccc">
+      <ion-row>
+        <ion-col col-2 class="notice-icon">
+            <ion-icon class="notice-icon-inner" ios="ios-paper-outline" md="md-paper"></ion-icon>
+        </ion-col>
+        <ion-col col-10 style="padding-left: 16px;">
         <ion-row>
-          <ion-item>
-            <ion-label class="noticeSubjectText">{{item.subject}}</ion-label>
-          </ion-item>
-        </ion-row>
-        <ion-row>
-          <ion-col col-10 style="padding-top: 0px;">
-            <ion-row>
-              <ion-icon name="calendar" class="noticedate-icon"></ion-icon>
-              <ion-label class="noticedate-text">{{item.date}}</ion-label>
-            </ion-row>
-          </ion-col>
-        </ion-row>
-
-      </ion-card>
+            <ion-label class="noticeSubjectText">{{item.notice_title}}</ion-label>
+      </ion-row>
+      <ion-row>
+          <ion-label class="noticedate-text">{{item.date}}</ion-label>
+      </ion-row>
+    </ion-col>
+      </ion-row>
+    </ion-grid>
+      
     </ion-list>
 
-    <ion-list *ngSwitchCase="'archivedNotices'">
-      <ion-card *ngFor="let item of noticesArchivedArray" (click)="getNotice(item.searchid,'archived')">
+    <ion-list *ngSwitchCase="'archivedNotices'" style="margin-top: 16px;">
+      <ion-grid *ngFor="let item of archivedNotices"  (click)="getNotice(item,'recent')" style="padding-top: 8px;margin-bottom: 8px; border-bottom: 1px solid #ccc">
+      <ion-row>
+        <ion-col col-2 class="notice-icon">
+            <ion-icon class="notice-icon-inner" ios="ios-paper-outline" md="md-paper"></ion-icon>
+        </ion-col>
+        <ion-col col-10 style="padding-left: 16px;">
         <ion-row>
-          <ion-item>
-            <ion-label class="noticeSubjectText">{{item.subject}}</ion-label>
-          </ion-item>
-        </ion-row>
-        <ion-row>
-          <ion-col col-10 style="padding-top: 0px;">
-            <ion-row>
-              <ion-icon name="calendar" class="noticedate-icon"></ion-icon>
-              <ion-label class="noticedate-text">{{item.date}}</ion-label>
-            </ion-row>
-          </ion-col>
-        </ion-row>
-
-      </ion-card>
+            <ion-label class="noticeSubjectText">{{item.notice_title}}</ion-label>
+      </ion-row>
+      <ion-row>
+          <ion-label class="noticedate-text">{{item.date}}</ion-label>
+      </ion-row>
+    </ion-col>
+      </ion-row>
+    </ion-grid>
+      
     </ion-list>
+
   </div>
 </ion-content>

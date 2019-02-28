@@ -33,6 +33,7 @@ export class MyApp {
   private loader: any;
   private logoutAlert: any;
   private societyId: any;
+  private societyInfo: any;
   private clientName: any; //used for sidemenu
   private clientAddress: any; //used for sidemenu
   private societyName: any; //used for sidemenu
@@ -41,7 +42,6 @@ export class MyApp {
     firebase.initializeApp(environment.firebase);
     this.checkLogin();
     this.initializeApp();
-
     this.network.onConnect().subscribe(() => {
       this.toastCtrl.create({
         message: "Network Connected",
@@ -98,10 +98,14 @@ export class MyApp {
       } else {
         this.storage.get("societyId").then((val) => {
           this.societyId = val;
-          this.storage.get("societyInfo").then((val) => {
-            this.societyName = val.society.display_name;
+          firebase.database().ref('societies').orderByChild('society_id').equalTo("" + this.societyId).on('value', (societysnapshot) => {
+            console.log("Information Stored");
+            let tempKey = Object.keys(societysnapshot.val())[0];
+            this.societyInfo = Object.getOwnPropertyDescriptor(societysnapshot.val(),tempKey).value;
+            console.log(this.societyInfo);
+            this.societyName = this.societyInfo.display_name;
             this.nav.push(HomePage, {
-              societyInfo: val,
+              societyInfo: this.societyInfo,
               societyId: this.societyId
             });
           })
@@ -129,11 +133,23 @@ export class MyApp {
   openPage(page) {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
-    if (page.title == "Logout") {
+    if (page.title == "Logout") {//user wants to logout
       this.logout();
     }
-    else {
-      this.nav.setRoot(page.component);
+    else if (page.title === "Home"){//navigate to home page
+      this.nav.setRoot(HomePage,{
+        societyInfo: this.societyInfo,//used for dymanic fetching
+        societyId: this.societyId //used for layering the societies
+      });
+    }
+    else if (page.title === "My Bookings"){//navigate to my bookings page
+      this.nav.push(BookingsPage);
+    }
+    else if (page.title === "Profile"){//navigate to profile page
+      this.nav.push(ProfilePage, {
+        societyName: this.societyName,
+        address: this.societyInfo.address
+      });
     }
   }
 

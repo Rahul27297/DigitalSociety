@@ -26,19 +26,17 @@ export class NbfacilityPage {
   }
 
   ionViewDidLoad() {
-    console.log("1");
     this.loading = this.loadingCtrl.create({
       content: "Please wait..."
     });
     this.loading.present();
     this.facilityInfo = this.navParams.get('facility');
-    this.facilityName = this.facilityInfo.name;
-    this.facilityImage = this.facilityInfo.url;
+    this.facilityName = this.facilityInfo.display_name;
+    this.facilityImage = this.facilityInfo.image_url;
     this.facilityDescription = this.facilityInfo.description;
   }
 
   ionViewDidEnter(){
-    console.log("2");
     this.loading.dismiss();
   }
 

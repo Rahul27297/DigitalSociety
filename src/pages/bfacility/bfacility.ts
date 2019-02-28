@@ -35,6 +35,7 @@ export class BfacilityPage {
 		this.selectedSlot = "transparent";
 		this.todayDate = new Date();
 		this.currentDate = this.todayDate.getDate();
+		this.calendar.selectedDate = this.currentDate;
 		//console.log(this.currentDate);
 		this.facility = this.navParams.get('facility');
 		//console.log(this.facility);
@@ -43,7 +44,7 @@ export class BfacilityPage {
 	setup(){
 		this.simplyBookClient = new SimplyBookClient();
 		//this.currentDate = this.simplyBookClient.client.getFirstWorkingDay();
-		let slots = this.simplyBookClient.client.getStartTimeMatrix(this.todayDate,this.todayDate,this.facility.id,this.societyId + 3,1);
+		let slots = this.simplyBookClient.client.getStartTimeMatrix(this.todayDate,this.todayDate,this.facility.service_id_in_simplybook,this.societyId,1);
 		console.log(slots);
 		this.slotsArray = Object.getOwnPropertyDescriptor(slots,Object.keys(slots)[0]).value;
 	}
@@ -78,21 +79,29 @@ export class BfacilityPage {
 		let date = this.calendar.date.getFullYear().toString() + "-" + (this.calendar.date.getMonth()+1).toString() + "-" +this.currentDate.toString();
 		console.log("booking date" + date);
 		this.navController.push(BookingConfirmationPage, {
-			facilityId: this.facility.id,
-			facilityName: this.facility.name,
+			facilityId: this.facility.service_id_in_simplybook,
+			facilityName: this.facility.display_name,
 			startDate: date,
 			startTime: this.selectedSlotTime,
-			societyId: this.societyId
+			societyId: this.societyId,
+			facilityTnC: this.facility.terms_and_conditions
 		});
 	}
 
 	dateSelected(day,month,year){
-		this.currentDate = day;
-		console.log(day+month+year);
-		let date = new Date(this.calendar.date.getFullYear(),this.calendar.date.getMonth(),day);
-		let slots = this.simplyBookClient.client.getStartTimeMatrix(date,date,this.facility.id,this.societyId + 3,1);
-		console.log(slots);
-		this.slotsArray = Object.getOwnPropertyDescriptor(slots,Object.keys(slots)[0]).value;
+		if(this.calendar.goToPreviousMonthFlag || this.currentDate <= day ){
+			if(this.calendar.goToNextMonthFlag && day < this.currentDate){
+				this.calendar.selectedDate = this.currentDate;	
+			}
+			else{
+				this.calendar.selectedDate = day;
+			}
+			console.log(day+month+year);
+			let date = new Date(this.calendar.date.getFullYear(),this.calendar.date.getMonth(),day);
+			let slots = this.simplyBookClient.client.getStartTimeMatrix(date,date,this.facility.id,this.societyId,1);
+			console.log(slots);
+			this.slotsArray = Object.getOwnPropertyDescriptor(slots,Object.keys(slots)[0]).value;
+		}
 	}
 }
 

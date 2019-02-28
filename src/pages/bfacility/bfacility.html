@@ -8,34 +8,40 @@
 
 <ion-content >
   <div style="padding: 8px;">
+  <ion-card style="padding-bottom: 8px;">
   <div class="calendar-header">
     <ion-row class="calendar-month">
-      <ion-col col-2 (click)="calendar.goToPreviousMonth()"><ion-icon name="arrow-dropleft"></ion-icon></ion-col>
+      <ion-col col-2 *ngIf="calendar.goToPreviousMonthFlag === true" (click)="calendar.goToPreviousMonth()"><ion-icon name="arrow-dropleft-circle"></ion-icon></ion-col>
+      <ion-col col-2 *ngIf="calendar.goToPreviousMonthFlag === false" (click)="calendar.goToPreviousMonth()"><ion-icon isActive="false" name="arrow-dropleft"></ion-icon></ion-col>
       <ion-col col-8>{{calendar.currentMonth}} {{calendar.currentYear}}</ion-col>
-      <ion-col col-2 (click)="calendar.goToNextMonth()"><ion-icon name="arrow-dropright"></ion-icon></ion-col>
+      <ion-col col-2 *ngIf="calendar.goToNextMonthFlag" (click)="calendar.goToNextMonth()"><ion-icon name="arrow-dropright-circle"></ion-icon></ion-col>
+      <ion-col col-2 *ngIf="calendar.goToNextMonthFlag === false" (click)="calendar.goToNextMonth()"><ion-icon isActive="false" name="arrow-dropright"></ion-icon></ion-col>
     </ion-row>
   </div>
   <div class="calendar-body">
     <ion-grid>
       <ion-row class="calendar-weekday">
-        <ion-col>Su</ion-col>
-        <ion-col>Mo</ion-col>
-        <ion-col>Tu</ion-col>
-        <ion-col>We</ion-col>
-        <ion-col>Th</ion-col>
-        <ion-col>Fr</ion-col>
-        <ion-col>Sa</ion-col>
+        <ion-col>S</ion-col>
+        <ion-col>M</ion-col>
+        <ion-col>T</ion-col>
+        <ion-col>W</ion-col>
+        <ion-col>T</ion-col>
+        <ion-col>F</ion-col>
+        <ion-col>S</ion-col>
       </ion-row>
       <ion-row class="calendar-date">
         <ion-col col-1 *ngFor="let lastDay of calendar.daysInLastMonth" class="last-month">{{lastDay}}</ion-col>
         <ion-col col-1 *ngFor="let day of calendar.daysInThisMonth" (click)=dateSelected(day,calendar.currentMonth,calendar.currentYear)>
-          <span class="currentDate" *ngIf="currentDate === day; else otherDate" style="color: 0064b7">{{day}}</span>
-          <ng-template #otherDate class="otherDate">{{day}}</ng-template>
+          <span class="last-month"  *ngIf="currentDate > day && calendar.selectedDate !== day && calendar.goToNextMonthFlag" >{{day}}</span>
+          <span *ngIf="currentDate > day && calendar.selectedDate !== day && calendar.goToPreviousMonthFlag" style="color: #000000">{{day}}</span>
+          <span  *ngIf="currentDate <= day && calendar.selectedDate !== day" style="color: #000000">{{day}}</span>
+          <span class="currentDate" *ngIf="calendar.selectedDate === day">{{day}}</span>
         </ion-col>
         <ion-col col-1 *ngFor="let nextDay of calendar.daysInNextMonth" class="next-month" >{{nextDay}}</ion-col>
       </ion-row>
     </ion-grid>
   </div>
+  </ion-card>
 
   <div>
     <ion-grid>
@@ -50,8 +56,8 @@
       </ion-row>
     </ion-grid>
   </div>
-    <div text-center>
-    <button ion-button icon-end class="proceedBookBtn" (click)=proceedBook()>Book<ion-icon name="arrow-dropright"></ion-icon></button>
+    <div text-center style="padding-left:8px;padding-right: 8px;">
+    <button ion-button icon-end block class="btn" (click)=proceedBook()>Book<ion-icon name="arrow-dropright"></ion-icon></button>
   </div>
 </div>
 </ion-content>

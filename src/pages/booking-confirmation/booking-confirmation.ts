@@ -26,6 +26,7 @@ export class BookingConfirmationPage {
   private facilityName: any;
   private startTime: any;
   private startDate: any;
+  private facilityTnC: any;
   private tnc:any;
   private simplyBookClient: SimplyBookClient;
   private clientData: any;
@@ -50,6 +51,7 @@ export class BookingConfirmationPage {
         this.startTime = this.navParams.get("startTime");
         this.startDate = this.navParams.get("startDate");
         this.societyId = this.navParams.get('societyId');
+        this.facilityTnC = this.navParams.get("facilityTnC");
         this.loader.dismiss();
       });
     });
@@ -72,6 +74,18 @@ export class BookingConfirmationPage {
     }
   }
 
+  displayTnC(){
+    console.log("displayTnc");
+    this.alertCtrl.create({
+      title: "Terms & Conditions",
+      subTitle: this.facilityTnC,
+      buttons:[{
+        text: "Dismiss",
+        role: "cancel"
+      }]
+    }).present();
+  }
+
   confirmBooking(){
     let booking;
     console.log("here");
@@ -81,7 +95,7 @@ export class BookingConfirmationPage {
         buttons:[{
           text: "Yes",
           handler: () => {
-            booking = this.simplyBookClient.client.book(this.facilityId, this.societyId + 3, this.startDate, this.startTime, this.clientData, null , 1);
+            booking = this.simplyBookClient.client.book(this.facilityId, this.societyId, this.startDate, this.startTime, this.clientData, null , 1);
             console.log(this.simplyBookClient.client.book(this.facilityId, 1, this.startDate, this.startTime, this.clientData, null , 1));
             console.log(Object.keys(booking));
             if(Object.keys(booking)[1] == "bookings"){

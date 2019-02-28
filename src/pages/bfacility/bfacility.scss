@@ -21,7 +21,7 @@ padding: 5px;
 .currentDate {
 font-weight: bold;
 background-color:  color($colors, primary-dark);
-color: color($colors, black);
+color: white;
 border-radius: 30px;
 }
 .calendar-header {
@@ -54,14 +54,10 @@ margin: 0;
 }
 .calendar-weekday {
 font-weight: bold;
-border-top: solid 0.5px color($colors, primary-dark);
-border-bottom: solid 1px color($colors, primary-dark);
 color: color($colors, primary-dark);
 font-size: 18px;
 }
 .calendar-date {
-border-top: solid 1px color($colors, primary-dark);;
-border-bottom: solid 1px color($colors, primary-dark);;
 font-size: 18px;
 }
 }

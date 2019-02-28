@@ -15,10 +15,12 @@
 
 <ion-content class="card-background-page">
   <ion-list>
-  <ion-card *ngFor="let item of facilitiesArray" (click)=facilitySelected(item) class="facilitycard">
-    <img src={{item.url}} class="facilityImage"/>
-    <div class="card-title" style="top: 40%">{{item.name}}</div>
+    <ng-container *ngFor="let item of facilitiesArray">
+  <ion-card  *ngIf="item.is_active === true" (click)=facilitySelected(item) class="facilitycard">
+    <img src={{item.image_url}} class="facilityImage"/>
+    <div class="card-title" style="top: 40%">{{item.display_name}}</div>
   </ion-card>
+</ng-container>
 </ion-list>
 
 </ion-content>

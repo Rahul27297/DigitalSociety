@@ -1,11 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Slides } from 'ionic-angular';
-import { NoticesPage } from '../notices/notices'
+import { NoticesPage } from '../notices/notices';
 import { FacilitiesPage } from '../facilities/facilities';
 import { Http } from '@angular/http';
 import { LoadingController } from 'ionic-angular';
 import { NewcomplaintPage } from '../newcomplaint/newcomplaint';
 import { Storage } from '@ionic/storage';
+import * as firebase from 'firebase';
 /**
  * Generated class for the HomePage page.
  *
@@ -33,23 +34,44 @@ export class HomePage {
   constructor(public navCtrl: NavController, public navParams: NavParams, private http: Http, private loadingCtrl: LoadingController, private storage: Storage) {
     this.societyId = this.navParams.get('societyId');
     this.societyInfo = this.navParams.get('societyInfo');
-    this.societyName = this.societyInfo.society.display_name;
+    this.societyName = this.societyInfo.display_name;
+    console.log(this.societyId);
+    console.log(this.societyName);
     this.setUpHomeScreen();
   }
 
   setUpHomeScreen() {
+    let storageRef = firebase.storage();
     if (this.societyInfo != null) {
-      this.hasFacilities = this.societyInfo.society.facilities.is_feature_available;
-      this.hasComplaints = this.societyInfo.society.complaints.is_feature_available;
-      this.hasNotices = this.societyInfo.society.notices.is_feature_available;
+      this.hasFacilities = this.societyInfo.facilities.is_feature_available;
+      this.hasComplaints = this.societyInfo.complaints.is_feature_available;
+      this.hasNotices = this.societyInfo.notices.is_feature_available;
+      
       if (this.hasFacilities) {
-        this.facilitiesImage = this.societyInfo.download_urls.facilities_image_download_url;
+        if (this.societyInfo.facilities.has_custom_image) {
+          this.facilitiesImage = this.societyInfo.facilities.custom_image_url;
+        }
+        else {
+          this.facilitiesImage = this.societyInfo.facilities.default_image_url;
+        }
       }
+
       if (this.hasComplaints) {
-        this.complaintsImage = this.societyInfo.download_urls.complaints_image_download_url;
+        if (this.societyInfo.complaints.has_custom_image) {
+          this.complaintsImage = this.societyInfo.complaints.custom_image_url;
+        }
+        else {
+          this.complaintsImage = this.societyInfo.complaints.default_image_url;
+        }
       }
+
       if (this.hasNotices) {
-        this.noticesImage = this.societyInfo.download_urls.notices_image_download_url;
+        if (this.societyInfo.notices.has_custom_image) {
+          this.noticesImage = this.societyInfo.notices.custom_image_url;
+        }
+        else {
+          this.noticesImage = this.societyInfo.notices.default_image_url;
+        }
       }
     }
   }
@@ -66,7 +88,8 @@ export class HomePage {
 
   facilities() {
     this.navCtrl.push(FacilitiesPage, {
-      societyId: this.societyId
+      societyId: this.societyId,
+      societyInfo: this.societyInfo
     });
   }
 
