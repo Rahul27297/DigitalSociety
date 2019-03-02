@@ -11,11 +11,11 @@
   <ion-card style="padding-bottom: 8px;">
   <div class="calendar-header">
     <ion-row class="calendar-month">
-      <ion-col col-2 *ngIf="calendar.goToPreviousMonthFlag === true" (click)="calendar.goToPreviousMonth()"><ion-icon name="arrow-dropleft-circle"></ion-icon></ion-col>
-      <ion-col col-2 *ngIf="calendar.goToPreviousMonthFlag === false" (click)="calendar.goToPreviousMonth()"><ion-icon isActive="false" name="arrow-dropleft"></ion-icon></ion-col>
+      <ion-col col-2 *ngIf="calendar.goToPreviousMonthFlag === true" (tap)="calendar.goToPreviousMonth()"><ion-icon name="arrow-dropleft-circle"></ion-icon></ion-col>
+      <ion-col col-2 *ngIf="calendar.goToPreviousMonthFlag === false" (tap)="calendar.goToPreviousMonth()"><ion-icon isActive="false" name="arrow-dropleft"></ion-icon></ion-col>
       <ion-col col-8>{{calendar.currentMonth}} {{calendar.currentYear}}</ion-col>
-      <ion-col col-2 *ngIf="calendar.goToNextMonthFlag" (click)="calendar.goToNextMonth()"><ion-icon name="arrow-dropright-circle"></ion-icon></ion-col>
-      <ion-col col-2 *ngIf="calendar.goToNextMonthFlag === false" (click)="calendar.goToNextMonth()"><ion-icon isActive="false" name="arrow-dropright"></ion-icon></ion-col>
+      <ion-col col-2 *ngIf="calendar.goToNextMonthFlag" (tap)="calendar.goToNextMonth()"><ion-icon name="arrow-dropright-circle"></ion-icon></ion-col>
+      <ion-col col-2 *ngIf="calendar.goToNextMonthFlag === false" (tap)="calendar.goToNextMonth()"><ion-icon isActive="false" name="arrow-dropright"></ion-icon></ion-col>
     </ion-row>
   </div>
   <div class="calendar-body">
@@ -31,7 +31,7 @@
       </ion-row>
       <ion-row class="calendar-date">
         <ion-col col-1 *ngFor="let lastDay of calendar.daysInLastMonth" class="last-month">{{lastDay}}</ion-col>
-        <ion-col col-1 *ngFor="let day of calendar.daysInThisMonth" (click)=dateSelected(day,calendar.currentMonth,calendar.currentYear)>
+        <ion-col col-1 *ngFor="let day of calendar.daysInThisMonth" (tap)=dateSelected(day,calendar.currentMonth,calendar.currentYear)>
           <span class="last-month"  *ngIf="currentDate > day && calendar.selectedDate !== day && calendar.goToNextMonthFlag" >{{day}}</span>
           <span *ngIf="currentDate > day && calendar.selectedDate !== day && calendar.goToPreviousMonthFlag" style="color: #000000">{{day}}</span>
           <span  *ngIf="currentDate <= day && calendar.selectedDate !== day" style="color: #000000">{{day}}</span>
@@ -53,14 +53,14 @@
       </ion-row>
       <ion-row>
         <ion-col col-4 *ngFor="let slot of slotsArray">
-          <button ion-button *ngIf="slot === selectedSlotTime; else otherslots" class="selected-slot" (click)=slotSelected(slot)>{{slot}}</button>
-          <ng-template #otherslots><button ion-button outline (click)=slotSelected(slot) class="slotButton">{{slot}}</button></ng-template>
+          <button ion-button *ngIf="slot === selectedSlotTime; else otherslots" class="selected-slot" (tap)=slotSelected(slot)>{{slot}}</button>
+          <ng-template #otherslots><button ion-button outline (tap)=slotSelected(slot) class="slotButton">{{slot}}</button></ng-template>
         </ion-col>
       </ion-row>
     </ion-grid>
   </div>
     <div text-center style="padding-left:8px;padding-right: 8px;">
-    <button ion-button icon-end block class="btn" (click)=proceedBook()>Book<ion-icon name="arrow-dropright"></ion-icon></button>
+    <button ion-button icon-end block class="btn" [disabled]="!isValidDateAndTimeSelected" (tap)=proceedBook()>Book<ion-icon name="arrow-dropright"></ion-icon></button>
   </div>
 </div>
 </ion-content>

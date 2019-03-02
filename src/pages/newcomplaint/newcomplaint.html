@@ -35,14 +35,16 @@
     </ion-item>
     <div id="complaint-image" class="complaints-item" *ngIf="imageObtained != false">
       <ion-label style="font-size: 18px">Image Preview</ion-label>
-      <button id = "x" (click)="removeImage()">X</button>
+      <button id = "x" (tap)="removeImage()">X</button>
       <img [src]="this.imageURI" style = "min-height:30%px; min-width:100%"/>
     </div>
     <div text-center *ngIf="imageObtained === false">
-      <button ion-button large class="complaint-buttons" (click)=presentActionSheet() style="margin-top: 16px;">Upload Image</button>
+      <button ion-button icon-end block class="btn" (tap)=presentActionSheet() style="margin-top: 17px;">Upload Image</button>
+
     </div>
     <div text-center>
-      <button ion-button large type="submit" [disabled]="!complaintForm.valid" class="complaint-buttons" (click)=registerComplaint() style="margin-top: 16px;">Register Complaint</button>
+      <button ion-button icon-end block class="btn" [disabled]="!complaintForm.valid" type="submit" (tap)=registerComplaint() style="margin-top: 17px;">Register Complaint</button>
+
     </div>
   </form>
 </ion-content>

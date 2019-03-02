@@ -27,7 +27,7 @@
   <div [ngSwitch]="noticesTab">
 
     <ion-list *ngSwitchCase="'recentNotices'" style="margin-top: 16px;">
-      <ion-grid *ngFor="let item of recentNotices"  (click)="getNotice(item,'recent')" style="padding-top: 8px;margin-bottom: 8px; border-bottom: 1px solid #ccc">
+      <ion-grid *ngFor="let item of recentNotices"  (tap)="getNotice(item,'recent')" style="padding-top: 8px;margin-bottom: 8px; border-bottom: 1px solid #ccc">
       <ion-row>
         <ion-col col-2 class="notice-icon">
             <ion-icon class="notice-icon-inner" ios="ios-paper-outline" md="md-paper"></ion-icon>
@@ -46,7 +46,7 @@
     </ion-list>
 
     <ion-list *ngSwitchCase="'archivedNotices'" style="margin-top: 16px;">
-      <ion-grid *ngFor="let item of archivedNotices"  (click)="getNotice(item,'recent')" style="padding-top: 8px;margin-bottom: 8px; border-bottom: 1px solid #ccc">
+      <ion-grid *ngFor="let item of archivedNotices"  (tap)="getNotice(item,'recent')" style="padding-top: 8px;margin-bottom: 8px; border-bottom: 1px solid #ccc">
       <ion-row>
         <ion-col col-2 class="notice-icon">
             <ion-icon class="notice-icon-inner" ios="ios-paper-outline" md="md-paper"></ion-icon>

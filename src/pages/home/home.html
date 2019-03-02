@@ -28,17 +28,17 @@
     </ion-col>
   </ion-row >
 </ion-grid>
-    <ion-card *ngIf="this.hasFacilities === true" class="facilitycard" (click)="facilities()">
+    <ion-card *ngIf="this.hasFacilities === true" class="facilitycard" (tap)="facilities()">
         <img src={{facilitiesImage}} class="facilityImage"/>
       <div class="card-title">Facilities</div>
       <div class="card-subtitle">Enjoy the best of sports and entertainment</div>
     </ion-card>
-    <ion-card *ngIf="this.hasNotices === true" class="facilitycard" (click)="notices()">
+    <ion-card *ngIf="this.hasNotices === true" class="facilitycard" (tap)="notices()">
         <img src={{noticesImage}} class="facilityImage"/>
       <div class="card-title">Notices</div>
       <div class="card-subtitle">Stay notified with the changes in you society</div>
     </ion-card>
-    <ion-card *ngIf="this.hasComplaints === true" class="facilitycard" (click)="complaints()">
+    <ion-card *ngIf="this.hasComplaints === true" class="facilitycard" (tap)="complaints()">
         <img src={{complaintsImage}} class="facilityImage"/>
       <div class="card-title">Complaints</div>
       <div class="card-subtitle">Let us know about your issues</div>
