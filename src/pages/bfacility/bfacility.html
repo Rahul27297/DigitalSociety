@@ -48,6 +48,9 @@
       <ion-row>
         <ion-label style="font-size: 18px">Available Time Slots</ion-label>
       </ion-row>
+      <ion-row *ngIf="!this.areSlotsAvailable">
+          <ion-label style="font-size: 18px; color: red">No Slots Available for Selected Date</ion-label>
+      </ion-row>
       <ion-row>
         <ion-col col-4 *ngFor="let slot of slotsArray">
           <button ion-button *ngIf="slot === selectedSlotTime; else otherslots" class="selected-slot" (click)=slotSelected(slot)>{{slot}}</button>

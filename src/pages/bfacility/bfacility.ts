@@ -28,6 +28,7 @@ export class BfacilityPage {
 	public selectedSlot: any;
 	public selectedSlotTime:any;
 	private loader: any;
+	private areSlotsAvailable: any;
 	private societyId: any;
     constructor(private navController:NavController, private navParams:NavParams, private loadingCtrl: LoadingController, private storage: Storage) {
 		this.societyId = navParams.get('societyId');
@@ -38,6 +39,7 @@ export class BfacilityPage {
 		this.calendar.selectedDate = this.currentDate;
 		//console.log(this.currentDate);
 		this.facility = this.navParams.get('facility');
+		this.areSlotsAvailable = true;
 		//console.log(this.facility);
 	}
 	
@@ -47,6 +49,17 @@ export class BfacilityPage {
 		let slots = this.simplyBookClient.client.getStartTimeMatrix(this.todayDate,this.todayDate,this.facility.service_id_in_simplybook,this.societyId,1);
 		console.log(slots);
 		this.slotsArray = Object.getOwnPropertyDescriptor(slots,Object.keys(slots)[0]).value;
+		console.log(this.slotsArray);
+		if(this.slotsArray.length == 0){
+			console.log("here", this.slotsArray.length)
+			this.areSlotsAvailable = false;
+		}
+		else {
+			console.log("here", this.slotsArray.length)
+
+			this.areSlotsAvailable = true;
+		}
+
 	}
 
 	ionViewDidLoad(){
@@ -101,6 +114,15 @@ export class BfacilityPage {
 			let slots = this.simplyBookClient.client.getStartTimeMatrix(date,date,this.facility.id,this.societyId,1);
 			console.log(slots);
 			this.slotsArray = Object.getOwnPropertyDescriptor(slots,Object.keys(slots)[0]).value;
+			if(this.slotsArray.length == 0){
+				console.log("here", this.slotsArray.length)
+				this.areSlotsAvailable = false;
+			}
+			else {
+				console.log("here", this.slotsArray.length)
+	
+				this.areSlotsAvailable = true;
+			}
 		}
 	}
 }
