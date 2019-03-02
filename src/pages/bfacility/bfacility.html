@@ -60,7 +60,7 @@
     </ion-grid>
   </div>
     <div text-center style="padding-left:8px;padding-right: 8px;">
-    <button ion-button icon-end block class="btn" (tap)=proceedBook()>Book<ion-icon name="arrow-dropright"></ion-icon></button>
+    <button ion-button icon-end block class="btn" [disabled]="!isValidDateAndTimeSelected" (tap)=proceedBook()>Book<ion-icon name="arrow-dropright"></ion-icon></button>
   </div>
 </div>
 </ion-content>
