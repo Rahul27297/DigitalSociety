@@ -54,7 +54,8 @@ export class BfacilityPage {
 		
 		if(this.slotsArray.length == 0){
 			console.log("here", this.slotsArray.length)
-			this.areSlotsAvailable = false;			
+			this.areSlotsAvailable = false;		
+			this.isValidDateAndTimeSelected = false;	
 		}
 		else {
 			console.log("here", this.slotsArray.length)
