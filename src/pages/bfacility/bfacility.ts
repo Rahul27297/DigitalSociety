@@ -52,11 +52,10 @@ export class BfacilityPage {
 		console.log(this.slotsArray);
 		if(this.slotsArray.length == 0){
 			console.log("here", this.slotsArray.length)
-			this.areSlotsAvailable = false;
+			this.areSlotsAvailable = false;			
 		}
 		else {
 			console.log("here", this.slotsArray.length)
-
 			this.areSlotsAvailable = true;
 		}
 
@@ -102,6 +101,10 @@ export class BfacilityPage {
 	}
 
 	dateSelected(day,month,year){
+		this.loader = this.loadingCtrl.create({
+      content: "Please Wait..."
+    });
+    this.loader.present();
 		if(this.calendar.goToPreviousMonthFlag || this.currentDate <= day ){
 			if(this.calendar.goToNextMonthFlag && day < this.currentDate){
 				this.calendar.selectedDate = this.currentDate;	
@@ -113,6 +116,7 @@ export class BfacilityPage {
 			let date = new Date(this.calendar.date.getFullYear(),this.calendar.date.getMonth(),day);
 			let slots = this.simplyBookClient.client.getStartTimeMatrix(date,date,this.facility.id,this.societyId,1);
 			console.log(slots);
+			this.loader.dismiss();
 			this.slotsArray = Object.getOwnPropertyDescriptor(slots,Object.keys(slots)[0]).value;
 			if(this.slotsArray.length == 0){
 				console.log("here", this.slotsArray.length)

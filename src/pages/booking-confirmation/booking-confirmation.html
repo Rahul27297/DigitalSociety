@@ -44,16 +44,16 @@
           <ion-col style="padding-right: 0px;">
           <ion-item>
               <ion-label class="tncaccept-text">Accept Terms & Conditions </ion-label>
-              <ion-checkbox color="dark" checked="false" (click)="tncCheckBox()" style="margin-right: 4px;"></ion-checkbox>
+              <ion-checkbox color="dark" checked="false" (tap)="tncCheckBox()" style="margin-right: 4px;"></ion-checkbox>
             </ion-item>
           </ion-col>
           <ion-col class="tnc-info-icon">
-            <ion-icon color="light-grey" name="information-circle" (click)="displayTnC()"></ion-icon>
+            <ion-icon color="light-grey" name="information-circle" (tap)="displayTnC()"></ion-icon>
           </ion-col>
         </ion-row>
         <ion-row class="confirm-cancel-btns">
-            <button ion-button (click)="confirmBooking()" class="btn" style="margin-bottom: 8px; margin-right: 8px">Confirm</button>
-            <button ion-button (click)="cancelBooking()" class="btn" style="margin-left: 8px;">Cancel</button>
+            <button ion-button (tap)="confirmBooking()" class="btn" style="margin-bottom: 8px; margin-right: 8px">Confirm</button>
+            <button ion-button (tap)="cancelBooking()" class="btn" style="margin-left: 8px;">Cancel</button>
           </ion-row>
       </ion-grid>
     </ion-card-content>
