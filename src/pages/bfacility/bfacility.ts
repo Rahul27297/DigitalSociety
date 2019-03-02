@@ -141,6 +141,7 @@ export class BfacilityPage {
 			}
 		}
 		this.selectedSlotTime = false;
+		this.isValidDateAndTimeSelected = false;
 	}
 }
 
