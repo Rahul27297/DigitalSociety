@@ -30,7 +30,8 @@ export class BfacilityPage {
 	private loader: any;
 	private areSlotsAvailable: any;
 	private societyId: any;
-    constructor(private navController:NavController, private navParams:NavParams, private loadingCtrl: LoadingController, private storage: Storage) {
+	private isValidDateAndTimeSelected: boolean;
+	constructor(private navController:NavController, private navParams:NavParams, private loadingCtrl: LoadingController, private storage: Storage) {
 		this.societyId = navParams.get('societyId');
 		this.calendar = new CalendarPage();
 		this.selectedSlot = "transparent";
@@ -50,18 +51,22 @@ export class BfacilityPage {
 		console.log(slots);
 		this.slotsArray = Object.getOwnPropertyDescriptor(slots,Object.keys(slots)[0]).value;
 		console.log(this.slotsArray);
+		
 		if(this.slotsArray.length == 0){
 			console.log("here", this.slotsArray.length)
-			this.areSlotsAvailable = false;			
+			this.areSlotsAvailable = false;		
+			this.isValidDateAndTimeSelected = false;	
 		}
 		else {
 			console.log("here", this.slotsArray.length)
 			this.areSlotsAvailable = true;
 		}
+		this.calendar.selectedDate = this.currentDate;	
 
 	}
 
-	ionViewDidLoad(){
+	ionViewWillEnter(){
+		this.isValidDateAndTimeSelected = false;
 		this.loader = this.loadingCtrl.create({
 			content: "Please wait..."
 		});
@@ -69,10 +74,11 @@ export class BfacilityPage {
 	}
 
 	ionViewDidEnter(){
-		
 		this.setup();
 		this.loader.dismiss();
 	}
+
+
 	hello(){
 		console.log("hello");
 	}
@@ -85,10 +91,12 @@ export class BfacilityPage {
 		console.log(slot);
 		this.selectedSlot = "color($colors, primary-dark)";
 		this.selectedSlotTime = slot;
+		this.isValidDateAndTimeSelected = true;
 	}
 
 	proceedBook(){
-		let date = this.calendar.date.getFullYear().toString() + "-" + (this.calendar.date.getMonth()+1).toString() + "-" +this.currentDate.toString();
+		console.log(this.calendar)
+		let date = this.calendar.date.getFullYear().toString() + "-" + (this.calendar.date.getMonth()+1).toString() + "-" +this.calendar.selectedDate.toString();
 		console.log("booking date" + date);
 		this.navController.push(BookingConfirmationPage, {
 			facilityId: this.facility.service_id_in_simplybook,
@@ -104,15 +112,19 @@ export class BfacilityPage {
 		this.loader = this.loadingCtrl.create({
       content: "Please Wait..."
     });
-    this.loader.present();
+		this.loader.present();
+		console.log(day)
 		if(this.calendar.goToPreviousMonthFlag || this.currentDate <= day ){
 			if(this.calendar.goToNextMonthFlag && day < this.currentDate){
+				console.log("here 2")
 				this.calendar.selectedDate = this.currentDate;	
 			}
 			else{
+				console.log("here 5")
+
 				this.calendar.selectedDate = day;
 			}
-			console.log(day+month+year);
+			console.log(this.calendar.selectedDate,day+month+year);
 			let date = new Date(this.calendar.date.getFullYear(),this.calendar.date.getMonth(),day);
 			let slots = this.simplyBookClient.client.getStartTimeMatrix(date,date,this.facility.id,this.societyId,1);
 			console.log(slots);
@@ -128,6 +140,7 @@ export class BfacilityPage {
 				this.areSlotsAvailable = true;
 			}
 		}
+		this.selectedSlotTime = false;
 	}
 }
 
