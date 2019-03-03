@@ -35,7 +35,7 @@ export class FacilitiesPage {
   }
 
   getEventList(){
-    this.simplyBookClient = new SimplyBookClient();
+    // this.simplyBookClient = new SimplyBookClient();
     this.societyId = null;
     this.societyInfo = null;
     this.societyId = this.navParams.get('societyId');

@@ -11,6 +11,7 @@ import { LoadingController } from 'ionic-angular';
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
+declare var JSONRpcClient;
 
 @IonicPage()
 @Component({
@@ -33,8 +34,9 @@ export class BookingConfirmationPage {
   private clientPassword: any;
   private societyId: any;
   private loader: any;
+  public newClient: any;
   constructor(public navCtrl: NavController, public navParams: NavParams,  private storage: Storage, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
-    this.simplyBookClient = new SimplyBookClient();
+    // this.simplyBookClient = new SimplyBookClient();
     this.tnc = false;
     this.storage.get('Password').then((val) => {
       this.clientPassword = val;
@@ -52,7 +54,18 @@ export class BookingConfirmationPage {
         this.startDate = this.navParams.get("startDate");
         this.societyId = this.navParams.get('societyId');
         this.facilityTnC = this.navParams.get("facilityTnC");
-        this.loader.dismiss();
+        this.storage.get('clientToken').then((val) => {
+          console.log(val)
+          this.newClient = new JSONRpcClient({
+            'url': 'https://user-api.simplybook.me',
+            'headers': {
+              'X-Company-Login': 'gully',
+              'X-Token': val
+            },
+            'onerror': function (error) {}
+          });
+          this.loader.dismiss();
+        });
       });
     });
     
@@ -95,30 +108,40 @@ export class BookingConfirmationPage {
         buttons:[{
           text: "Yes",
           handler: () => {
-            booking = this.simplyBookClient.client.book(this.facilityId, this.societyId, this.startDate, this.startTime, this.clientData, null , 1);
-            console.log(this.simplyBookClient.client.book(this.facilityId, 1, this.startDate, this.startTime, this.clientData, null , 1));
-            console.log(Object.keys(booking));
-            if(Object.keys(booking)[1] == "bookings"){
-              this.alertCtrl.create({
-                title: "Booking Successful!",
-                buttons: [{
-                  text: "Dismiss",
-                  handler: () => {
-                    this.navCtrl.popToRoot();
-                  }
-              }]
-              }).present();
-            }else{
-              this.alertCtrl.create({
-                title: "Booking Failure!",
-                buttons: [{
-                  text: "Dismiss",
-                  handler: () => {
-                    this.navCtrl.popTo(BfacilityPage);
-                  }
-              }]
-              }).present();
-            }
+            this.storage.get('clientToken').then((val) => {
+              this.newClient = new JSONRpcClient({
+                'url': 'https://user-api.simplybook.me',
+                'headers': {
+                  'X-Company-Login': 'gully',
+                  'X-Token': val
+                },
+                'onerror': function (error) {}
+              });
+              booking = this.newClient.book(this.facilityId, this.societyId, this.startDate, this.startTime, this.clientData, null , 1);
+              // console.log(this.simplyBookClient.client.book(this.facilityId, 1, this.startDate, this.startTime, this.clientData, null , 1));
+              console.log(Object.keys(booking));
+              if(Object.keys(booking)[1] == "bookings"){
+                this.alertCtrl.create({
+                  title: "Booking Successful!",
+                  buttons: [{
+                    text: "Dismiss",
+                    handler: () => {
+                      this.navCtrl.popToRoot();
+                    }
+                }]
+                }).present();
+              }else{
+                this.alertCtrl.create({
+                  title: "Booking Failure!",
+                  buttons: [{
+                    text: "Dismiss",
+                    handler: () => {
+                      this.navCtrl.popTo(BfacilityPage);
+                    }
+                }]
+                }).present();
+              }		
+            });
           }
         },
         {

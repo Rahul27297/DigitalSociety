@@ -35,7 +35,7 @@ export class BookingsPage {
   private BookingsArray: Array<{service_name: string, date: string, first_char: any}>;
   private upcomingBookingsCount: any;
   constructor(public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, private storage: Storage) {
-    this.simplyBookClient = new SimplyBookClient();
+    this.simplyBookClient = new SimplyBookClient(storage);
 
     // this.md5 = new Md5();
     // this.upcomingBookingsFilter = {
