@@ -93,9 +93,9 @@
     <plugin name="cordova-plugin-telerik-imagepicker" spec="2.2.3">
         <variable name="PHOTO_LIBRARY_USAGE_DESCRIPTION" value="Allow photo library usage" />
     </plugin>
-    <engine name="browser" spec="5.0.4" />
-    <engine name="ios" spec="4.5.5" />
-    <engine name="android" spec="7.0.0" />
     <allow-navigation href="http://192.168.43.44:8100" />
     <allow-navigation href="http://192.168.31.183:8100" />
+    <engine name="browser" spec="5.0.4" />
+    <engine name="android" spec="7.0.0" />
+    <engine name="ios" spec="4.5.5" />
 </widget>
