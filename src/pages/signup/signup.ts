@@ -85,7 +85,13 @@ export class SignupPage {
       let clientId = this.client[0].id;
       this.clientObject = this.simplyBookAdmin.admin.getClient(parseInt(clientId));
       console.log(this.clientObject);
-      if(this.userName === this.clientObject.email && this.flatNumber === this.clientObject.address1 && this.oneTimeCode === this.clientObject.address2){
+      //extract last 4 digits of the client phone to compare with OTP
+      let phone = this.clientObject.phone.toString();
+      let last4= phone.substring(phone.length-4,phone.length);
+
+      // compare all the parameters and if matched then allow to set the password
+      if(this.userName === this.clientObject.email && this.flatNumber === this.clientObject.address1 
+        && this.oneTimeCode === last4){
       this.loader.dismiss();
       this.alertCtrl.create({
         title: "OTP verified successfully. Please fill in further entries.",
