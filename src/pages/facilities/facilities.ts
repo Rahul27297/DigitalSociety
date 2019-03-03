@@ -52,19 +52,28 @@ export class FacilitiesPage {
 
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad FacilitiesPage');
+  // ionViewDidLoad() {
+  //   // console.log('ionViewDidLoad FacilitiesPage');
+  //   // this.loading = this.loadingCtrl.create({
+  //   //   content:'Please wait...'
+  //   // });
+  //   // this.loading.present();
+  //   // setTimeout(() => {
+  //   //   this.getEventList();
+  //   //   this.loading.dismiss();   
+  //   // }, 100);
+  // }
+
+  ionViewWillEnter() {
     this.loading = this.loadingCtrl.create({
-      content:'Please wait...'
-    });
-    this.loading.present();
-    setTimeout(() => {
-      this.getEventList();
-      this.loading.dismiss();   
-    }, 100);
+			content: "Please wait..."
+		});
+		this.loading.present();
   }
 
   ionViewDidEnter(){
+    this.getEventList();
+    this.loading.dismiss();
     console.log('ionViewDidLoad FacilitiesPag111e');
     //this.getEventList();
   }
