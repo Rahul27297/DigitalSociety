@@ -14,6 +14,7 @@ import {  Md5 } from 'ts-md5/dist/md5'
  /*
  class to fetch the bookings of the client.
  */
+declare var JSONRpcClient;
 
 @IonicPage()
 @Component({
@@ -21,7 +22,7 @@ import {  Md5 } from 'ts-md5/dist/md5'
   templateUrl: 'bookings.html',
 })
 export class BookingsPage {
-  private simplyBookClient: SimplyBookClient; //simplybook client api has been used
+  // private simplyBookClient: SimplyBookClient; //simplybook client api has been used
   private clientId: any; //used to calculate md5
   private clientHash: any; //used to calculate md5
   private loader:any; //UI loader
@@ -32,10 +33,12 @@ export class BookingsPage {
   private upcomingBookingsFilter: any;
   private pastBookingsFilter: any;
   private eventList: any;
-  private BookingsArray: Array<{service_name: string, date: string, first_char: any}>;
+  private BookingsArray: any;
   private upcomingBookingsCount: any;
+  private newClient: any;
+  private clientEmail: any;
   constructor(public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, private storage: Storage) {
-    this.simplyBookClient = new SimplyBookClient(storage);
+    // this.simplyBookClient = new SimplyBookClient(storage);
 
     // this.md5 = new Md5();
     // this.upcomingBookingsFilter = {
@@ -74,15 +77,15 @@ export class BookingsPage {
     //   }
     // });
 
-    this.storage.get('Info').then((res) => {
-      this.clientId = res.id;
-      console.log(this.simplyBookClient.admin.getBookings({
-        "client_id": "1"
-      }), this.clientId)    
-    })
+    // this.storage.get('Info').then((res) => {
+    //   this.clientId = res.id;
+    //   console.log(this.simplyBookClient.admin.getBookings({
+    //     "client_id": "1"
+    //   }), this.clientId)    
+    // })
   }
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad BookingsPage');
+
+  ionViewWillEnter() {
     this.loader = this.loadingCtrl.create({
       content: "Please wait..."
     });
@@ -90,8 +93,50 @@ export class BookingsPage {
   }
 
   ionViewDidEnter() {
-    console.log('ionViewDidEnter BookingsPage');
+    console.log('ionViewDidLoad BookingsPage');
+    this.storage.get('adminToken').then((val) => {
+			console.log(val)
+			this.newClient = new JSONRpcClient({
+        'url': 'https://user-api.simplybook.me' + '/admin/',
+        'headers': {
+            'X-Company-Login': 'gully',
+            'X-User-Token': val
+        },
+        'onerror': function (error) {}
+    });
+
+    this.storage.get('Info').then((val) => {
+      this.clientEmail = val.email;
+      console.log(this.clientEmail)
+      let currentDateAndTime = new Date();
+      console.log(currentDateAndTime)
+      let dd = currentDateAndTime.getDate();
+      let mm = currentDateAndTime.getMonth()+1;
+      let yyyy = currentDateAndTime.getFullYear();
+      let HH = currentDateAndTime.getHours();
+      let MM = currentDateAndTime.getMinutes();
+      let SS = currentDateAndTime.getSeconds();
+      let BookingsTemp = this.newClient.getBookings({
+        "client_email": this.clientEmail,
+        "date_from": yyyy+"-"+mm+"-"+dd,
+        // "time_from": HH+":"+MM+":"+SS,    // will fetch all bookings after this particular time, even for future dates 
+        "order": "date_start_asc"
+      })
+      this.BookingsArray = BookingsTemp;
+      console.log(dd,mm,yyyy,HH,MM,SS)
+      console.log(this.newClient.getBookings({
+        "client_email": this.clientEmail,
+        "date_from": yyyy+"-"+mm+"-"+dd,
+        // "time_from": HH+":"+MM+":"+SS,    // will fetch all bookings after this particular time, even for future dates 
+        "order": "date_start_asc"
+        })
+      )
+    })
+
     this.loader.dismiss();
+    
+		});
   }
+
 
 }

@@ -108,40 +108,30 @@ export class BookingConfirmationPage {
         buttons:[{
           text: "Yes",
           handler: () => {
-            this.storage.get('clientToken').then((val) => {
-              this.newClient = new JSONRpcClient({
-                'url': 'https://user-api.simplybook.me',
-                'headers': {
-                  'X-Company-Login': 'gully',
-                  'X-Token': val
-                },
-                'onerror': function (error) {}
-              });
-              booking = this.newClient.book(this.facilityId, this.societyId, this.startDate, this.startTime, this.clientData, null , 1);
-              // console.log(this.simplyBookClient.client.book(this.facilityId, 1, this.startDate, this.startTime, this.clientData, null , 1));
-              console.log(Object.keys(booking));
-              if(Object.keys(booking)[1] == "bookings"){
-                this.alertCtrl.create({
-                  title: "Booking Successful!",
-                  buttons: [{
-                    text: "Dismiss",
-                    handler: () => {
-                      this.navCtrl.popToRoot();
-                    }
-                }]
-                }).present();
-              }else{
-                this.alertCtrl.create({
-                  title: "Booking Failure!",
-                  buttons: [{
-                    text: "Dismiss",
-                    handler: () => {
-                      this.navCtrl.popTo(BfacilityPage);
-                    }
-                }]
-                }).present();
-              }		
-            });
+            booking = this.newClient.book(this.facilityId, this.societyId, this.startDate, this.startTime, this.clientData, null , 1);
+            // console.log(this.simplyBookClient.client.book(this.facilityId, 1, this.startDate, this.startTime, this.clientData, null , 1));
+            console.log(Object.keys(booking));
+            if(Object.keys(booking)[1] == "bookings"){
+              this.alertCtrl.create({
+                title: "Booking Successful!",
+                buttons: [{
+                  text: "Dismiss",
+                  handler: () => {
+                    this.navCtrl.popToRoot();
+                  }
+              }]
+              }).present();
+            }else{
+              this.alertCtrl.create({
+                title: "Booking Failure!",
+                buttons: [{
+                  text: "Dismiss",
+                  handler: () => {
+                    this.navCtrl.popTo(BfacilityPage);
+                  }
+              }]
+              }).present();
+            }		
           }
         },
         {
