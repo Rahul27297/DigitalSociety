@@ -36,7 +36,7 @@ export class LoginPage {
       userName: ['', Validators.required],
       password: ['', Validators.required],
     });
-    this.appmodule = new SimplyBookClient();
+    this.appmodule = new SimplyBookClient(storage);
   }
 
   displayLoader() {

@@ -35,7 +35,7 @@ export class FacilitiesPage {
   }
 
   getEventList(){
-    this.simplyBookClient = new SimplyBookClient();
+    // this.simplyBookClient = new SimplyBookClient();
     this.societyId = null;
     this.societyInfo = null;
     this.societyId = this.navParams.get('societyId');
@@ -53,15 +53,15 @@ export class FacilitiesPage {
   }
 
   // ionViewDidLoad() {
-  //   // console.log('ionViewDidLoad FacilitiesPage');
-  //   // this.loading = this.loadingCtrl.create({
-  //   //   content:'Please wait...'
-  //   // });
-  //   // this.loading.present();
-  //   // setTimeout(() => {
-  //   //   this.getEventList();
-  //   //   this.loading.dismiss();   
-  //   // }, 100);
+  //   console.log('ionViewDidLoad FacilitiesPage');
+  //   this.loading = this.loadingCtrl.create({
+  //     content:'Please wait...'
+  //   });
+  //   this.loading.present();
+  //   setTimeout(() => {
+  //     this.getEventList();
+  //     this.loading.dismiss();   
+  //   }, 100);
   // }
 
   ionViewWillEnter() {

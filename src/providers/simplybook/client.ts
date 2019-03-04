@@ -1,4 +1,6 @@
 import { Injectable } from "@angular/core";
+import { Storage } from '@ionic/storage';
+
 
 declare var JSONRpcClient;
 
@@ -7,7 +9,7 @@ export class SimplyBookClient{
     public loginClient:any;
     public client:any;
     public admin: any;
-    constructor(){
+    constructor(public storage: Storage){
          this.loginClient = new JSONRpcClient({
             'url': 'https://user-api.simplybook.me' + '/login',
             'onerror': function (error) {},
@@ -21,9 +23,10 @@ export class SimplyBookClient{
             },
             'onerror': function (error) {}
         });
-
+        storage.set("clientToken", clienttoken)
         let token = this.loginClient.getUserToken('gully', 'admin' ,'digisoc123');
         console.log(token);
+        storage.set("adminToken", token)
         this.admin = new JSONRpcClient({
             'url': 'https://user-api.simplybook.me' + '/admin/',
             'headers': {

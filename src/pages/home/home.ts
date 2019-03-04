@@ -7,6 +7,8 @@ import { LoadingController } from 'ionic-angular';
 import { NewcomplaintPage } from '../newcomplaint/newcomplaint';
 import { Storage } from '@ionic/storage';
 import * as firebase from 'firebase';
+import { SimplyBookClient } from '../../providers/simplybook/client';
+
 /**
  * Generated class for the HomePage page.
  *
@@ -31,7 +33,7 @@ export class HomePage {
   private hasNotices: boolean;
   private hasComplaints: boolean;
   private societyName: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams, private http: Http, private loadingCtrl: LoadingController, private storage: Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private http: Http, private loadingCtrl: LoadingController, private storage: Storage, private simplyBookClient: SimplyBookClient) {
     this.societyId = this.navParams.get('societyId');
     this.societyInfo = this.navParams.get('societyInfo');
     this.societyName = this.societyInfo.display_name;

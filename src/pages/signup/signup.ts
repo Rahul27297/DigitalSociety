@@ -139,7 +139,7 @@ export class SignupPage {
   }
 
   ionViewDidEnter(){
-    this.simplyBookAdmin = new SimplyBookClient();
+    this.simplyBookAdmin = new SimplyBookClient(this.storage);
     this.loader.dismiss();
   }
 

@@ -10,27 +10,30 @@
       <button ion-button menuToggle>
           <ion-icon name="menu"></ion-icon>
       </button>
-    <ion-title>Bookings</ion-title>
+    <ion-title>Upcoming Bookings</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content>
-  <ion-grid>
-    <ion-row *ngFor="let item of BookingsArray">
-      <ion-col col-2 >
-        <div class="facilityname-circle" text-center>
-          <ion-label>
-           {{item.first_char}}
-          </ion-label>
-        </div>
-      </ion-col>
-      <ion-col col-10 class="bookingtext">
-        <ion-row class="bookingfacility-name">{{item.service_name}}</ion-row>
-        <ion-row class="bookingfacility-date">{{item.date}}</ion-row>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+    <ion-list style="margin-top: 16px;">
+      <ion-grid *ngFor="let booking of BookingsArray"  style="padding-top: 8px;margin-bottom: 8px; border-bottom: 1px solid #ccc">
+      <ion-row style="margin-left: 16px;">
+        <ion-col col-2 class="notice-icon">
+            <ion-icon class="notice-icon-inner" ios="ios-paper-outline" md="md-paper"></ion-icon>
+        </ion-col>
+        <ion-col col-10 style="padding-left: 16px;">
+          <ion-row>
+                <ion-label class="noticeSubjectText">{{booking.event}}</ion-label>
+          </ion-row>
+          <ion-row>
+              <ion-label class="noticedate-text">{{booking.start_date}}</ion-label>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+      
+    </ion-list>
 
 </ion-content>

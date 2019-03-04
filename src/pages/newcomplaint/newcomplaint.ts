@@ -39,6 +39,8 @@ export class NewcomplaintPage {
   private societyInfo: any;
   private loader: any;
   private hasAttachment: boolean;
+  private clientFlatNo: any;
+  private societyDisplayName: any;
   constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public loadingCtrl: LoadingController, public toastCtrl: ToastController, private formBuilder: FormBuilder, private actionSheetCtrl: ActionSheetController, private http: Http, private storage: Storage, private alertCtrl: AlertController, private httpClient: HttpClient) {
     this.complaintKey = firebase.database().ref("complaints").push().key
     this.http = http;
@@ -53,7 +55,9 @@ export class NewcomplaintPage {
     this.storage.get('Info').then((val) => {
       this.clientEmail = val.email;
       this.clientName = val.name;
+      this.clientFlatNo = val.address1;
     });
+    this.societyDisplayName = this.societyInfo.display_name;
     this.firebaseComplaintStorageRed = firebase.storage().ref();
   }
   presentActionSheet() {
@@ -146,6 +150,7 @@ export class NewcomplaintPage {
   }
 
   registerComplaint() {
+    console.log(this.clientFlatNo)
     this.loader = this.loadingCtrl.create({
       content: "Please Wait..."
     });
@@ -203,7 +208,7 @@ export class NewcomplaintPage {
       })
     };
     console.log(this.societyId, typeof(this.societyId))
-    console.log(this)
+    console.log(this.societyDisplayName)
     this.httpClient.post("https://gentle-savannah-47625.herokuapp.com/complaints/send",
     {
      "attachment_url": "/complaints/" + this.societyId + "/" + this.complaintKey,
@@ -217,7 +222,9 @@ export class NewcomplaintPage {
       "location": this.complaintLocation,
       "society_id": this.societyId,
       "time": new Date(),
-      "admin_email_ids": this.societyInfo.admin_email_ids
+      "admin_email_ids": this.societyInfo.admin_email_ids,
+      "client_flat_no": this.clientFlatNo,
+      "society_display_name": this.societyDisplayName
     },
     httpOptions     // Headers
     )

@@ -11,6 +11,7 @@ import { Storage } from '@ionic/storage';
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
+declare var JSONRpcClient;
 
 @IonicPage()
 @Component({
@@ -31,6 +32,7 @@ export class BfacilityPage {
 	private areSlotsAvailable: any;
 	private societyId: any;
 	private isValidDateAndTimeSelected: boolean;
+	public newClient: any;
 	constructor(private navController:NavController, private navParams:NavParams, private loadingCtrl: LoadingController, private storage: Storage) {
 		this.societyId = navParams.get('societyId');
 		this.calendar = new CalendarPage();
@@ -45,23 +47,26 @@ export class BfacilityPage {
 	}
 	
 	setup(){
-		this.simplyBookClient = new SimplyBookClient();
+		// this.storage.get('clientToken').then((val) => {
+		// 	console.log(val)
+	
+			let slots = this.newClient.getStartTimeMatrix(this.todayDate,this.todayDate,this.facility.service_id_in_simplybook,this.societyId,1);
+			console.log(slots);
+			this.slotsArray = Object.getOwnPropertyDescriptor(slots,Object.keys(slots)[0]).value;
+			console.log(this.slotsArray);
+			
+			if(this.slotsArray.length == 0){
+				console.log("here", this.slotsArray.length)
+				this.areSlotsAvailable = false;		
+			}
+			else {
+				console.log("here", this.slotsArray.length)
+				this.areSlotsAvailable = true;
+			}
+			this.calendar.selectedDate = this.currentDate;
+			this.selectedSlotTime = false;
+
 		//this.currentDate = this.simplyBookClient.client.getFirstWorkingDay();
-		let slots = this.simplyBookClient.client.getStartTimeMatrix(this.todayDate,this.todayDate,this.facility.service_id_in_simplybook,this.societyId,1);
-		console.log(slots);
-		this.slotsArray = Object.getOwnPropertyDescriptor(slots,Object.keys(slots)[0]).value;
-		console.log(this.slotsArray);
-		
-		if(this.slotsArray.length == 0){
-			console.log("here", this.slotsArray.length)
-			this.areSlotsAvailable = false;		
-			this.isValidDateAndTimeSelected = false;	
-		}
-		else {
-			console.log("here", this.slotsArray.length)
-			this.areSlotsAvailable = true;
-		}
-		this.calendar.selectedDate = this.currentDate;	
 
 	}
 
@@ -71,11 +76,24 @@ export class BfacilityPage {
 			content: "Please wait..."
 		});
 		this.loader.present();
+
 	}
 
 	ionViewDidEnter(){
-		this.setup();
-		this.loader.dismiss();
+		this.storage.get('clientToken').then((val) => {
+			console.log(val)
+			this.newClient = new JSONRpcClient({
+				'url': 'https://user-api.simplybook.me',
+				'headers': {
+					'X-Company-Login': 'gully',
+					'X-Token': val
+				},
+				'onerror': function (error) {}
+			});
+			this.loader.dismiss();
+			this.setup();
+		});
+
 	}
 
 
@@ -110,8 +128,8 @@ export class BfacilityPage {
 
 	dateSelected(day,month,year){
 		this.loader = this.loadingCtrl.create({
-      content: "Please Wait..."
-    });
+			content: "Please Wait..."
+		});
 		this.loader.present();
 		console.log(day)
 		if(this.calendar.goToPreviousMonthFlag || this.currentDate <= day ){
@@ -126,7 +144,7 @@ export class BfacilityPage {
 			}
 			console.log(this.calendar.selectedDate,day+month+year);
 			let date = new Date(this.calendar.date.getFullYear(),this.calendar.date.getMonth(),day);
-			let slots = this.simplyBookClient.client.getStartTimeMatrix(date,date,this.facility.id,this.societyId,1);
+			let slots = this.newClient.getStartTimeMatrix(date,date,this.facility.id,this.societyId,1);
 			console.log(slots);
 			this.loader.dismiss();
 			this.slotsArray = Object.getOwnPropertyDescriptor(slots,Object.keys(slots)[0]).value;
@@ -136,9 +154,8 @@ export class BfacilityPage {
 			}
 			else {
 				console.log("here", this.slotsArray.length)
-	
 				this.areSlotsAvailable = true;
-			}
+			}				
 		}
 		this.selectedSlotTime = false;
 		this.isValidDateAndTimeSelected = false;
