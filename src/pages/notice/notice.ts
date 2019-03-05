@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Alert } from 'ionic-angular';
 import { Http } from '@angular/http';
 import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer';
 import { File } from '@ionic-native/file';
-import { ToastController } from 'ionic-angular';
+import { ToastController, AlertController, LoadingController } from 'ionic-angular';
 import * as firebase from 'firebase';
 import 'rxjs/add/operator/map';
 /**
@@ -25,14 +25,19 @@ export class NoticePage {
   private description: any;
   private date: any;
   private attachment: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public http: Http,private file: File, private transfer: FileTransfer, private toastCtrl: ToastController) {
+  private hasAttachment: boolean;
+  private downloadLoader: any;
+  constructor(public navCtrl: NavController, public navParams: NavParams, public http: Http,private file: File, private transfer: FileTransfer, private toastCtrl: ToastController, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
     this.notice = this.navParams.get('notice');
     console.log(this.notice);
       this.subject = this.notice.notice_title;
-      this.date = this.notice.date + " " + this.notice.time;
+      this.date = this.notice.date;
       this.description = this.notice.notice_description;
       this.attachment = this.notice.notice_url;
-    
+      this.hasAttachment = this.notice.has_attachment;
+      this.downloadLoader = this.loadingCtrl.create({
+        content: "Downloading attachment"
+      });
   }
 
   ionViewDidLoad() {
@@ -54,19 +59,41 @@ export class NoticePage {
 
     });
     */
+    this.alertCtrl.create({
+      subTitle: "Do you want to download attachment for this notice?",
+      buttons: [
+        {
+          text: "Yes",
+          handler: () => {
+            this.downloadLoader.present();
+            firebase.storage().ref(this.attachment).getDownloadURL().then((url) => {
+              const fileTransfer: FileTransferObject = this.transfer.create();
+              fileTransfer.download(url,this.file.externalRootDirectory + '/Download/'+ "Notice" + this.notice.searchid+".pdf").then((entry) => {
+                console.log('download complete: ' + entry.toURL());
+                this.downloadLoader.dismiss();
+                this.alertCtrl.create({
+                  title: "Download successful!",
+                  buttons: [
+                    {
+                      text: "Dismiss",
+                      role: "Dismiss"
+                    }
+                  ]
+                }).present();
+              }, (error) => {
+                console.log("error");
+              });
+             });
+          }
+        },
+        {
+          text: "No",
+          role: "cancel"
+        }
+      ]
+    }).present();
 
-   firebase.storage().ref(this.attachment).getDownloadURL().then((url) => {
-    const fileTransfer: FileTransferObject = this.transfer.create();
-    fileTransfer.download(url,this.file.externalRootDirectory + '/Download/'+ "Notice" + this.notice.searchid+".pdf").then((entry) => {
-      console.log('download complete: ' + entry.toURL());
-      this.toastCtrl.create({
-        message: "Download Successful",
-        duration: 2000
-      }).present();
-    }, (error) => {
-      console.log("error");
-    });
-   });
+   
   }
 
 }

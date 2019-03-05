@@ -27,6 +27,7 @@
   <div [ngSwitch]="noticesTab">
 
     <ion-list *ngSwitchCase="'recentNotices'" style="margin-top: 16px;">
+      <div *ngIf="recentNoticesLength !== 0; else emptyListsDisplay">
       <ion-grid *ngFor="let item of recentNotices"  (tap)="getNotice(item,'recent')" style="padding-top: 8px;margin-bottom: 8px; border-bottom: 1px solid #ccc">
       <ion-row>
         <ion-col col-2 class="notice-icon">
@@ -42,10 +43,11 @@
     </ion-col>
       </ion-row>
     </ion-grid>
-      
+  </div>
     </ion-list>
-
+    
     <ion-list *ngSwitchCase="'archivedNotices'" style="margin-top: 16px;">
+        <div *ngIf="archivedNoticesLength !== 0; else emptyListsDisplay">
       <ion-grid *ngFor="let item of archivedNotices"  (tap)="getNotice(item,'recent')" style="padding-top: 8px;margin-bottom: 8px; border-bottom: 1px solid #ccc">
       <ion-row>
         <ion-col col-2 class="notice-icon">
@@ -61,8 +63,13 @@
     </ion-col>
       </ion-row>
     </ion-grid>
-      
+  </div>
     </ion-list>
 
   </div>
+
+  <ng-template #emptyListsDisplay>
+      <ion-label style="color: red; font-size: 18px;">There are no notices in this section</ion-label>
+    </ng-template>
+
 </ion-content>

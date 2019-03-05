@@ -20,6 +20,8 @@ import * as firebase from 'firebase';
 })
 export class NoticesPage {
   public recentNotices: any;
+  public recentNoticesLength: any = 0;
+  public archivedNoticesLength : any = 0;
   public archivedNotices: any;
   public noticesArray: Array<{ subject: any, date: any, content: any, searchid: any }>;
   public noticesArchivedArray: Array<{ subject: any, date: any, searchid: any }>;
@@ -55,7 +57,8 @@ export class NoticesPage {
             date: childSnapshot.val().date + " " + childSnapshot.val().time,
             notice_description: childSnapshot.val().notice_description,
             notice_url: childSnapshot.val().notice_url,
-            searchid: childSnapshot.key
+            searchid: childSnapshot.key,
+            has_attachment: childSnapshot.val().has_attachment
           });
         }
         else if(childSnapshot.val().epoch_time < epoch_recent && childSnapshot.val().epoch_time > epoch_archived) {
@@ -64,11 +67,14 @@ export class NoticesPage {
             date: childSnapshot.val().date + " " + childSnapshot.val().time,
             notice_description: childSnapshot.val().notice_description,
             notice_url: childSnapshot.val().notice_url,
-            searchid: childSnapshot.key
+            searchid: childSnapshot.key,
+            has_attachment: childSnapshot.val().has_attachment
           });
         }
       });
-      console.log(this.archivedNotices);
+      this.recentNoticesLength = this.recentNotices.length;
+      this.archivedNoticesLength = this.archivedNotices.length;
+      console.log(this.archivedNoticesLength);
     });
 
     /*let url = "https://upgraded-server.herokuapp.com/getNoticesBySocietyId?society_id=" + this.societyId;
