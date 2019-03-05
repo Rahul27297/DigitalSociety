@@ -18,17 +18,17 @@
 
 <ion-content>
     <ion-list style="margin-top: 16px;">
-      <ion-grid *ngFor="let booking of BookingsArray"  style="padding-top: 8px;margin-bottom: 8px; border-bottom: 1px solid #ccc">
+      <ion-grid *ngFor="let facilityName of facilityNames"  style="padding-top: 8px;margin-bottom: 8px; border-bottom: 1px solid #ccc">
       <ion-row style="margin-left: 16px;">
         <ion-col col-2 class="notice-icon">
             <ion-icon class="notice-icon-inner" ios="ios-paper-outline" md="md-paper"></ion-icon>
         </ion-col>
         <ion-col col-10 style="padding-left: 16px;">
           <ion-row>
-                <ion-label class="noticeSubjectText">{{booking.event}}</ion-label>
+                <ion-label class="noticeSubjectText">{{facilityName.nameAfterRemovingSocietyId}}</ion-label>
           </ion-row>
           <ion-row>
-              <ion-label class="noticedate-text">{{booking.start_date}}</ion-label>
+              <ion-label class="noticedate-text">{{facilityName.eventDateAndTime}}</ion-label>
           </ion-row>
         </ion-col>
       </ion-row>
