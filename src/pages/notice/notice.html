@@ -19,12 +19,12 @@
     <ion-row class="date">
       <ion-col col-10 style="padding: 0px;">
       <ion-label style="text-align: left">
-        <ion-icon name="calendar" class="selectednoticedate-icon"></ion-icon>{{date}}
+        <ion-icon md="md-calendar" ios="ios-calendar-outline" class="selectednoticedate-icon"></ion-icon>{{date}}
       </ion-label>
     </ion-col>
-    <ion-col class="noticedownload-icon">
+    <ion-col *ngIf="hasAttachment" class="noticedownload-icon">
         <button ion-button outline class="noticedownload-button" (tap)="downloadAttachment()">
-            <ion-icon name="download"></ion-icon></button>
+            <ion-icon ios="ios-download-outline" md="md-download" style="font-size: 30px;font-weight: 700"></ion-icon></button>
     </ion-col>
     </ion-row>
 
