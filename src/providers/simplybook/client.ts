@@ -5,7 +5,7 @@ import { Storage } from '@ionic/storage';
 declare var JSONRpcClient;
 
 @Injectable()
-export class SimplyBookClient{
+export class SimplyBookClient {
     public loginClient:any;
     public client:any;
     public admin: any;
@@ -23,6 +23,8 @@ export class SimplyBookClient{
             },
             'onerror': function (error) {}
         });
+        console.log(this.client.getEventList());
+        console.log(this.client.getUnitList());
         storage.set("clientToken", clienttoken)
         let token = this.loginClient.getUserToken('gully', 'admin' ,'digisoc123');
         console.log(token);

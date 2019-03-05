@@ -49,8 +49,8 @@ export class BfacilityPage {
 	setup(){
 		// this.storage.get('clientToken').then((val) => {
 		// 	console.log(val)
-	
-			let slots = this.newClient.getStartTimeMatrix(this.todayDate,this.todayDate,this.facility.service_id_in_simplybook,this.societyId,1);
+			console.log(this.facility)
+			let slots = this.newClient.getStartTimeMatrix(this.todayDate,this.todayDate,this.facility.service_id_in_simplybook,this.facility.service_provider_id_in_simplybook,1);
 			console.log(slots);
 			this.slotsArray = Object.getOwnPropertyDescriptor(slots,Object.keys(slots)[0]).value;
 			console.log(this.slotsArray);
@@ -118,6 +118,7 @@ export class BfacilityPage {
 		console.log("booking date" + date);
 		this.navController.push(BookingConfirmationPage, {
 			facilityId: this.facility.service_id_in_simplybook,
+			serviceProviderIdInSimplybook: this.facility.service_provider_id_in_simplybook,
 			facilityName: this.facility.display_name,
 			startDate: date,
 			startTime: this.selectedSlotTime,
@@ -144,7 +145,8 @@ export class BfacilityPage {
 			}
 			console.log(this.calendar.selectedDate,day+month+year);
 			let date = new Date(this.calendar.date.getFullYear(),this.calendar.date.getMonth(),day);
-			let slots = this.newClient.getStartTimeMatrix(date,date,this.facility.id,this.societyId,1);
+			console.log(this.facility)
+			let slots = this.newClient.getStartTimeMatrix(date,date,this.facility.service_id_in_simplybook,this.facility.service_provider_id_in_simplybook,1);
 			console.log(slots);
 			this.loader.dismiss();
 			this.slotsArray = Object.getOwnPropertyDescriptor(slots,Object.keys(slots)[0]).value;

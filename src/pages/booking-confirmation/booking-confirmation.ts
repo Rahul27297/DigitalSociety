@@ -34,6 +34,7 @@ export class BookingConfirmationPage {
   private clientPassword: any;
   private societyId: any;
   private loader: any;
+  private serviceProviderIdInSimplybook: any;
   public newClient: any;
   constructor(public navCtrl: NavController, public navParams: NavParams,  private storage: Storage, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
     // this.simplyBookClient = new SimplyBookClient();
@@ -49,11 +50,13 @@ export class BookingConfirmationPage {
           client_password: this.clientPassword
         };
         this.facilityId = this.navParams.get("facilityId");
+        this.serviceProviderIdInSimplybook = this.navParams.get("serviceProviderIdInSimplybook");
         this.facilityName = this.navParams.get("facilityName");
         this.startTime = this.navParams.get("startTime");
         this.startDate = this.navParams.get("startDate");
         this.societyId = this.navParams.get('societyId');
         this.facilityTnC = this.navParams.get("facilityTnC");
+        console.log(this.facilityId, this.serviceProviderIdInSimplybook)
         this.storage.get('clientToken').then((val) => {
           console.log(val)
           this.newClient = new JSONRpcClient({
@@ -108,9 +111,8 @@ export class BookingConfirmationPage {
         buttons:[{
           text: "Yes",
           handler: () => {
-            booking = this.newClient.book(this.facilityId, this.societyId, this.startDate, this.startTime, this.clientData, null , 1);
+            booking = this.newClient.book(this.facilityId, this.serviceProviderIdInSimplybook, this.startDate, this.startTime, this.clientData, null , 1);
             // console.log(this.simplyBookClient.client.book(this.facilityId, 1, this.startDate, this.startTime, this.clientData, null , 1));
-            console.log(Object.keys(booking));
             if(Object.keys(booking)[1] == "bookings"){
               this.alertCtrl.create({
                 title: "Booking Successful!",
