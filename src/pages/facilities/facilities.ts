@@ -42,6 +42,7 @@ export class FacilitiesPage {
     this.societyInfo = this.navParams.get('societyInfo');
     console.log(this.societyId);
     console.log(this.societyInfo);
+    console.log(this.societyInfo.facilities.list)
     this.facilitiesArray = [];
     for (let i = 0; i < this.societyInfo.facilities.list.length; i=i+1) {
       if (this.societyInfo.facilities.list[i] != null) {
