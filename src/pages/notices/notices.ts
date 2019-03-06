@@ -52,7 +52,7 @@ export class NoticesPage {
       this.archivedNotices = [];
       snapshot.forEach((childSnapshot) => {
         if(childSnapshot.val().epoch_time > epoch_recent) {
-          this.recentNotices.push({
+          this.recentNotices.unshift({
             notice_title: childSnapshot.val().notice_title,
             date: childSnapshot.val().date + " " + childSnapshot.val().time,
             notice_description: childSnapshot.val().notice_description,
@@ -62,7 +62,7 @@ export class NoticesPage {
           });
         }
         else if(childSnapshot.val().epoch_time < epoch_recent && childSnapshot.val().epoch_time > epoch_archived) {
-          this.archivedNotices.push({
+          this.archivedNotices.unshift({
             notice_title: childSnapshot.val().notice_title,
             date: childSnapshot.val().date + " " + childSnapshot.val().time,
             notice_description: childSnapshot.val().notice_description,
@@ -122,6 +122,7 @@ export class NoticesPage {
   }
 
   ionViewDidEnter() {
+    console.log("Enter");
   }
 
   getNotice(notice, type) {

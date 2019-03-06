@@ -59,6 +59,7 @@ export class NewcomplaintPage {
     });
     this.societyDisplayName = this.societyInfo.display_name;
     this.firebaseComplaintStorageRed = firebase.storage().ref();
+    
   }
   presentActionSheet() {
     const actionSheet = this.actionSheetCtrl.create({
@@ -90,6 +91,10 @@ export class NewcomplaintPage {
 
   getImage(imageSource: string) {
     let sourceType: any;
+    this.loader = this.loadingCtrl.create({
+      content: "Please wait..."
+    });
+    this.loader.present();
     if(imageSource === "Camera"){
       sourceType = this.camera.PictureSourceType.CAMERA;
     }
@@ -107,10 +112,6 @@ export class NewcomplaintPage {
     }
 
     this.camera.getPicture(options).then((imageData) => {
-      this.loader = this.loadingCtrl.create({
-        content: "Please wait..."
-      });
-      this.loader.present();
       this.selectedPhoto = this.dataURItoBlob('data:image/jpeg;base64,' + imageData);
       this.upload();
     }, (err) => {
