@@ -43,12 +43,14 @@
 #x {
     position: relative;
     float: right;   
-    background:	#86888A;
-	color: white;
-    top: -10px;
-    right: -10px;
-    width: 20px;
-    height: 20px;
-    border-radius: 100%;
+    font-size: 24px;
+}
+
+.platform-mobile textarea.text-input {
+    min-height: 150px;
+}
+
+.item-radio.item-md ion-label{
+    padding-left: 16px;
 }
 

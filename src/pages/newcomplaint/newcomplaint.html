@@ -26,24 +26,21 @@
           </ion-select>
     </ion-item>
     <ion-item class="complaints-item">
-      <ion-label class="complaints-label complaintLocation">Location</ion-label>
-      <ion-input type="text" formControlName="complaintLocation"></ion-input>
+      <ion-input type="text" formControlName="complaintLocation" placeholder="Location" class="form-input-field"></ion-input>
     </ion-item>
     <ion-item class="complaints-item" >
-      <ion-label class="complaints-label complaintDescription">Description</ion-label>
-      <ion-textarea class="complaintDescriptionTextArea" formControlName="complaintDescription" ></ion-textarea>
+      <ion-textarea class="complaintDescriptionTextArea" placeholder="Description" formControlName="complaintDescription" class="form-input-field"></ion-textarea>
     </ion-item>
     <div id="complaint-image" class="complaints-item" *ngIf="imageObtained != false">
-      <ion-label style="font-size: 18px">Image Preview</ion-label>
-      <button id = "x" (tap)="removeImage()">X</button>
-      <img [src]="this.imageURI" style = "min-height:30%px; min-width:100%"/>
+      <ion-label style="font-size: 16px">Image Preview<ion-icon name="close-circle" id = "x" (tap)="removeImage()"></ion-icon></ion-label>
+      <img [src]="this.imageURI" style = "min-height:20%; max-height: 25%; min-width:100%"/>
     </div>
     <div text-center *ngIf="imageObtained === false">
-      <button ion-button icon-end block class="btn" (tap)=presentActionSheet() style="margin-top: 17px;">Upload Image</button>
+      <button ion-button icon-end block class="btn" (tap)=presentActionSheet() style="margin-top: 17px;" clear>Upload Image (optional)</button>
 
     </div>
     <div text-center>
-      <button ion-button icon-end block class="btn" [disabled]="!complaintForm.valid" type="submit" (tap)=registerComplaint() style="margin-top: 17px;">Register Complaint</button>
+      <button ion-button icon-end block class="btn" [disabled]="!complaintForm.valid" type="submit" (tap)=registerComplaint() style="margin-top: 17px;" clear>Register Complaint</button>
 
     </div>
   </form>

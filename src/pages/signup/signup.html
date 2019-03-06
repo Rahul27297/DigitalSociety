@@ -20,7 +20,7 @@
         <ng-template #disabledoneTimeCode><ion-input type="text" disabled value = "{{oneTimeCode}}" class="form-input-field input-top-margin"></ion-input></ng-template>
       </ion-item>
       <div text-center *ngIf="visibility == 'none'; else showotherfields">
-        <button ion-button block large class="btn" style="margin-top: 24px; " type="submit" [disabled]="!login.valid" (tap)="displayLoader('otp')">Verify OTP</button>
+        <button ion-button block large clear class="btn" style="margin-top: 24px; " type="submit" [disabled]="!login.valid" (tap)="displayLoader('otp')">Verify OTP</button>
       </div>
       <ng-template #showotherfields>
         <ion-item>
@@ -30,11 +30,11 @@
           <ion-input type="password" placeholder="Re-Type Password" class="form-input-field input-top-margin" formControlName="rePassword"></ion-input>
         </ion-item>
         <div text-center class="submitBtn">
-          <button ion-button block large class="btn" style="margin-top: 24px; " type="submit" [disabled]="!login.valid" (tap)='displayLoader("full")'>Submit</button>
+          <button ion-button block large clear class="btn" style="margin-top: 24px; " type="submit" [disabled]="!login.valid" (tap)='displayLoader("full")'>Submit</button>
         </div>
       </ng-template>
     </form>
-    <button ion-button block large class="btn" style="margin-top: 24px;" (tap)=loadLoginPage()>Already a User? Login</button>
+    <button ion-button block large clear class="btn" style="margin-top: 24px;" (tap)=loadLoginPage()>Already a User? Login</button>
     </div>
     
 </ion-content>

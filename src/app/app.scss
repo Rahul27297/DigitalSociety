@@ -48,12 +48,21 @@ ion-content{
   font-size: 48px;
 }
 
+.toolbar-title-md{
+  color: white;
+}
+
+.bar-button-default-md{
+  color: white;
+}
+
 .toolbar-background-ios{
   background: color($colors, primary);
 }
 
 .bar-button-default-ios{
   color: whitesmoke;
+  padding-left: 16px;
 }
 
 .toolbar-background-md{
@@ -103,7 +112,7 @@ hr{
 .btn{
   background-color: color($colors, primary);
   color: white;
-  font-size: 15px;
+  font-size: 16px;
   border-radius: 8px;
 }
 
@@ -120,7 +129,7 @@ ion-item{
 }
 
 .form-input-field{
-  font-size: 15px;
+  font-size: 16px;
 }
 
 
