@@ -137,10 +137,7 @@ export class MyApp {
       this.nav.push(BookingsPage);
     }
     else if (page.title === "Profile"){//navigate to profile page
-      this.nav.push(ProfilePage, {
-        societyName: this.societyName,
-        address: this.societyInfo.address
-      });
+      this.nav.push(ProfilePage);
     }
   }
 
