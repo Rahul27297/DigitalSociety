@@ -82,7 +82,8 @@ export class LoginPage {
             }).present();
             this.storage.set('Info', this.clientinfo);
               this.navCtrl.setRoot(HomePage, {
-                societyInfo: this.societyInfo
+                societyInfo: this.societyInfo,
+                societyId: this.societyId
               });
         });
       });
