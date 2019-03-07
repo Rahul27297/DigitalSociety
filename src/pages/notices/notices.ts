@@ -29,8 +29,23 @@ export class NoticesPage {
   private loader: any;
   noticesTab: string = "recentNotices";
   private societyId: any;
+  private monthMap : any = {
+    "1": "Jan",
+    "2": "Feb",
+    "3": "Mar",
+    "4": "April",
+    "5": "May",
+    "6": "June",
+    "7": "July",
+    "8": "Aug",
+    "9": "Sep",
+    "10": "Oct",
+    "11": "Nov",
+    "12": "Dec"
+  }
   constructor(public navCtrl: NavController, public navParams: NavParams, private http: Http, private loadingCtrl: LoadingController, private storage: Storage) {
     this.societyId = navParams.get('societyId').toString();
+    console.log(this.monthMap)
   }
 
   setup() {
@@ -50,11 +65,20 @@ export class NoticesPage {
     firebase.database().ref('notices').orderByChild('society_id').equalTo(this.societyId).on('value', (snapshot) => {
       this.recentNotices = [];
       this.archivedNotices = [];
+
       snapshot.forEach((childSnapshot) => {
+        let d = new Date(0);
+        d.setUTCSeconds(childSnapshot.val().epoch_time)
+        let month = this.monthMap[d.getMonth()+1];
+        let date = d.getDate();
+        let year = d.getFullYear();
+        let hh = d.getHours();
+        let mm = d.getMinutes();
+        console.log(childSnapshot.val(),d)
         if(childSnapshot.val().epoch_time > epoch_recent) {
           this.recentNotices.unshift({
             notice_title: childSnapshot.val().notice_title,
-            date: childSnapshot.val().date + " " + childSnapshot.val().time,
+            date: month + " " + date + ", " + year + " " + hh + ":" + mm,
             notice_description: childSnapshot.val().notice_description,
             notice_url: childSnapshot.val().notice_url,
             searchid: childSnapshot.key,
@@ -64,7 +88,7 @@ export class NoticesPage {
         else if(childSnapshot.val().epoch_time < epoch_recent && childSnapshot.val().epoch_time > epoch_archived) {
           this.archivedNotices.unshift({
             notice_title: childSnapshot.val().notice_title,
-            date: childSnapshot.val().date + " " + childSnapshot.val().time,
+            date: month + " " + date + ", " + year + " " + hh + ":" + mm,
             notice_description: childSnapshot.val().notice_description,
             notice_url: childSnapshot.val().notice_url,
             searchid: childSnapshot.key,
