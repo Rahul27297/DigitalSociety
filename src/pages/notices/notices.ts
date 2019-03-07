@@ -20,8 +20,8 @@ import * as firebase from 'firebase';
 })
 export class NoticesPage {
   public recentNotices: any;
-  public recentNoticesLength: any = 0;
-  public archivedNoticesLength : any = 0;
+  public recentNoticesLength: any = -1;
+  public archivedNoticesLength : any = -1;
   public archivedNotices: any;
   public noticesArray: Array<{ subject: any, date: any, content: any, searchid: any }>;
   public noticesArchivedArray: Array<{ subject: any, date: any, searchid: any }>;

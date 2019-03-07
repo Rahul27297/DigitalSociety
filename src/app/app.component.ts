@@ -65,20 +65,7 @@ export class MyApp {
       { title: 'Profile', component: ProfilePage, icon_name: "person" },
       { title: 'Logout', component: LogoutPage, icon_name: "log-out" }
     ];
-    this.logoutAlert = this.alertCtrl.create({
-      title: "Logout",
-      subTitle: "Are you sure you want to logout?",
-      buttons: [{
-        text: "Yes",
-        handler: () => {
-          this.displayLoader();
-        }
-      },
-      {
-        text: "No",
-        role: "cancel"
-      }]
-    });
+    
   }
 
   checkInstall() {
@@ -94,6 +81,7 @@ export class MyApp {
   checkLogin() {
     this.storage.get('Info').then((val) => {
       if (val == null) {
+        this.splashScreen.hide();
         this.rootPage = LoginPage;
       } else {
         this.storage.get("societyId").then((val) => {
@@ -104,6 +92,7 @@ export class MyApp {
             this.societyInfo = Object.getOwnPropertyDescriptor(societysnapshot.val(),tempKey).value;
             console.log(this.societyInfo);
             this.societyName = this.societyInfo.display_name;
+            this.splashScreen.hide();
             this.nav.push(HomePage, {
               societyInfo: this.societyInfo,
               societyId: this.societyId
@@ -128,7 +117,7 @@ export class MyApp {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
-      this.splashScreen.hide();
+      
     });
   }
 
@@ -179,6 +168,20 @@ export class MyApp {
   }
 
   logout() {
+    this.logoutAlert = this.alertCtrl.create({
+      title: "Logout",
+      subTitle: "Are you sure you want to logout?",
+      buttons: [{
+        text: "Yes",
+        handler: () => {
+          this.displayLoader();
+        }
+      },
+      {
+        text: "No",
+        role: "cancel"
+      }]
+    });
     this.logoutAlert.present();
   }
 }
