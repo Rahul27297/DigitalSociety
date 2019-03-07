@@ -131,9 +131,9 @@ export class BfacilityPage {
 		this.loader = this.loadingCtrl.create({
 			content: "Please Wait..."
 		});
-		this.loader.present();
 		console.log(day)
 		if(this.calendar.goToPreviousMonthFlag || this.currentDate <= day ){
+			this.loader.present();
 			if(this.calendar.goToNextMonthFlag && day < this.currentDate){
 				console.log("here 2")
 				this.calendar.selectedDate = this.currentDate;	
@@ -148,7 +148,6 @@ export class BfacilityPage {
 			console.log(this.facility)
 			let slots = this.newClient.getStartTimeMatrix(date,date,this.facility.service_id_in_simplybook,this.facility.service_provider_id_in_simplybook,1);
 			console.log(slots);
-			this.loader.dismiss();
 			this.slotsArray = Object.getOwnPropertyDescriptor(slots,Object.keys(slots)[0]).value;
 			if(this.slotsArray.length == 0){
 				console.log("here", this.slotsArray.length)
@@ -157,7 +156,8 @@ export class BfacilityPage {
 			else {
 				console.log("here", this.slotsArray.length)
 				this.areSlotsAvailable = true;
-			}				
+			}		
+			this.loader.dismiss();		
 		}
 		this.selectedSlotTime = false;
 		this.isValidDateAndTimeSelected = false;
