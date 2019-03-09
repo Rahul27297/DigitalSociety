@@ -20,6 +20,8 @@ import { ToastsProvider } from '../providers/toasts/toasts';
 import { LoadersProvider } from '../providers/loaders/loaders';
 import * as firebase from 'firebase';
 import { environment } from '../providers/firebase/firebase';
+import {enableProdMode} from '@angular/core';
+enableProdMode();
 
 @Component({
   templateUrl: 'app.html'
