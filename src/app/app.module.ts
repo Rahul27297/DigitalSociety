@@ -36,6 +36,7 @@ import { LoadersProvider } from '../providers/loaders/loaders';
 import { FirebaseProvider } from '../providers/firebase/firebase';
 import { environment } from '../providers/firebase/firebase'
 import { HttpClientModule } from '@angular/common/http';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 
 @NgModule({
@@ -102,7 +103,8 @@ import { HttpClientModule } from '@angular/common/http';
     ConstantsProvider,
     ToastsProvider,
     LoadersProvider,
-    FirebaseProvider
+    FirebaseProvider,
+    InAppBrowser
   ]
 })
 export class AppModule {
