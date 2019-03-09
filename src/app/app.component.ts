@@ -47,7 +47,8 @@ export class MyApp {
         message: "Network Connected",
         duration: 3000,
       }).present();
-      this.rootPage = HomePage;
+      this.checkLogin();
+
     })
 
     this.network.onDisconnect().subscribe(() => {
@@ -55,7 +56,7 @@ export class MyApp {
         message: "Network Disconnected",
         duration: 3000,
       }).present();
-      this.rootPage = NoNetworkPage;
+      this.nav.setRoot(NoNetworkPage);
     })
 
     // used for an example of ngFor and navigation
@@ -82,7 +83,7 @@ export class MyApp {
     this.storage.get('Info').then((val) => {
       if (val == null) {
         this.splashScreen.hide();
-        this.rootPage = LoginPage;
+        this.nav.setRoot(LoginPage);
       } else {
         this.storage.get("societyId").then((val) => {
           this.societyId = val;
