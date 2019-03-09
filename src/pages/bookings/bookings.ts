@@ -139,13 +139,13 @@ export class BookingsPage {
       console.log(this.facilityNames)
       this.BookingsArray = BookingsTemp;
       console.log(dd,mm,yyyy,HH,MM,SS)
-      console.log(this.newClient.getBookings({
-        "client_email": this.clientEmail,
-        "date_from": yyyy+"-"+mm+"-"+dd,
-        // "time_from": HH+":"+MM+":"+SS,    // will fetch all bookings after this particular time, even for future dates 
-        "order": "date_start_asc"
-        })
-      )
+      // console.log(this.newClient.getBookings({
+      //   "client_email": this.clientEmail,
+      //   "date_from": yyyy+"-"+mm+"-"+dd,
+      //   // "time_from": HH+":"+MM+":"+SS,    // will fetch all bookings after this particular time, even for future dates 
+      //   "order": "date_start_asc"
+      //   })
+      // )
     })
 
     this.loader.dismiss();
