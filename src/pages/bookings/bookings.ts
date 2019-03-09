@@ -38,6 +38,7 @@ export class BookingsPage {
   private newClient: any;
   private clientEmail: any;
   public facilityNames: any[] = [];
+  private noOfUpcomingBookings: any = -1;
   constructor(public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, private storage: Storage) {
     // this.simplyBookClient = new SimplyBookClient(storage);
 
@@ -123,7 +124,7 @@ export class BookingsPage {
         // "time_from": HH+":"+MM+":"+SS,    // will fetch all bookings after this particular time, even for future dates 
         "order": "date_start_asc"
       })
-
+      this.noOfUpcomingBookings = BookingsTemp.length;
       for(let i = 0; i < BookingsTemp.length; i++){
         let eventName = BookingsTemp[i].event;
         let eventDateAndTime = BookingsTemp[i].start_date;
