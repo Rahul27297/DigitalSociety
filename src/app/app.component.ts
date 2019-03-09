@@ -65,7 +65,7 @@ export class MyApp {
       { title: 'Profile', component: ProfilePage, icon_name: "person" },
       { title: 'Logout', component: LogoutPage, icon_name: "log-out" }
     ];
-
+    
   }
 
   checkInstall() {
@@ -81,6 +81,7 @@ export class MyApp {
   checkLogin() {
     this.storage.get('Info').then((val) => {
       if (val == null) {
+        this.splashScreen.hide();
         this.rootPage = LoginPage;
       } else {
         this.storage.get("societyId").then((val) => {
@@ -91,6 +92,7 @@ export class MyApp {
             this.societyInfo = Object.getOwnPropertyDescriptor(societysnapshot.val(),tempKey).value;
             console.log(this.societyInfo);
             this.societyName = this.societyInfo.display_name;
+            this.splashScreen.hide();
             this.nav.push(HomePage, {
               societyInfo: this.societyInfo,
               societyId: this.societyId
@@ -115,7 +117,7 @@ export class MyApp {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
-      this.splashScreen.hide();
+      
     });
   }
 
@@ -135,10 +137,7 @@ export class MyApp {
       this.nav.push(BookingsPage);
     }
     else if (page.title === "Profile"){//navigate to profile page
-      this.nav.push(ProfilePage, {
-        societyName: this.societyName,
-        address: this.societyInfo.address
-      });
+      this.nav.push(ProfilePage);
     }
   }
 
@@ -179,7 +178,7 @@ export class MyApp {
         text: "No",
         role: "cancel"
       }]
-    });    
+    });
     this.logoutAlert.present();
   }
 }
