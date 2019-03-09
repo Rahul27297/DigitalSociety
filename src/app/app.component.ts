@@ -65,20 +65,7 @@ export class MyApp {
       { title: 'Profile', component: ProfilePage, icon_name: "person" },
       { title: 'Logout', component: LogoutPage, icon_name: "log-out" }
     ];
-    this.logoutAlert = this.alertCtrl.create({
-      title: "Logout",
-      subTitle: "Are you sure you want to logout?",
-      buttons: [{
-        text: "Yes",
-        handler: () => {
-          this.displayLoader();
-        }
-      },
-      {
-        text: "No",
-        role: "cancel"
-      }]
-    });
+
   }
 
   checkInstall() {
@@ -179,6 +166,20 @@ export class MyApp {
   }
 
   logout() {
+    this.logoutAlert = this.alertCtrl.create({
+      title: "Logout",
+      subTitle: "Are you sure you want to logout?",
+      buttons: [{
+        text: "Yes",
+        handler: () => {
+          this.displayLoader();
+        }
+      },
+      {
+        text: "No",
+        role: "cancel"
+      }]
+    });    
     this.logoutAlert.present();
   }
 }

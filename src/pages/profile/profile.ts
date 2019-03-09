@@ -31,6 +31,7 @@ export class ProfilePage {
       this.clientPhone = res.phone;
       //this.clientAddress = res.address2;
       this.clientFlat = res.address1;
+      console.log(this.navParams)
       this.societyName = this.navParams.get('societyName');
       this.societyAddress = this.navParams.get('address');
     });
