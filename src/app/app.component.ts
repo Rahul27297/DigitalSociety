@@ -145,7 +145,8 @@ export class MyApp {
     this.storage.remove('Info');
     this.storage.remove('societyId');
     this.storage.remove('societyInfo');
-    this.rootPage = LoginPage;
+    // this.rootPage = LoginPage;
+    this.nav.setRoot(LoginPage);
     this.toastCtrl.create({
       message: 'Logged Out Successfully',
       duration: 2000,
