@@ -18,6 +18,8 @@ import * as firebase from 'firebase';
   selector: 'page-notices',
   templateUrl: 'notices.html',
 })
+
+
 export class NoticesPage {
   public recentNotices: any;
   public recentNoticesLength: any = -1;
@@ -48,6 +50,19 @@ export class NoticesPage {
     console.log(this.monthMap)
   }
 
+  // function to sort notices by epoch_time in DESC order
+  predicateBy(prop) {
+    return function(a,b){
+       if( a[prop] < b[prop]){
+           return 1;
+       }else if( a[prop] > b[prop] ){
+           return -1;
+       }
+       return 0;
+    }
+
+ }
+
   setup() {
     let date = new Date();
     console.log(date);
@@ -65,7 +80,7 @@ export class NoticesPage {
     firebase.database().ref('notices').orderByChild('society_id').equalTo(this.societyId).on('value', (snapshot) => {
       this.recentNotices = [];
       this.archivedNotices = [];
-
+      console.log(snapshot.val());
       snapshot.forEach((childSnapshot) => {
         let d = new Date(0);
         d.setUTCSeconds(childSnapshot.val().epoch_time)
@@ -82,7 +97,8 @@ export class NoticesPage {
             notice_description: childSnapshot.val().notice_description,
             notice_url: childSnapshot.val().notice_url,
             searchid: childSnapshot.key,
-            has_attachment: childSnapshot.val().has_attachment
+            has_attachment: childSnapshot.val().has_attachment,
+            epoch_time: childSnapshot.val().epoch_time
           });
         }
         else if(childSnapshot.val().epoch_time < epoch_recent && childSnapshot.val().epoch_time > epoch_archived) {
@@ -92,10 +108,15 @@ export class NoticesPage {
             notice_description: childSnapshot.val().notice_description,
             notice_url: childSnapshot.val().notice_url,
             searchid: childSnapshot.key,
-            has_attachment: childSnapshot.val().has_attachment
+            has_attachment: childSnapshot.val().has_attachment,
+            epoch_time: childSnapshot.val().epoch_time
           });
         }
       });
+      
+      this.recentNotices.sort(this.predicateBy("epoch_time"))
+      this.archivedNotices.sort(this.predicateBy("epoch_time"))
+
       this.recentNoticesLength = this.recentNotices.length;
       this.archivedNoticesLength = this.archivedNotices.length;
       console.log(this.archivedNoticesLength);
