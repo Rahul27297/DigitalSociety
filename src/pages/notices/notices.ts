@@ -156,18 +156,18 @@ export class NoticesPage {
   }
 
   ionViewDidLoad() {
+
+  }
+
+  ionViewWillEnter() {
+    console.log("Enter");
     this.loader = this.loadingCtrl.create({
       content: "Please wait..."
     });
-    this.loader.present();
-    setTimeout(() => {
+    this.loader.present().then(() => {
       this.setup();
       this.loader.dismiss();
-    }, 50);
-  }
-
-  ionViewDidEnter() {
-    console.log("Enter");
+    });
   }
 
   getNotice(notice, type) {
