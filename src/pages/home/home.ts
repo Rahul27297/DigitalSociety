@@ -8,6 +8,7 @@ import { NewcomplaintPage } from '../newcomplaint/newcomplaint';
 import { Storage } from '@ionic/storage';
 import * as firebase from 'firebase';
 import { SimplyBookClient } from '../../providers/simplybook/client';
+import { SplashScreen } from '@ionic-native/splash-screen';
 
 /**
  * Generated class for the HomePage page.
@@ -33,7 +34,7 @@ export class HomePage {
   private hasNotices: boolean;
   private hasComplaints: boolean;
   private societyName: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams, private http: Http, private loadingCtrl: LoadingController, private storage: Storage, private simplyBookClient: SimplyBookClient) {
+  constructor(public splashScreen: SplashScreen, public navCtrl: NavController, public navParams: NavParams, private http: Http, private loadingCtrl: LoadingController, private storage: Storage, private simplyBookClient: SimplyBookClient) {
     this.societyId = this.navParams.get('societyId');
     this.societyInfo = this.navParams.get('societyInfo');
     this.societyName = this.societyInfo.display_name;
@@ -82,6 +83,7 @@ export class HomePage {
   }
 
   ionViewDidLoad() {
+    this.splashScreen.hide();
     this.loader = this.loadingCtrl.create({
       content: "Please wait..."
     });

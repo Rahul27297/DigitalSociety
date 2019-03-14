@@ -13,6 +13,8 @@ import { HomePage } from '../home/home';
 import { LoadingController } from 'ionic-angular';
 import { SignupPage } from '../signup/signup';
 import * as firebase from 'firebase';
+import { SplashScreen } from '@ionic-native/splash-screen';
+
 
 @IonicPage()
 @Component({
@@ -29,7 +31,7 @@ export class LoginPage {
   private societyId: any;
   private societyInfo: any;
   private societyReady: boolean;
-  constructor(public navCtrl: NavController, private toastCtrl: ToastController, private storage: Storage, public http: Http, private formBuilder: FormBuilder, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private keyboard: Keyboard) {
+  constructor(public splashScreen: SplashScreen, public navCtrl: NavController, private toastCtrl: ToastController, private storage: Storage, public http: Http, private formBuilder: FormBuilder, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private keyboard: Keyboard) {
     this.societyReady = false;
     this.societyName = "gully";
     this.login = this.formBuilder.group({
@@ -37,6 +39,10 @@ export class LoginPage {
       password: ['', Validators.required],
     });
     this.appmodule = new SimplyBookClient(storage);
+  }
+
+  ionViewDidLoad() {
+    this.splashScreen.hide();
   }
 
   displayLoader() {
