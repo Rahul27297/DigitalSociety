@@ -26,6 +26,7 @@ export class BookingConfirmationPage {
   private clientEmail: any;
   private facilityName: any;
   private startTime: any;
+  private endTime: any;
   private startDate: any;
   private facilityTnC: any;
   private tnc:any;
@@ -49,14 +50,17 @@ export class BookingConfirmationPage {
           client_login: this.clientEmail,
           client_password: this.clientPassword
         };
+        console.log(navParams)
         this.facilityId = this.navParams.get("facilityId");
         this.serviceProviderIdInSimplybook = this.navParams.get("serviceProviderIdInSimplybook");
         this.facilityName = this.navParams.get("facilityName");
         this.startTime = this.navParams.get("startTime");
+        this.endTime = this.navParams.get('endTime');
+        console.log(this.endTime);
         this.startDate = this.navParams.get("startDate");
         this.societyId = this.navParams.get('societyId');
         this.facilityTnC = this.navParams.get("facilityTnC");
-        console.log(this.facilityId, this.serviceProviderIdInSimplybook)
+        console.log(this.facilityId, this.serviceProviderIdInSimplybook);
         this.storage.get('clientToken').then((val) => {
           console.log(val)
           this.newClient = new JSONRpcClient({
@@ -67,11 +71,13 @@ export class BookingConfirmationPage {
             },
             'onerror': function (error) {}
           });
+          // this.endTime = this.newClient.calculateEndTime(this.startDate + " " + this.startTime, this.facilityId, this.serviceProviderIdInSimplybook);
+          // this.endTime = this.endTime.split(" ")[1]
+
           this.loader.dismiss();
         });
       });
     });
-    
   }
 
   ionViewDidLoad() {
@@ -111,29 +117,37 @@ export class BookingConfirmationPage {
         buttons:[{
           text: "Yes",
           handler: () => {
-            booking = this.newClient.book(this.facilityId, this.serviceProviderIdInSimplybook, this.startDate, this.startTime, this.clientData, null , 1);
+            this.loader = this.loadingCtrl.create({
+              content: "Please wait..."
+            });
+            this.loader.present().then(() => {
+              booking = this.newClient.book(this.facilityId, this.serviceProviderIdInSimplybook, this.startDate, this.startTime, this.clientData, null , 1);
+              if(Object.keys(booking)[1] == "bookings"){
+                this.loader.dismiss();
+                this.alertCtrl.create({
+                  title: "Booking Successful!",
+                  buttons: [{
+                    text: "Dismiss",
+                    handler: () => {
+                      this.navCtrl.popToRoot();
+                    }
+                }]
+                }).present();
+              }else{
+                this.loader.dismiss();
+                this.alertCtrl.create({
+                  title: "Booking Failure!",
+                  buttons: [{
+                    text: "Dismiss",
+                    handler: () => {
+                      this.navCtrl.popTo(BfacilityPage);
+                    }
+                }]
+                }).present();
+              }		
+            });
             // console.log(this.simplyBookClient.client.book(this.facilityId, 1, this.startDate, this.startTime, this.clientData, null , 1));
-            if(Object.keys(booking)[1] == "bookings"){
-              this.alertCtrl.create({
-                title: "Booking Successful!",
-                buttons: [{
-                  text: "Dismiss",
-                  handler: () => {
-                    this.navCtrl.popToRoot();
-                  }
-              }]
-              }).present();
-            }else{
-              this.alertCtrl.create({
-                title: "Booking Failure!",
-                buttons: [{
-                  text: "Dismiss",
-                  handler: () => {
-                    this.navCtrl.popTo(BfacilityPage);
-                  }
-              }]
-              }).present();
-            }		
+
           }
         },
         {

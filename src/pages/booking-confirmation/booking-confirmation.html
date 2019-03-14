@@ -36,7 +36,7 @@
         </ion-row>
         <hr>
         <ion-row>
-          Time<div>: {{startTime}}</div>
+          Time<div>: {{startTime}} - {{endTime}}</div>
         </ion-row>
         <ion-row >
           <ion-col style="padding-right: 0px;">
@@ -50,7 +50,7 @@
           </ion-col>
         </ion-row>
         <ion-row class="confirm-cancel-btns">
-            <button ion-button (tap)="confirmBooking()" clear class="btn" style="margin-bottom: 8px; margin-right: 8px">Confirm</button>
+            <button ion-button (tap)="confirmBooking()" clear class="btn" [disabled]="!this.tnc" style="margin-bottom: 8px; margin-right: 8px">Confirm</button>
             <button ion-button (tap)="cancelBooking()" clear class="btn" style="margin-left: 8px;">Cancel</button>
           </ion-row>
       </ion-grid>

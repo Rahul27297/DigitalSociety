@@ -33,6 +33,7 @@ export class BfacilityPage {
 	private societyId: any;
 	private isValidDateAndTimeSelected: boolean;
 	public newClient: any;
+	private endTime: any;
 	constructor(private navController:NavController, private navParams:NavParams, private loadingCtrl: LoadingController, private storage: Storage) {
 		this.societyId = navParams.get('societyId');
 		this.calendar = new CalendarPage();
@@ -51,7 +52,7 @@ export class BfacilityPage {
 		// 	console.log(val)
 			console.log(this.facility)
 			let slots = this.newClient.getStartTimeMatrix(this.todayDate,this.todayDate,this.facility.service_id_in_simplybook,this.facility.service_provider_id_in_simplybook,1);
-			console.log(slots);
+		
 			this.slotsArray = Object.getOwnPropertyDescriptor(slots,Object.keys(slots)[0]).value;
 			console.log(this.slotsArray);
 			
@@ -106,22 +107,39 @@ export class BfacilityPage {
 	}
 
 	slotSelected(slot){
-		console.log(slot);
 		this.selectedSlot = "color($colors, primary-dark)";
 		this.selectedSlotTime = slot;
-		this.isValidDateAndTimeSelected = true;
+		this.loader = this.loadingCtrl.create({
+			content: "Please Wait..."
+		});
+		this.loader.present().then(() => {
+			// Your logic to load content
+			console.log("hihere")
+			console.log(slot);
+
+			this.isValidDateAndTimeSelected = true;
+			let date = this.calendar.date.getFullYear().toString() + "-" + (this.calendar.date.getMonth()+1).toString() + "-" +this.calendar.selectedDate.toString();
+			this.endTime = this.newClient.calculateEndTime(date + " " + this.selectedSlotTime, this.facility.service_id_in_simplybook, this.facility.service_provider_id_in_simplybook);
+			this.endTime = this.endTime.split(" ")[1]
+			console.log(this.endTime);
+			this.loader.dismiss();
+		});
+
 	}
 
 	proceedBook(){
 		console.log(this.calendar)
 		let date = this.calendar.date.getFullYear().toString() + "-" + (this.calendar.date.getMonth()+1).toString() + "-" +this.calendar.selectedDate.toString();
-		console.log("booking date" + date);
+		console.log("booking date" + date+" "+this.selectedSlotTime);
+		// console.log(endTime)
 		this.navController.push(BookingConfirmationPage, {
 			facilityId: this.facility.service_id_in_simplybook,
 			serviceProviderIdInSimplybook: this.facility.service_provider_id_in_simplybook,
 			facilityName: this.facility.display_name,
 			startDate: date,
 			startTime: this.selectedSlotTime,
+			combinedStartTimeAndDate: date+ " " + this.selectedSlotTime,
+			endTime: this.endTime,
 			societyId: this.societyId,
 			facilityTnC: this.facility.terms_and_conditions
 		});
@@ -133,7 +151,7 @@ export class BfacilityPage {
 		});
 		console.log(day)
 		if(this.calendar.goToPreviousMonthFlag || this.currentDate <= day ){
-			this.loader.present();
+
 			if(this.calendar.goToNextMonthFlag && day < this.currentDate){
 				console.log("here 2")
 				this.calendar.selectedDate = this.currentDate;	
@@ -146,18 +164,22 @@ export class BfacilityPage {
 			console.log(this.calendar.selectedDate,day+month+year);
 			let date = new Date(this.calendar.date.getFullYear(),this.calendar.date.getMonth(),day);
 			console.log(this.facility)
-			let slots = this.newClient.getStartTimeMatrix(date,date,this.facility.service_id_in_simplybook,this.facility.service_provider_id_in_simplybook,1);
-			console.log(slots);
-			this.slotsArray = Object.getOwnPropertyDescriptor(slots,Object.keys(slots)[0]).value;
-			if(this.slotsArray.length == 0){
-				console.log("here", this.slotsArray.length)
-				this.areSlotsAvailable = false;
-			}
-			else {
-				console.log("here", this.slotsArray.length)
-				this.areSlotsAvailable = true;
-			}		
-			this.loader.dismiss();		
+			this.loader.present().then(() => {
+				// Your logic to load content
+				let slots = this.newClient.getStartTimeMatrix(date,date,this.facility.service_id_in_simplybook,this.facility.service_provider_id_in_simplybook,1);
+				console.log(slots);
+				this.slotsArray = Object.getOwnPropertyDescriptor(slots,Object.keys(slots)[0]).value;
+				if(this.slotsArray.length == 0){
+					console.log("here", this.slotsArray.length)
+					this.areSlotsAvailable = false;
+				}
+				else {
+					console.log("here", this.slotsArray.length)
+					this.areSlotsAvailable = true;
+				}		
+				this.loader.dismiss();	
+			});
+	
 		}
 		this.selectedSlotTime = false;
 		this.isValidDateAndTimeSelected = false;
