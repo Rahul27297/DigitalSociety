@@ -53,7 +53,7 @@
       </ion-row>
       <ion-row>
         <ion-col col-4 *ngFor="let slot of slotsArray">
-          <button ion-button *ngIf="slot === selectedSlotTime; else otherslots" class="selected-slot" (tap)=slotSelected(slot)>{{slot}}</button>
+          <button ion-button clear *ngIf="slot === selectedSlotTime; else otherslots" class="selected-slot" (tap)=slotSelected(slot)>{{slot}}</button>
           <ng-template #otherslots><button ion-button outline (tap)=slotSelected(slot) class="slotButton">{{slot}}</button></ng-template>
         </ion-col>
       </ion-row>
