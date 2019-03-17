@@ -52,19 +52,19 @@ export class CalendarPage {
     }
   
     var thisNumOfDays = new Date(this.date.getFullYear(), this.date.getMonth()+1, 0).getDate();
-    for (var i = 0; i < thisNumOfDays; i++) {
+    for (let i = 0; i < thisNumOfDays; i++) {
       this.daysInThisMonth.push(i+1);
     }
   
     console.log(this.daysInThisMonth);
     var lastDayThisMonth = new Date(this.date.getFullYear(), this.date.getMonth()+1, 0).getDay();
     var nextNumOfDays = new Date(this.date.getFullYear(), this.date.getMonth()+2, 0).getDate();
-    for (var i = 0; i < (6-lastDayThisMonth); i++) {
+    for (let i = 0; i < (6-lastDayThisMonth); i++) {
       this.daysInNextMonth.push(i+1);
     }
     var totalDays = this.daysInLastMonth.length+this.daysInThisMonth.length+this.daysInNextMonth.length;
     if(totalDays<36) {
-      for(var i = (7-lastDayThisMonth); i < ((7-lastDayThisMonth)+7); i++) {
+      for(let i = (7-lastDayThisMonth); i < ((7-lastDayThisMonth)+7); i++) {
         this.daysInNextMonth.push(i);
       }
     }

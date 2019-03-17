@@ -9,6 +9,7 @@ import * as firebase from 'firebase';
 import { Storage } from '@ionic/storage';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
+import { BackgroundMode } from '@ionic-native/background-mode';
 
 /**
  * Generated class for the NewcomplaintPage page.
@@ -41,7 +42,7 @@ export class NewcomplaintPage {
   private hasAttachment: boolean;
   private clientFlatNo: any;
   private societyDisplayName: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, public loadingCtrl: LoadingController, public toastCtrl: ToastController, private formBuilder: FormBuilder, private actionSheetCtrl: ActionSheetController, private http: Http, private storage: Storage, private alertCtrl: AlertController, private httpClient: HttpClient) {
+  constructor(public backgroundMode: BackgroundMode, public navCtrl: NavController, public navParams: NavParams, public camera: Camera, public loadingCtrl: LoadingController, public toastCtrl: ToastController, private formBuilder: FormBuilder, private actionSheetCtrl: ActionSheetController, private http: Http, private storage: Storage, private alertCtrl: AlertController, private httpClient: HttpClient) {
     this.complaintKey = firebase.database().ref("complaints").push().key
     this.http = http;
     this.hasAttachment = false;
@@ -89,12 +90,12 @@ export class NewcomplaintPage {
     actionSheet.present();
   }
 
+ 
+
   getImage(imageSource: string) {
     let sourceType: any;
-    this.loader = this.loadingCtrl.create({
-      content: "Please wait..."
-    });
-    this.loader.present();
+
+    this.backgroundMode.enable();
     if(imageSource === "Camera"){
       sourceType = this.camera.PictureSourceType.CAMERA;
     }
@@ -110,13 +111,21 @@ export class NewcomplaintPage {
       mediaType: this.camera.MediaType.PICTURE,
       sourceType: sourceType
     }
-
-    this.camera.getPicture(options).then((imageData) => {
-      this.selectedPhoto = this.dataURItoBlob('data:image/jpeg;base64,' + imageData);
-      this.upload();
-    }, (err) => {
-      console.log(err);
+    this.loader = this.loadingCtrl.create({
+      content: "Please wait..."
     });
+    this.loader.present().then(() => {
+      this.camera.getPicture(options).then((imageData) => {
+
+        this.selectedPhoto = this.dataURItoBlob('data:image/jpeg;base64,' + imageData);
+        this.upload();
+
+      }, (err) => {
+        this.loader.dismiss();
+        console.log("ehrer", err);
+      });
+
+    })
   }
 
   dataURItoBlob(dataURI) {
@@ -139,6 +148,7 @@ export class NewcomplaintPage {
           this.hasAttachment = true;
           this.imageObtained = true;
           this.loader.dismiss();
+          this.backgroundMode.disable();
         });
       }, () => {
         console.log("error");
@@ -146,7 +156,7 @@ export class NewcomplaintPage {
     }
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
     console.log('ionViewDidLoad NewcomplaintPage');
   }
 

@@ -37,6 +37,7 @@ import { FirebaseProvider } from '../providers/firebase/firebase';
 import { environment } from '../providers/firebase/firebase'
 import { HttpClientModule } from '@angular/common/http';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { BackgroundMode } from '@ionic-native/background-mode';
 
 
 @NgModule({
@@ -104,7 +105,8 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
     ToastsProvider,
     LoadersProvider,
     FirebaseProvider,
-    InAppBrowser
+    InAppBrowser,
+    BackgroundMode
   ]
 })
 export class AppModule {

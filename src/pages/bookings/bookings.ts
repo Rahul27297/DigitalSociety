@@ -91,66 +91,69 @@ export class BookingsPage {
     this.loader = this.loadingCtrl.create({
       content: "Please wait..."
     });
-    this.loader.present();
+    this.loader.present().then(() => {
+      console.log('ionViewDidLoad BookingsPage');
+      this.storage.get('adminToken').then((val) => {
+        console.log(val)
+        this.newClient = new JSONRpcClient({
+          'url': 'https://user-api.simplybook.me' + '/admin/',
+          'headers': {
+              'X-Company-Login': 'gully',
+              'X-User-Token': val
+          },
+          'onerror': function (error) {}
+      });
+  
+      this.storage.get('Info').then((val) => {
+        this.clientEmail = val.email;
+        console.log(this.clientEmail)
+        let currentDateAndTime = new Date();
+        console.log(currentDateAndTime)
+        let dd = currentDateAndTime.getDate();
+        let mm = currentDateAndTime.getMonth()+1;
+        let yyyy = currentDateAndTime.getFullYear();
+        let HH = currentDateAndTime.getHours();
+        let MM = currentDateAndTime.getMinutes();
+        let SS = currentDateAndTime.getSeconds();
+        let BookingsTemp = this.newClient.getBookings({
+          "client_email": this.clientEmail,
+          "date_from": yyyy+"-"+mm+"-"+dd,
+          // "time_from": HH+":"+MM+":"+SS,    // will fetch all bookings after this particular time, even for future dates 
+          "order": "date_start_asc"
+        })
+        this.noOfUpcomingBookings = BookingsTemp.length;
+        for(let i = 0; i < BookingsTemp.length; i++){
+          let eventName = BookingsTemp[i].event;
+          let eventDateAndTime = BookingsTemp[i].start_date;
+          console.log(eventName, eventDateAndTime)
+          let nameAfterRemovingSocietyId = (eventName.split("-"))[0];
+          this.facilityNames.push({
+            "nameAfterRemovingSocietyId": nameAfterRemovingSocietyId,
+            "eventDateAndTime": eventDateAndTime
+          })
+        }
+        console.log("hiii")
+        console.log(this.facilityNames)
+        this.BookingsArray = BookingsTemp;
+        console.log(dd,mm,yyyy,HH,MM,SS)
+        // console.log(this.newClient.getBookings({
+        //   "client_email": this.clientEmail,
+        //   "date_from": yyyy+"-"+mm+"-"+dd,
+        //   // "time_from": HH+":"+MM+":"+SS,    // will fetch all bookings after this particular time, even for future dates 
+        //   "order": "date_start_asc"
+        //   })
+        // )
+      })
+  
+      this.loader.dismiss();
+    });
+
+    
+		});
   }
 
   ionViewDidEnter() {
-    console.log('ionViewDidLoad BookingsPage');
-    this.storage.get('adminToken').then((val) => {
-			console.log(val)
-			this.newClient = new JSONRpcClient({
-        'url': 'https://user-api.simplybook.me' + '/admin/',
-        'headers': {
-            'X-Company-Login': 'gully',
-            'X-User-Token': val
-        },
-        'onerror': function (error) {}
-    });
 
-    this.storage.get('Info').then((val) => {
-      this.clientEmail = val.email;
-      console.log(this.clientEmail)
-      let currentDateAndTime = new Date();
-      console.log(currentDateAndTime)
-      let dd = currentDateAndTime.getDate();
-      let mm = currentDateAndTime.getMonth()+1;
-      let yyyy = currentDateAndTime.getFullYear();
-      let HH = currentDateAndTime.getHours();
-      let MM = currentDateAndTime.getMinutes();
-      let SS = currentDateAndTime.getSeconds();
-      let BookingsTemp = this.newClient.getBookings({
-        "client_email": this.clientEmail,
-        "date_from": yyyy+"-"+mm+"-"+dd,
-        // "time_from": HH+":"+MM+":"+SS,    // will fetch all bookings after this particular time, even for future dates 
-        "order": "date_start_asc"
-      })
-      this.noOfUpcomingBookings = BookingsTemp.length;
-      for(let i = 0; i < BookingsTemp.length; i++){
-        let eventName = BookingsTemp[i].event;
-        let eventDateAndTime = BookingsTemp[i].start_date;
-        console.log(eventName, eventDateAndTime)
-        let nameAfterRemovingSocietyId = (eventName.split("-"))[0];
-        this.facilityNames.push({
-          "nameAfterRemovingSocietyId": nameAfterRemovingSocietyId,
-          "eventDateAndTime": eventDateAndTime
-        })
-      }
-      console.log("hiii")
-      console.log(this.facilityNames)
-      this.BookingsArray = BookingsTemp;
-      console.log(dd,mm,yyyy,HH,MM,SS)
-      // console.log(this.newClient.getBookings({
-      //   "client_email": this.clientEmail,
-      //   "date_from": yyyy+"-"+mm+"-"+dd,
-      //   // "time_from": HH+":"+MM+":"+SS,    // will fetch all bookings after this particular time, even for future dates 
-      //   "order": "date_start_asc"
-      //   })
-      // )
-    })
-
-    this.loader.dismiss();
-    
-		});
   }
 
 
