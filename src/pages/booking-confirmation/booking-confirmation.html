@@ -19,25 +19,13 @@
     </ion-card-header>
     <ion-card-content class="bookingConfirmationContent">
       <ion-grid>
-        <ion-row>
-            Name<div>: {{clientName}}</div>
-        </ion-row>
-        <hr>
-        <ion-row>
-          Phone<div >: {{clientPhone}}</div>
-        </ion-row>
-        <hr>
-        <ion-row>
-          Facility<div >: {{facilityName}}</div>
-        </ion-row>
-        <hr>
-        <ion-row>
-          Date<div >: {{startDate}}</div>
-        </ion-row>
-        <hr>
-        <ion-row>
-          Time<div>: {{startTime}} - {{endTime}}</div>
-        </ion-row>
+          <table>
+          <tr><td>Name</td><td>: {{clientName}}</td></tr>
+          <tr><td>Phone</td><td>: {{clientPhone}}</td></tr>
+          <tr><td>Facility</td><td>: {{facilityName}}</td></tr>
+          <tr><td>Date</td><td>: {{startDate}}</td></tr>
+          <tr><td>Time</td><td>: {{startTime}} - {{endTime}}</td></tr>
+        </table>
         <ion-row >
           <ion-col style="padding-right: 0px;">
           <ion-item>

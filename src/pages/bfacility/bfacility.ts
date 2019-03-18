@@ -25,7 +25,7 @@ export class BfacilityPage {
 	public currentDate:any;
 	public simplyBookClient: SimplyBookClient;
 	public todayDate: any;
-	public slotsArray: Array<{time: string}>;
+	public slotsArray: any;
 	public selectedSlot: any;
 	public selectedSlotTime:any;
 	private loader: any;
@@ -61,8 +61,15 @@ export class BfacilityPage {
 				this.areSlotsAvailable = false;		
 			}
 			else {
+				console.log(this.slotsArray);
 				console.log("here", this.slotsArray.length)
 				this.areSlotsAvailable = true;
+				
+				for (let i = 0; i < this.slotsArray.length; i = i + 1) {
+					let timeArray = this.slotsArray[i].split(":");
+					this.slotsArray[i] = timeArray[0] + ":" + timeArray[1];
+					console.log(this.slotsArray[i]);
+				}
 			}
 			this.calendar.selectedDate = this.currentDate;
 			this.selectedSlotTime = false;
@@ -108,7 +115,7 @@ export class BfacilityPage {
 
 	slotSelected(slot){
 		this.selectedSlot = "color($colors, primary-dark)";
-		this.selectedSlotTime = slot;
+		this.selectedSlotTime = slot  ;
 		this.loader = this.loadingCtrl.create({
 			content: "Please Wait..."
 		});
@@ -176,6 +183,11 @@ export class BfacilityPage {
 				else {
 					console.log("here", this.slotsArray.length)
 					this.areSlotsAvailable = true;
+					for (let i = 0; i < this.slotsArray.length; i = i + 1) {
+						let timeArray = this.slotsArray[i].split(":");
+						this.slotsArray[i] = timeArray[0] + ":" + timeArray[1];
+						console.log(this.slotsArray[i]);
+					}
 				}		
 				this.loader.dismiss();	
 			});

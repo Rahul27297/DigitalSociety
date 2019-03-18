@@ -39,6 +39,20 @@ export class BookingsPage {
   private clientEmail: any;
   public facilityNames: any[] = [];
   private noOfUpcomingBookings: any = -1;
+  private monthMap : any = {
+    "01": "Jan",
+    "02": "Feb",
+    "03": "Mar",
+    "04": "April",
+    "05": "May",
+    "06": "June",
+    "07": "July",
+    "08": "Aug",
+    "09": "Sep",
+    "10": "Oct",
+    "11": "Nov",
+    "12": "Dec"
+  };
   constructor(public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, private storage: Storage) {
     // this.simplyBookClient = new SimplyBookClient(storage);
 
@@ -124,7 +138,12 @@ export class BookingsPage {
         this.noOfUpcomingBookings = BookingsTemp.length;
         for(let i = 0; i < BookingsTemp.length; i++){
           let eventName = BookingsTemp[i].event;
-          let eventDateAndTime = BookingsTemp[i].start_date;
+          let eventDateAndTime = (BookingsTemp[i].start_date).split(" ");
+          let dateArray = eventDateAndTime[0].split("-");
+          console.log(dateArray);
+          eventDateAndTime[0] = this.monthMap[dateArray[1]] + " " + dateArray[2] + ", " + dateArray[0]; 
+          let timeArray = eventDateAndTime[1].split(":");
+          eventDateAndTime[1] = timeArray[0] + ":" + timeArray[1];
           console.log(eventName, eventDateAndTime)
           let nameAfterRemovingSocietyId = (eventName.split("-"))[0];
           this.facilityNames.push({

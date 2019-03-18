@@ -37,6 +37,20 @@ export class BookingConfirmationPage {
   private loader: any;
   private serviceProviderIdInSimplybook: any;
   public newClient: any;
+  private monthMap : any = {
+    "1": "Jan",
+    "2": "Feb",
+    "3": "Mar",
+    "4": "April",
+    "5": "May",
+    "6": "June",
+    "7": "July",
+    "8": "Aug",
+    "9": "Sep",
+    "10": "Oct",
+    "11": "Nov",
+    "12": "Dec"
+  };
   constructor(public navCtrl: NavController, public navParams: NavParams,  private storage: Storage, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
     // this.simplyBookClient = new SimplyBookClient();
     this.tnc = false;
@@ -57,7 +71,8 @@ export class BookingConfirmationPage {
         this.startTime = this.navParams.get("startTime");
         this.endTime = this.navParams.get('endTime');
         console.log(this.endTime);
-        this.startDate = this.navParams.get("startDate");
+        let dateArray = this.navParams.get("startDate").split("-");
+        this.startDate = this.monthMap[dateArray[1]] + " " + dateArray[2] + ", " + dateArray[0];
         this.societyId = this.navParams.get('societyId');
         this.facilityTnC = this.navParams.get("facilityTnC");
         console.log(this.facilityId, this.serviceProviderIdInSimplybook);
