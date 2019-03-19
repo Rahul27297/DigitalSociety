@@ -128,7 +128,10 @@ export class BfacilityPage {
 			let date = this.calendar.date.getFullYear().toString() + "-" + (this.calendar.date.getMonth()+1).toString() + "-" +this.calendar.selectedDate.toString();
 			this.endTime = this.newClient.calculateEndTime(date + " " + this.selectedSlotTime, this.facility.service_id_in_simplybook, this.facility.service_provider_id_in_simplybook);
 			this.endTime = this.endTime.split(" ")[1]
-			console.log(this.endTime);
+			let endTimeHH = this.endTime.split(":")[0]
+			let endTimeMM = this.endTime.split(":")[1]
+			this.endTime = endTimeHH+":"+endTimeMM;
+			console.log(endTimeHH, endTimeMM);
 			this.loader.dismiss();
 		});
 

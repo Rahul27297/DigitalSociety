@@ -96,8 +96,8 @@
     <allow-navigation href="http://192.168.43.44:8100" />
     <allow-navigation href="http://192.168.31.183:8100" />
     <plugin name="cordova-plugin-inappbrowser" spec="^3.0.0" />
+    <plugin name="cordova-plugin-background-mode" spec="^0.7.2" />
     <engine name="browser" spec="5.0.4" />
     <engine name="ios" spec="4.5.5" />
-    <plugin name="cordova-plugin-background-mode" spec="^0.7.2" />
-    <engine name="android" spec="~7.0.0" />
+    <engine name="android" spec="7.0.0" />
 </widget>
