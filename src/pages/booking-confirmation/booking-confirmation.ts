@@ -37,6 +37,7 @@ export class BookingConfirmationPage {
   private loader: any;
   private serviceProviderIdInSimplybook: any;
   public newClient: any;
+  public simplyBookDateFormat: any;
   private monthMap : any = {
     "1": "Jan",
     "2": "Feb",
@@ -66,6 +67,7 @@ export class BookingConfirmationPage {
         };
         console.log(navParams)
         this.facilityId = this.navParams.get("facilityId");
+        this.simplyBookDateFormat = this.navParams.get('simplyBookDateFormat');
         this.serviceProviderIdInSimplybook = this.navParams.get("serviceProviderIdInSimplybook");
         this.facilityName = this.navParams.get("facilityName");
         this.startTime = this.navParams.get("startTime");
@@ -136,7 +138,8 @@ export class BookingConfirmationPage {
               content: "Please wait..."
             });
             this.loader.present().then(() => {
-              booking = this.newClient.book(this.facilityId, this.serviceProviderIdInSimplybook, this.startDate, this.startTime, this.clientData, null , 1);
+              console.log(this.startTime+":00")
+              booking = this.newClient.book(this.facilityId, this.serviceProviderIdInSimplybook, this.simplyBookDateFormat, this.startTime+":00", this.clientData, null , 1);
               if(Object.keys(booking)[1] == "bookings"){
                 this.loader.dismiss();
                 this.alertCtrl.create({
