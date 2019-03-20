@@ -34,6 +34,7 @@ export class BfacilityPage {
 	private isValidDateAndTimeSelected: boolean;
 	public newClient: any;
 	private endTime: any;
+	public simplyBookDateFormat: any;
 	constructor(private navController:NavController, private navParams:NavParams, private loadingCtrl: LoadingController, private storage: Storage) {
 		this.societyId = navParams.get('societyId');
 		this.calendar = new CalendarPage();
@@ -126,9 +127,14 @@ export class BfacilityPage {
 
 			this.isValidDateAndTimeSelected = true;
 			let date = this.calendar.date.getFullYear().toString() + "-" + (this.calendar.date.getMonth()+1).toString() + "-" +this.calendar.selectedDate.toString();
+			console.log(date)
+			this.simplyBookDateFormat = date;
 			this.endTime = this.newClient.calculateEndTime(date + " " + this.selectedSlotTime, this.facility.service_id_in_simplybook, this.facility.service_provider_id_in_simplybook);
 			this.endTime = this.endTime.split(" ")[1]
-			console.log(this.endTime);
+			let endTimeHH = this.endTime.split(":")[0]
+			let endTimeMM = this.endTime.split(":")[1]
+			this.endTime = endTimeHH+":"+endTimeMM;
+			console.log(endTimeHH, endTimeMM);
 			this.loader.dismiss();
 		});
 
@@ -146,6 +152,7 @@ export class BfacilityPage {
 			startDate: date,
 			startTime: this.selectedSlotTime,
 			combinedStartTimeAndDate: date+ " " + this.selectedSlotTime,
+			simplyBookDateFormat: this.simplyBookDateFormat,
 			endTime: this.endTime,
 			societyId: this.societyId,
 			facilityTnC: this.facility.terms_and_conditions
