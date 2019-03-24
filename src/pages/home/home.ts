@@ -9,6 +9,7 @@ import { Storage } from '@ionic/storage';
 import * as firebase from 'firebase';
 import { SimplyBookClient } from '../../providers/simplybook/client';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { FCM } from '@ionic-native/fcm';
 
 /**
  * Generated class for the HomePage page.
@@ -34,12 +35,53 @@ export class HomePage {
   private hasNotices: boolean;
   private hasComplaints: boolean;
   private societyName: any;
-  constructor(public splashScreen: SplashScreen, public navCtrl: NavController, public navParams: NavParams, private http: Http, private loadingCtrl: LoadingController, private storage: Storage, private simplyBookClient: SimplyBookClient) {
+  private userKey: any;
+  constructor(private fcm: FCM, public splashScreen: SplashScreen, public navCtrl: NavController, public navParams: NavParams, private http: Http, private loadingCtrl: LoadingController, private storage: Storage, private simplyBookClient: SimplyBookClient) {
     this.societyId = this.navParams.get('societyId');
     this.societyInfo = this.navParams.get('societyInfo');
     this.societyName = this.societyInfo.display_name;
+    this.userKey = this.navParams.get('userKey');
     console.log(this.societyId);
     console.log(this.societyName);
+    this.storage.get('emailId').then((val1) => {
+      console.log(val1);
+      this.storage.get('userKey').then((val2) => {
+
+      if(this.societyId != null && val1 != null && val2 != null){
+        console.log("here23")
+        this.fcm.getToken().then(token => {
+          firebase.database().ref('tokens'+'/'+val2).set({
+            "member_email": val1,
+            "society_id": this.societyId,
+            "token": token
+          })
+        })
+
+        this.fcm.onNotification().subscribe(data => {
+          if(data.wasTapped){
+            console.log("Received in background");
+          } else {
+            console.log("Received in foreground");
+          };
+        });
+
+        this.fcm.onTokenRefresh().subscribe(token => {
+          firebase.database().ref('tokens'+'/'+val2).set({
+            "member_email": val1,
+            "society_id": this.societyId,
+            "token": token
+          })
+        });
+      }
+    })
+	});
+    // firebase.database().ref('users/' + userKey).set({
+  
+    // });
+
+    // this.fcm.onTokenRefresh().subscribe(token => {
+    // });
+    // this.fcm.subscribeToTopic('marketing');
     this.setUpHomeScreen();
   }
 
