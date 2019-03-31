@@ -206,41 +206,9 @@ export class NewcomplaintPage {
         "is_attachment_present": this.hasAttachment,
         "location": this.complaintLocation,
         "society_id": this.societyId,
-        "time": currentTime
-    });
-
-
-    // let url = "https://upgraded-server.herokuapp.com/postComplaint?society_id=" + this.societyId +"&complainant_email=" + this.clientEmail + "&complainant_name=" + this.clientName +"&complaint_title=" + this.complaintTitle + "&complaint_description=" + this.complaintDescription + "&time=" + new Date() + "&date" + new Date() +"&location=" + this.complaintLocation + "&is_attachment_present=" + this.hasAttachment + "&admin_email_ids="+ this.societyInfo.society.admin_email_ids + "&complaint_key=" + this.complaintKey;
-
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json'
-      })
-    };
-    console.log(this.societyId, typeof(this.societyId))
-    console.log(this.societyDisplayName)
-    this.httpClient.post("https://gentle-savannah-47625.herokuapp.com/complaints/send",
-    {
-     "attachment_url": "/complaints/" + this.societyId + "/" + this.complaintKey,
-      "complainant_email": this.clientEmail,
-      "complaint_key": this.complaintKey,
-      "complainant_name": this.clientName,
-      "complaint_description": this.complaintDescription,
-      "complaint_title": this.complaintTitle,
-      "download_url": this.imageURI,
-      "is_attachment_present": this.hasAttachment,
-      "location": this.complaintLocation,
-      "society_id": this.societyId,
-      "time": new Date(),
-      "admin_email_ids": this.societyInfo.admin_email_ids,
-      "client_flat_no": this.clientFlatNo,
-      "society_display_name": this.societyDisplayName
-    },
-    httpOptions     // Headers
-    )
-    .subscribe(data  => {
-      console.log("POST Request is successful ", data);
+        "time": currentTime,
+        "unit_no": this.clientFlatNo
+    }).then(() => {
       this.loader.dismiss();
       this.alertCtrl.create({
         title: "Complaint successfully registered!",
@@ -248,12 +216,8 @@ export class NewcomplaintPage {
       }).present().then(() => {
         this.navCtrl.popToRoot();
       });
-    },
-    error  => {
-      console.log("Error", error);
-    }
+    });
 
-    );
     
     // this.http.get(url).map(res => res.json()).subscribe((val) => {
     //   if(val.data.flag && val.data.complaint_state === "COM"){

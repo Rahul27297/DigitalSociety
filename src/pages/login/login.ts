@@ -69,10 +69,12 @@ export class LoginPage {
     else {//login considered successful --> Server can be down, this case has not been considered here
       firebase.database().ref('members').orderByChild('member_email').equalTo("" + userName).once('value',(snapshot) => {
         let childsnapshotkey = Object.keys(snapshot.val())[0];
-        console.log(childsnapshotkey);
+        // console.log(childsnapshotkey, userName);
         this.societyId = Object.getOwnPropertyDescriptor(snapshot.val(), childsnapshotkey).value;
         this.societyId = this.societyId.society_id;
         this.storage.set("societyId", this.societyId);
+        this.storage.set('userKey', childsnapshotkey);
+        this.storage.set('emailId', userName);
         console.log("Society Id: " + this.societyId);
         firebase.database().ref('societies').orderByChild('society_id').equalTo("" + this.societyId).on('value', (societysnapshot) => {
           console.log("Information Stored");
