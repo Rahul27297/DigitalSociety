@@ -52,7 +52,7 @@ export class HomePage {
         this.fcm.getToken().then(token => {
           firebase.database().ref('tokens'+'/'+val2).set({
             "member_email": val1,
-            "society_id": this.societyId,
+            "society_id": this.societyId.toString(),  // please test this
             "token": token
           })
         })
@@ -68,20 +68,13 @@ export class HomePage {
         this.fcm.onTokenRefresh().subscribe(token => {
           firebase.database().ref('tokens'+'/'+val2).set({
             "member_email": val1,
-            "society_id": this.societyId,
+            "society_id": this.societyId.toString(),  // please test this
             "token": token
           })
         });
       }
     })
 	});
-    // firebase.database().ref('users/' + userKey).set({
-  
-    // });
-
-    // this.fcm.onTokenRefresh().subscribe(token => {
-    // });
-    // this.fcm.subscribeToTopic('marketing');
     this.setUpHomeScreen();
   }
 
