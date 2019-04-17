@@ -1,0 +1,13 @@
+Font design classes:
+
+1. Card - Heading : Bold, 18px;
+2. Card - Content : Regular, 16px;
+3. Card - Metadata : Regular, 12px;
+4. Card - Name : Bold, 18px;
+4. List - Element Header: Regular, 16px;
+5. List - Metadata : Regular, 12px;
+6. Button - Content : Regular, 16px;
+7. Alerts - Title : Bold, 16px;
+8. Alerts - sub-title : Regular, 16px;
+9. Alerts - buttons : Bold, 16px;
+10. Loaders - content : Regular, 16px;

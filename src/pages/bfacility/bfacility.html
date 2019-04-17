@@ -11,11 +11,12 @@
   <ion-card style="padding-bottom: 8px;">
   <div class="calendar-header">
     <ion-row class="calendar-month">
-      <ion-col col-2 *ngIf="calendar.goToPreviousMonthFlag === true" (tap)="calendar.goToPreviousMonth()"><ion-icon name="arrow-dropleft-circle"></ion-icon></ion-col>
-      <ion-col col-2 *ngIf="calendar.goToPreviousMonthFlag === false" (tap)="calendar.goToPreviousMonth()"><ion-icon isActive="false" name="arrow-dropleft"></ion-icon></ion-col>
+      <!--ion-col col-2 *ngIf="this.goToPreviousMonthFlag === true" (tap)="this.goToPreviousMonth()"><ion-icon name="arrow-dropleft-circle"></ion-icon></ion-col-->
+      <ion-col col-2 (tap)="this.goToPreviousMonth()"><ion-icon *ngIf="this.goToPreviousMonthFlag" isActive="false" name="arrow-dropleft"></ion-icon></ion-col>
       <ion-col col-8>{{calendar.currentMonth}} {{calendar.currentYear}}</ion-col>
-      <ion-col col-2 *ngIf="calendar.goToNextMonthFlag" (tap)="calendar.goToNextMonth()"><ion-icon name="arrow-dropright-circle"></ion-icon></ion-col>
-      <ion-col col-2 *ngIf="calendar.goToNextMonthFlag === false" (tap)="calendar.goToNextMonth()"><ion-icon isActive="false" name="arrow-dropright"></ion-icon></ion-col>
+      <!--ion-col col-2 *ngIf="this.goToNextMonthFlag" (tap)="this.goToNextMonth()"><ion-icon name="arrow-dropright-circle"></ion-icon></ion-col-->
+      <!--*ngIf="this.goToNextMonthFlag === false"-->
+      <ion-col col-2 (tap)="this.goToNextMonth()"><ion-icon *ngIf="this.goToNextMonthFlag" isActive="false" name="arrow-dropright"></ion-icon></ion-col>
     </ion-row>
   </div>
   <div class="calendar-body">
@@ -31,11 +32,20 @@
       </ion-row>
       <ion-row class="calendar-date">
         <ion-col col-1 *ngFor="let lastDay of calendar.daysInLastMonth" class="last-month">{{lastDay}}</ion-col>
-        <ion-col col-1 *ngFor="let day of calendar.daysInThisMonth" (tap)=dateSelected(day,calendar.currentMonth,calendar.currentYear)>
-          <span class="last-month"  *ngIf="currentDate > day && calendar.selectedDate !== day && calendar.goToNextMonthFlag" >{{day}}</span>
-          <span *ngIf="currentDate > day && calendar.selectedDate !== day && calendar.goToPreviousMonthFlag" style="color: #000000">{{day}}</span>
-          <span  *ngIf="currentDate <= day && calendar.selectedDate !== day" style="color: #000000">{{day}}</span>
-          <span class="currentDate" *ngIf="calendar.selectedDate === day">{{day}}</span>
+        <ion-col col-1 *ngFor="let day of calendar.daysInThisMonth" (tap)=dateSelected(day,calendar.date.getMonth(),calendar.currentYear)>
+          <span class="last-month"  *ngIf="currentDate > day && this.goToPreviousMonthFlag == false" >{{day}}</span>
+          <span *ngIf="currentDate > day  && calendar.selectedDate!= day && this.goToPreviousMonthFlag && this.goToNextMonthFlag" style="color: #000000">{{day}}</span>
+          <span *ngIf="currentDate >= day  && calendar.selectedDate!= day && this.goToPreviousMonthFlag && this.goToNextMonthFlag == false && day < limitDate.getDate()" style="color: #000000">{{day}}</span>
+          <span *ngIf="currentDate >= day  && this.goToPreviousMonthFlag && this.goToNextMonthFlag == false && day >= limitDate.getDate()" class="last-month">{{day}}</span>
+          <span *ngIf="currentDate < day  && calendar.selectedDate!= day && this.goToPreviousMonthFlag && this.goToNextMonthFlag == false && day < limitDate.getDate()" style="color: #000000">{{day}}</span>
+          <span *ngIf="currentDate < day  && this.goToPreviousMonthFlag && this.goToNextMonthFlag == false && day >= limitDate.getDate()" class="last-month">{{day}}</span>
+          <span *ngIf="currentDate <= day  && calendar.selectedDate != day && this.goToNextMonthFlag == true" style="color: #000000">{{day}}</span>
+          <span *ngIf="currentDate < day  && calendar.selectedDate!= day && this.goToNextMonthFlag == false && this.goToPreviousMonthFlag == false && day <= limitDate.getDate()"  style="color: #000000">{{day}}</span>
+          <span *ngIf="currentDate < day  && this.goToNextMonthFlag == false && this.goToPreviousMonthFlag == false && day > limitDate.getDate()"  class="last-month">{{day}}</span>
+          <span class="currentDate" *ngIf="calendar.selectedDate === day && goToPreviousMonthFlag == false">{{day}}</span>
+          <span class="currentDate" *ngIf="calendar.selectedDate === day && (goToNextMonthFlag == false && goToPreviousMonthFlag == true) && calendar.selectedDate < limitDate.getDate() && this.isSelected">{{day}}</span>
+          <span  class="currentDate" *ngIf="calendar.selectedDate === day  && this.goToPreviousMonthFlag && this.goToNextMonthFlag && this.isSelected">{{day}}</span>
+          <span *ngIf="calendar.selectedDate === day  && this.goToPreviousMonthFlag && !this.isSelected" style="color: #000000">{{day}}</span>
         </ion-col>
         <ion-col col-1 *ngFor="let nextDay of calendar.daysInNextMonth" class="next-month" >{{nextDay}}</ion-col>
       </ion-row>
@@ -46,15 +56,22 @@
   <div>
     <ion-grid>
       <ion-row>
-        <ion-label style="font-size: 18px">Available Time Slots</ion-label>
+        <ion-label style="font-size: 18px">Available Time Slots <b>( {{this.dateSelectedString}} )</b></ion-label>
       </ion-row>
+      <ion-row style="margin-bottom: 8px;">
+          <ion-col col-4 class="available"><ion-icon name="square" style="margin-right: 4px"></ion-icon>Available</ion-col>
+          <ion-col col-4 class="booked"><ion-icon name="square" style="margin-right: 4px"></ion-icon>Booked</ion-col>
+          <ion-col col-4 class="restricted"><ion-icon name="square" style="margin-right: 4px"></ion-icon>Restricted</ion-col>
+        </ion-row>
       <ion-row *ngIf="!this.areSlotsAvailable">
           <ion-label style="font-size: 18px; color: red">No Slots Available for Selected Date</ion-label>
       </ion-row>
       <ion-row>
         <ion-col col-3 *ngFor="let slot of slotsArray">
-          <button ion-button clear *ngIf="slot === selectedSlotTime; else otherslots" class="selected-slot" (tap)=slotSelected(slot)>{{slot}}</button>
-          <ng-template #otherslots><button ion-button outline (tap)=slotSelected(slot) class="slotButton">{{slot}}</button></ng-template>
+          <button ion-button outline *ngIf="slot.slotType == 'restrictedSlot'" class="restricted-slot-button">{{slot.timeValue}}</button>
+          <button ion-button outline *ngIf="slot.slotType == 'bookedSlot'" class="booked-slot-button">{{slot.timeValue}}</button>
+          <button ion-button outline *ngIf="slot.slotType == 'availableSlot'&& slot.timeValue != selectedSlotTime" class="available-slot-button" (tap)=slotSelected(slot.timeValue)>{{slot.timeValue}}</button>
+          <button ion-button clear *ngIf="slot.timeValue === selectedSlotTime && slot.slotType == 'availableSlot'" class="selected-slot">{{slot.timeValue}}</button>
         </ion-col>
       </ion-row>
     </ion-grid>

@@ -62,15 +62,60 @@ font-size: 18px;
 }
 }
 
-.slotButton{
+.booked-slot-button{
   font-size: 18px;
-  border-color: color($colors, primary);
+  //border-color: color($colors, grey);
+  border-color: grey;
+  color: black;
+  border-right: 6px solid grey;
+  margin: 0px;
+  padding: 0px;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.restricted-slot-button{
+  font-size: 18px;
+ // border-color: color($colors, red);
+ border-color: red;
+  color: black;
+  border-right: 6px solid red;
+  margin: 0px;
+  padding: 0px;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.available-slot-button{
+  font-size: 18px;
+  //border-color: color($colors, green);
+  border-color: green;
+  border-right: 6px solid green;
   color: black;
   margin: 0px;
   padding: 0px;
   padding-left: 0.5em;
   padding-right: 0.5em;
   margin-bottom: 0.5em;
+}
+
+.available{
+  color: green;
+  font-size: 16px;
+  text-align: left;
+}
+
+.booked{
+  color: darkgray;
+  font-size: 16px;
+}
+
+.restricted{
+  color: red;
+  font-size: 16px;
+  text-align: right;
 }
 
 .transparent-slot{

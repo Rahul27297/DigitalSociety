@@ -137,6 +137,7 @@ export class BookingsPage {
         })
         this.noOfUpcomingBookings = BookingsTemp.length;
         for(let i = 0; i < BookingsTemp.length; i++){
+          console.log(BookingsTemp[i]);
           let eventName = BookingsTemp[i].event;
           let eventDateAndTime = (BookingsTemp[i].start_date).split(" ");
           let dateArray = eventDateAndTime[0].split("-");

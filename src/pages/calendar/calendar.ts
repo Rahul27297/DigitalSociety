@@ -22,14 +22,10 @@ export class CalendarPage {
   public currentMonth: any;
   public currentYear: any;
   public currentDate: any;
-  public goToNextMonthFlag: boolean;
-  public goToPreviousMonthFlag : boolean;
   public selectedDate: any;
   constructor() {
     this.date = new Date();
     this.getDaysOfMonth();
-    this.goToNextMonthFlag = true;
-    this.goToPreviousMonthFlag = false;
   }
 
   getDaysOfMonth() {
@@ -66,28 +62,6 @@ export class CalendarPage {
     if(totalDays<36) {
       for(let i = (7-lastDayThisMonth); i < ((7-lastDayThisMonth)+7); i++) {
         this.daysInNextMonth.push(i);
-      }
-    }
-  }
-
-  goToNextMonth() {
-    if(this.goToNextMonthFlag){
-      this.goToNextMonthFlag = false;
-      this.goToPreviousMonthFlag = true;
-      this.date = new Date(this.date.getFullYear(), this.date.getMonth()+2, 0);
-      this.getDaysOfMonth();
-    }
-  }
-
-  goToPreviousMonth() {
-    if(this.goToPreviousMonthFlag){
-      this.goToNextMonthFlag = true;
-      this.goToPreviousMonthFlag = false;
-      this.date = new Date(this.date.getFullYear(), this.date.getMonth(), 0);
-      this.getDaysOfMonth();
-      let d1 = new Date();
-      if(this.selectedDate < d1.getDate() || this.selectedDate > this.daysInThisMonth.length){
-        this.selectedDate = d1.getDate();
       }
     }
   }
