@@ -63,7 +63,7 @@ font-size: 18px;
 }
 
 .booked-slot-button{
-  font-size: 18px;
+  font-size: 16px;
   //border-color: color($colors, grey);
   border-color: grey;
   color: black;
@@ -73,10 +73,11 @@ font-size: 18px;
   padding-left: 0.5em;
   padding-right: 0.5em;
   margin-bottom: 0.5em;
+  background-color: transparent;
 }
 
 .restricted-slot-button{
-  font-size: 18px;
+  font-size: 16px;
  // border-color: color($colors, red);
  border-color: red;
   color: black;
@@ -86,11 +87,13 @@ font-size: 18px;
   padding-left: 0.5em;
   padding-right: 0.5em;
   margin-bottom: 0.5em;
+  background-color: transparent;
 }
 
 .available-slot-button{
-  font-size: 18px;
+  font-size: 16px;
   //border-color: color($colors, green);
+  background-color: transparent;
   border-color: green;
   border-right: 6px solid green;
   color: black;
@@ -124,7 +127,7 @@ font-size: 18px;
 
 .selected-slot{
   background-color: color($colors, primary-dark);
-  font-size: 18px;
+  font-size: 16px;
   border-color: color($colors, primary);
   color: white;
   margin: 0px;

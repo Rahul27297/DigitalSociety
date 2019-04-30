@@ -330,33 +330,36 @@ export class BfacilityPage {
 			facilityTnC: this.facility.terms_and_conditions
 		});
 	}
+	
 
 	dateSelected(day,month,year){
 		this.loader = this.loadingCtrl.create({
 			content: "Please wait..."
 		});
-		this.loader.present();
+		if (this.goToPreviousMonthFlag) this.isSelected = true;
+		this.calendar.selectedDate = day;
+		this.loader.present().then(() => {
 		console.log(day + month + year);
 		//this check is for avoiding selecting invalid or greyed out date
 		
 		this.dateSelectedString = day + " " + this.calendar.monthNames[month] + " " + year;
-		if ((day < this.calendar.currentDate && this.goToPreviousMonthFlag) || day > this.calendar.currentDate) {
-		if (this.goToPreviousMonthFlag) this.isSelected = true;
-		this.calendar.selectedDate = day;
-		this.ruleEngineInstance.ruleEngineDriver(new Date(year, month, day));
-		this.slotsArray = this.ruleEngineInstance.getSlotArray();
-		if (this.slotsArray.length == 0) this.areSlotsAvailable = false;
-		else this.areSlotsAvailable = true;
-		console.log(new Date(year, month, day));
-		console.log(this.slotsArray);
-		this.loader.dismiss();
-	}
+		if ((day < this.calendar.currentDate && this.goToPreviousMonthFlag) || day >= this.calendar.currentDate) {
+			this.ruleEngineInstance.ruleEngineDriver(new Date(year, month, day));
+			this.slotsArray = this.ruleEngineInstance.getSlotArray();
+			if (this.slotsArray.length == 0) this.areSlotsAvailable = false;
+			else this.areSlotsAvailable = true;
+			console.log(new Date(year, month, day));
+			console.log(this.slotsArray);
+			this.loader.dismiss();
+		}
+
+	});
 	}
 }
 
 export class ruleEngineFactory {
 
-	private slotArray : Array<{timeValue: string, slotType: string}>;
+	private slotArray : Array<{timeValue: string, displayTimeValue: string, slotType: string}>;
 	private slotArrayFromSimplyBook : any; 
 	private ruleIdentifier : any;
 	private ruleValue : any;
@@ -438,7 +441,7 @@ export class ruleEngineFactory {
 		console.log("ruleEngineFactory: getSlotsFromSimplyBook: slotArrayFromSimplyBook: " + this.slotArrayFromSimplyBook);
 	}
 
-	getBookingsForParticularFacility(upcomingOnly, monthlyOnly) {
+	getBookingsForParticularFacility(upcomingOnly, monthlyOnly, isCurrentMonth) {
 		let Bookings = [];
 		let date = new Date();
 		let epoch_today = date.getTime();
@@ -446,18 +449,24 @@ export class ruleEngineFactory {
 		this.clientBookings.forEach(booking => {
 			if (+booking.event_id === this.serviceId) {
 				if (upcomingOnly) {
-					let bDateTime = booking.start_date.replace(" ", "T");
+					let bDateTime = booking.start_date.replace(" ", "T");//replacing with T to parse into epoch
 					let bDate = Date.parse(bDateTime);
 					if (bDate > epoch_today){
 						Bookings.push(booking);	
 					}
 				}
 				else if (monthlyOnly) {
+					console.log(Object.keys(booking));
+					console.log(Object.getOwnPropertyDescriptor(booking,Object.keys(booking)[11]));
 					let bDateTime = booking.start_date.replace(" ", "T");
 					let bDate = Date.parse(bDateTime);
 					let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 1);//00:00 on first day of next month
+					console.log(lastDay);
 					let epoch_lastday = lastDay.getTime();
-					if (bDate < epoch_lastday) {
+					if (bDate < epoch_lastday && new Date(bDate).getMonth() === this.dateSelectedGlobal.getMonth()) {
+						Bookings.push(booking);
+					}
+					else if(bDate >= epoch_lastday && new Date(bDate).getMonth() === this.dateSelectedGlobal.getMonth()){
 						Bookings.push(booking);
 					}
 				}
@@ -476,7 +485,11 @@ export class ruleEngineFactory {
 		console.log("ruleEngineFactory: checkForMaxBookings: maxBookingRuleIndex: " + maxBookingRuleIndex);
 		if (maxBookingRuleIndex != -1) {
 			console.log("ruleEngineFactory: checkForMaxBookings: Info: Rule M01 is applicable");
-			let totalBookings = this.getBookingsForParticularFacility(false,true);
+			let isCurrentMonth;
+			if (new Date().getMonth() === this.dateSelectedGlobal.getMonth()) isCurrentMonth = true;
+			else isCurrentMonth = false;
+			console.log("ruleEngineFactory: checkForMaxBookings: isCurrentMonth: " + isCurrentMonth);
+			let totalBookings = this.getBookingsForParticularFacility(false,true, isCurrentMonth);
 			console.log("ruleEngineFactory: checkForMaxBookings: totalBookings: " + totalBookings);
 			if (totalBookings.length < this.ruleValue[maxBookingRuleIndex]) {
 				return true; 
@@ -496,10 +509,13 @@ export class ruleEngineFactory {
 		console.log("ruleEngineFactory: checkForUpcomingBooking: upcomingBookingRuleIndex: " + upcomingBookingRuleIndex);
 		if (upcomingBookingRuleIndex != -1) {
 			console.log("ruleEngineFactory: checkForUpcomingBooking: Info: Rule M02 is applicable");
-			let upcomingBookings = this.getBookingsForParticularFacility(true,false);
+			let upcomingBookings = this.getBookingsForParticularFacility(true,false,true);//3rd param here is dummy
 			console.log("ruleEngineFactory: checkForUpcomingBooking: upcomingBookings: " + upcomingBookings);
-			if (upcomingBookings.length === 0) {
+			if (this.ruleValue[upcomingBookingRuleIndex] == "false") {
 				return true; 
+			}
+			else if(upcomingBookings.length === 0 && this.ruleValue[upcomingBookingRuleIndex] == "true"){
+				return true;
 			}
 			else {
 				return false;
@@ -530,33 +546,37 @@ export class ruleEngineFactory {
 		console.log("ruleEngineFactory: populateSlotArray: endTime: " + endTime);
 
 		for (let i = startTime; i < endTime; i=i+this.timeSlot+slotBreakDuration) {
-			let mins = (i - Math.floor(i)) * 60; 
+			let mins = (i - Math.floor(i)) * 60;
+			let finalTime = i + this.timeSlot;
 			let displayTime;
-			if (this.dateSelectedGlobal.getDate() == new Date().getDate() && this.dateSelectedGlobal.getMonth() == new Date().getMonth() && this.dateSelectedGlobal.getFullYear() == new Date().getFullYear()) {
-				if ( i > time ) {
-					if (mins < 10){
-						displayTime = Math.floor(i).toString() + ":0" + mins.toString();
-					}
-					else {
-						displayTime = Math.floor(i).toString() + ":" + mins.toString();
-					}
-					console.log(displayTime);
-					this.slotArray.push({timeValue: displayTime, slotType: ""});
-				}
-			}
-			else {
-				if (mins < 10){
-					displayTime = (i < 10 ? ("0" + Math.floor(i).toString()) : Math.floor(i).toString()) + ":0" + mins.toString();
-				}
-				else {
-					displayTime = (i < 10 ? ("0" + Math.floor(i).toString()) : Math.floor(i).toString()) + ":" + mins.toString();
-				}
-
-				console.log(displayTime);
-				this.slotArray.push({timeValue: displayTime, slotType: ""});
-			}
+			displayTime = this.getDisplayTime(i);
+			console.log(displayTime);			
+			let slotDisplayTime = displayTime + " - " + this.getDisplayTime(i+this.timeSlot);
+			this.slotArray.push({timeValue: displayTime, displayTimeValue: slotDisplayTime, slotType: ""});
 		}
 		console.log("ruleEngineFactory: populateSlotArray: slotArray: " + this.slotArray);
+	}
+
+	getDisplayTime(time){
+		let mins = (time - Math.floor(time)) * 60;
+		let hour = Math.floor(time);
+		let displayMins;
+		let displayHours;
+		if (mins < 10){
+			displayMins = "0" + mins;
+		}
+		else {
+			displayMins = mins;
+		}
+
+		if (hour < 10){
+			displayHours = "0" + hour;
+		}
+		else{
+			displayHours = hour;
+		}
+		let displayTime = displayHours + ":" + displayMins;
+		return displayTime;
 	}
 
 }
