@@ -1,0 +1,3 @@
+1. add user related data in firebaes
+2. create member provider to access this data
+3. use this data reference in all pages

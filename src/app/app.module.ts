@@ -27,7 +27,6 @@ import { NoNetworkPage } from '../pages/no-network/no-network';
 import { BookingConfirmationPage } from '../pages/booking-confirmation/booking-confirmation';
 import { SignupPage } from '../pages/signup/signup';
 import { IntroPage } from '../pages/intro/intro';
-import { ComplaintsPage } from '../pages/complaints/complaints';
 import { NewcomplaintPage } from '../pages/newcomplaint/newcomplaint';
 import { Camera } from '@ionic-native/camera';
 import { ConstantsProvider } from '../providers/constants/constants';
@@ -39,6 +38,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { BackgroundMode } from '@ionic-native/background-mode';
 import { FCM } from '@ionic-native/fcm';
+import { SocietiesProvider } from '../providers/society/society';
 
 
 @NgModule({
@@ -59,7 +59,6 @@ import { FCM } from '@ionic-native/fcm';
     SignupPage,
     LogoutPage,
     IntroPage,
-    ComplaintsPage,
     NewcomplaintPage
   ],
   imports: [
@@ -87,7 +86,6 @@ import { FCM } from '@ionic-native/fcm';
     SignupPage,
     LogoutPage,
     IntroPage,
-    ComplaintsPage,
     NewcomplaintPage
   ],
   providers: [
@@ -108,7 +106,8 @@ import { FCM } from '@ionic-native/fcm';
     FirebaseProvider,
     InAppBrowser,
     BackgroundMode,
-    FCM
+    FCM,
+    SocietiesProvider
   ]
 })
 export class AppModule {

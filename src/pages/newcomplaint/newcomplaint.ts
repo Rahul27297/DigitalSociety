@@ -10,6 +10,7 @@ import { Storage } from '@ionic/storage';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { BackgroundMode } from '@ionic-native/background-mode';
+import { SocietiesProvider } from '../../providers/society/society';
 
 /**
  * Generated class for the NewcomplaintPage page.
@@ -42,12 +43,13 @@ export class NewcomplaintPage {
   private hasAttachment: boolean;
   private clientFlatNo: any;
   private societyDisplayName: any;
-  constructor(public backgroundMode: BackgroundMode, public navCtrl: NavController, public navParams: NavParams, public camera: Camera, public loadingCtrl: LoadingController, public toastCtrl: ToastController, private formBuilder: FormBuilder, private actionSheetCtrl: ActionSheetController, private http: Http, private storage: Storage, private alertCtrl: AlertController, private httpClient: HttpClient) {
+  constructor(public societyProvider: SocietiesProvider, public backgroundMode: BackgroundMode, public navCtrl: NavController, public navParams: NavParams, public camera: Camera, public loadingCtrl: LoadingController, public toastCtrl: ToastController, private formBuilder: FormBuilder, private actionSheetCtrl: ActionSheetController, private http: Http, private storage: Storage, private alertCtrl: AlertController, private httpClient: HttpClient) {
     this.complaintKey = firebase.database().ref("complaints").push().key
     this.http = http;
     this.hasAttachment = false;
     this.societyId = navParams.get('societyId');
     this.societyInfo = navParams.get('societyInfo');
+    console.log(this.societyProvider);
     this.complaintForm = this.formBuilder.group({
       complaintTitle: ['', Validators.required],
       complaintDescription: ['', Validators.required],
@@ -62,6 +64,48 @@ export class NewcomplaintPage {
     this.firebaseComplaintStorageRed = firebase.storage().ref();
     
   }
+
+  ionViewDidEnter() {
+    console.log("here");
+
+
+    this.loader = this.loadingCtrl.create({
+      content: "Please wait..."
+    });
+    this.loader.present().then(() => {
+
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          // User is signed in.
+          var displayName = user.displayName;
+          var email = user.email;
+          var emailVerified = user.emailVerified;
+          var photoURL = user.photoURL;
+          var isAnonymous = user.isAnonymous;
+          var uid = user.uid;
+          var providerData = user.providerData;
+          console.log(user)
+          this.loader.dismiss();
+          // ...
+        } else {
+          // User is signed out.
+          // ...
+          console.log("signedout", this)
+          this.loader.dismiss();
+
+        }
+
+      });
+
+    })  
+
+
+  }
+
+
+
+
+
   presentActionSheet() {
     const actionSheet = this.actionSheetCtrl.create({
       title: "Select Image Using: ",
@@ -154,10 +198,6 @@ export class NewcomplaintPage {
         console.log("error");
       });
     }
-  }
-
-  ionViewDidEnter() {
-    console.log('ionViewDidLoad NewcomplaintPage');
   }
 
   registerComplaint() {
