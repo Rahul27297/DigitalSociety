@@ -11,6 +11,7 @@ import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { BackgroundMode } from '@ionic-native/background-mode';
 import { SocietiesProvider } from '../../providers/society/society';
+import { UserProvider } from '../../providers/user/user';
 
 /**
  * Generated class for the NewcomplaintPage page.
@@ -43,7 +44,7 @@ export class NewcomplaintPage {
   private hasAttachment: boolean;
   private clientFlatNo: any;
   private societyDisplayName: any;
-  constructor(public societyProvider: SocietiesProvider, public backgroundMode: BackgroundMode, public navCtrl: NavController, public navParams: NavParams, public camera: Camera, public loadingCtrl: LoadingController, public toastCtrl: ToastController, private formBuilder: FormBuilder, private actionSheetCtrl: ActionSheetController, private http: Http, private storage: Storage, private alertCtrl: AlertController, private httpClient: HttpClient) {
+  constructor(public userProvider: UserProvider, public societyProvider: SocietiesProvider, public backgroundMode: BackgroundMode, public navCtrl: NavController, public navParams: NavParams, public camera: Camera, public loadingCtrl: LoadingController, public toastCtrl: ToastController, private formBuilder: FormBuilder, private actionSheetCtrl: ActionSheetController, private http: Http, private storage: Storage, private alertCtrl: AlertController, private httpClient: HttpClient) {
     this.complaintKey = firebase.database().ref("complaints").push().key
     this.http = http;
     this.hasAttachment = false;
@@ -55,54 +56,16 @@ export class NewcomplaintPage {
       complaintDescription: ['', Validators.required],
       complaintLocation: ['', Validators.required]
     });
-    this.storage.get('Info').then((val) => {
-      this.clientEmail = val.email;
-      this.clientName = val.name;
-      this.clientFlatNo = val.address1;
-    });
+    // this.storage.get('Info').then((val) => {
+      console.log(this.userProvider)
+      this.clientEmail = this.userProvider['userData']['member_email'];
+      this.clientName = this.userProvider['userData']['name'];
+      this.clientFlatNo = this.userProvider['userData']['unit_no'];
+    // });
     this.societyDisplayName = this.societyInfo.display_name;
     this.firebaseComplaintStorageRed = firebase.storage().ref();
     
   }
-
-  ionViewDidEnter() {
-    console.log("here");
-
-
-    this.loader = this.loadingCtrl.create({
-      content: "Please wait..."
-    });
-    this.loader.present().then(() => {
-
-      firebase.auth().onAuthStateChanged((user) => {
-        if (user) {
-          // User is signed in.
-          var displayName = user.displayName;
-          var email = user.email;
-          var emailVerified = user.emailVerified;
-          var photoURL = user.photoURL;
-          var isAnonymous = user.isAnonymous;
-          var uid = user.uid;
-          var providerData = user.providerData;
-          console.log(user)
-          this.loader.dismiss();
-          // ...
-        } else {
-          // User is signed out.
-          // ...
-          console.log("signedout", this)
-          this.loader.dismiss();
-
-        }
-
-      });
-
-    })  
-
-
-  }
-
-
 
 
 
@@ -235,7 +198,7 @@ export class NewcomplaintPage {
     // converting epoch time to seconds
 
     let currentTime = Math.floor(((new Date).getTime())/1000);
-    
+    console.log(this.clientEmail);
     firebase.database().ref('complaints/' + this.complaintKey).set({
         "attachment_url": attachment_url,
         "complainant_email": this.clientEmail,

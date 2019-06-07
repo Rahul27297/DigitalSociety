@@ -21,6 +21,7 @@ import { LoadersProvider } from '../providers/loaders/loaders';
 import * as firebase from 'firebase';
 import { environment } from '../providers/firebase/firebase';
 import { SocietiesProvider } from '../providers/society/society';
+import { UserProvider } from '../providers/user/user';
 
 
 import {enableProdMode} from '@angular/core';
@@ -42,7 +43,7 @@ export class MyApp {
   private clientName: any; //used for sidemenu
   private clientAddress: any; //used for sidemenu
   private societyName: any; //used for sidemenu
-  constructor(public societiesProvider: SocietiesProvider, public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, private alertCtrl: AlertController, private toastCtrl: ToastController, private loadingCtrl: LoadingController, private network: Network, private http: Http) {
+  constructor(public userProvider: UserProvider, public societiesProvider: SocietiesProvider, public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, private alertCtrl: AlertController, private toastCtrl: ToastController, private loadingCtrl: LoadingController, private network: Network, private http: Http) {
     //this.checkInstall();
     firebase.initializeApp(environment.firebase);
     this.checkLogin();
@@ -92,8 +93,9 @@ export class MyApp {
         firebase.database().ref('members').orderByChild('member_email').equalTo("" + email).once('value',(snapshot) => {
           let childsnapshotkey = Object.keys(snapshot.val())[0];
           // console.log(childsnapshotkey, email);
-          this.societyId = Object.getOwnPropertyDescriptor(snapshot.val(), childsnapshotkey).value;
-          this.societyId = this.societyId.society_id;
+          let userInfo = Object.getOwnPropertyDescriptor(snapshot.val(), childsnapshotkey).value;
+          this.userProvider.init(userInfo)
+          this.societyId = userInfo.society_id;
           this.storage.set("societyId", this.societyId);
           this.storage.set('userKey', childsnapshotkey);
           this.storage.set('emailId', email);

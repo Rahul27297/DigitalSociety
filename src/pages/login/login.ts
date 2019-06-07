@@ -68,7 +68,8 @@ export class LoginPage {
       // ...
     });
     //let serverErrorMessage = "Unable to connect to Server. Please try later";
-    // this.clientinfo = this.appmodule.client.getClientInfoByLoginPassword(userName, password);
+    this.clientinfo = this.appmodule.client.getClientInfoByLoginPassword(userName, password);
+    console.log(this.clientinfo)
     // if (this.clientinfo.code == -32065) {
     //   this.loader.dismiss();
     //   this.invalidLoginAlert(invalidLoginCredsMessage);

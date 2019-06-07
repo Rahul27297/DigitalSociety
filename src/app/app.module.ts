@@ -39,6 +39,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { BackgroundMode } from '@ionic-native/background-mode';
 import { FCM } from '@ionic-native/fcm';
 import { SocietiesProvider } from '../providers/society/society';
+import { UserProvider } from '../providers/user/user';
 
 
 @NgModule({
@@ -107,7 +108,8 @@ import { SocietiesProvider } from '../providers/society/society';
     InAppBrowser,
     BackgroundMode,
     FCM,
-    SocietiesProvider
+    SocietiesProvider,
+    UserProvider
   ]
 })
 export class AppModule {
