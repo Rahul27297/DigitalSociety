@@ -6,6 +6,8 @@ import { LoadingController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import 'rxjs/add/operator/map';
 import * as firebase from 'firebase';
+import { SocietiesProvider } from '../../providers/society/society';
+
 /**
  * Generated class for the NoticesPage page.
  *
@@ -45,8 +47,8 @@ export class NoticesPage {
     "11": "Nov",
     "12": "Dec"
   }
-  constructor(public navCtrl: NavController, public navParams: NavParams, private http: Http, private loadingCtrl: LoadingController, private storage: Storage) {
-    this.societyId = navParams.get('societyId').toString();
+  constructor(public societiesProvider: SocietiesProvider, public navCtrl: NavController, public navParams: NavParams, private http: Http, private loadingCtrl: LoadingController, private storage: Storage) {
+    this.societyId = this.societiesProvider['societyData']['society_id']
     console.log(this.monthMap)
   }
 
