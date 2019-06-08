@@ -7,6 +7,8 @@ import  { CalendarPage } from '../calendar/calendar';
 import { BfacilityPage } from '../bfacility/bfacility';
 import { Http } from '@angular/http';
 import * as firebase from 'firebase';
+import { BookingProvider } from '../../providers/booking/booking';
+
 /**
  * Generated class for the FacilitiesPage page.
  *
@@ -30,7 +32,7 @@ export class FacilitiesPage {
   private societyId :any;
   private societyInfo: any;
   private firebaseDatabase: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, public http: Http) {
+  constructor(public bookingProvider: BookingProvider, public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, public http: Http) {
     
   }
 
@@ -80,6 +82,7 @@ export class FacilitiesPage {
   }
 
   facilitySelected(item){
+    this.bookingProvider['facilityInfo'] = item;
     if(!item.is_bookable){
       this.navCtrl.push(NbfacilityPage,{
         facility: item,

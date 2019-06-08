@@ -36,7 +36,7 @@ export class HomePage {
   private hasComplaints: boolean;
   private societyName: any;
   private userKey: any;
-  constructor(private fcm: FCM, public splashScreen: SplashScreen, public navCtrl: NavController, public navParams: NavParams, private http: Http, private loadingCtrl: LoadingController, private storage: Storage, private simplyBookClient: SimplyBookClient) {
+  constructor(private fcm: FCM, public splashScreen: SplashScreen, public navCtrl: NavController, public navParams: NavParams, private http: Http, private loadingCtrl: LoadingController, private storage: Storage) {
     this.societyId = this.navParams.get('societyId');
     this.societyInfo = this.navParams.get('societyInfo');
     this.societyName = this.societyInfo.display_name;
@@ -79,6 +79,7 @@ export class HomePage {
   }
 
   setUpHomeScreen() {
+    
     let storageRef = firebase.storage();
     if (this.societyInfo != null) {
       this.hasFacilities = this.societyInfo.facilities.is_feature_available;

@@ -3,7 +3,9 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { SimplyBookClient } from '../../providers/simplybook/client';
 import { LoadingController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
-import {  Md5 } from 'ts-md5/dist/md5'
+import {  Md5 } from 'ts-md5/dist/md5';
+import { UserProvider } from '../../providers/user/user';
+
 /**
  * Generated class for the BookingsPage page.
  *
@@ -53,7 +55,7 @@ export class BookingsPage {
     "11": "Nov",
     "12": "Dec"
   };
-  constructor(public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, private storage: Storage) {
+  constructor(public userProvider: UserProvider, public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, private storage: Storage) {
     // this.simplyBookClient = new SimplyBookClient(storage);
 
     // this.md5 = new Md5();
@@ -118,8 +120,8 @@ export class BookingsPage {
           'onerror': function (error) {}
       });
   
-      this.storage.get('Info').then((val) => {
-        this.clientEmail = val.email;
+      // this.storage.get('Info').then((val) => {
+        this.clientEmail = this.userProvider['userData']['member_email']
         console.log(this.clientEmail)
         let currentDateAndTime = new Date();
         console.log(currentDateAndTime)
@@ -162,7 +164,7 @@ export class BookingsPage {
         //   "order": "date_start_asc"
         //   })
         // )
-      })
+      // })
   
       this.loader.dismiss();
     });

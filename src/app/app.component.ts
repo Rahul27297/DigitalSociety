@@ -75,7 +75,10 @@ export class MyApp {
     
         
     firebase.auth().onAuthStateChanged((user) => {
-
+      this.loader = this.loadingCtrl.create({
+        content: "Please wait..."
+      });
+      
       if (user) {
         // User is signed in.
         var displayName = user.displayName;
@@ -86,10 +89,7 @@ export class MyApp {
         var uid = user.uid;
         var providerData = user.providerData;
         console.log(this.societiesProvider)
-        this.loader = this.loadingCtrl.create({
-          content: "Please wait..."
-        });
-        this.loader.present()
+
         firebase.database().ref('members').orderByChild('member_email').equalTo("" + email).once('value',(snapshot) => {
           let childsnapshotkey = Object.keys(snapshot.val())[0];
           // console.log(childsnapshotkey, email);
@@ -102,9 +102,6 @@ export class MyApp {
           console.log("Society Id: " + this.societyId);
           firebase.database().ref('societies').orderByChild('society_id').equalTo("" + this.societyId).on('value', (societysnapshot) => {
   
-  
-  
-  
             console.log("Information Stored");
             let tempKey = Object.keys(societysnapshot.val())[0];
             this.societyInfo = Object.getOwnPropertyDescriptor(societysnapshot.val(),tempKey).value;
@@ -113,7 +110,6 @@ export class MyApp {
             this.societiesProvider.init(this.societyInfo);
   
             // this.storage.set('Password', password);
-            this.loader.dismiss();
             this.toastCtrl.create({
               message: 'Login Successful',
               duration: 2000,
@@ -134,13 +130,10 @@ export class MyApp {
         // ...
         this.nav.setRoot(LoginPage);
         console.log("signedout", this)
-        this.loader.dismiss();
 
-      }
+      }       
 
     });
-
-
   }
 
   checkInstall() {
@@ -219,20 +212,18 @@ export class MyApp {
     this.loader = this.loadingCtrl.create({
       content: "Please wait..."
     });
-    this.loader.present().then(() => {
-      firebase.auth().signOut().then(function() {
-        // Sign-out successful.
-        this.loader.dismiss();
-        this.nav.setRoot(LoginPage);
-        this.toastCtrl.create({
-          message: 'Logged Out Successfully',
-          duration: 2000,
-          position: 'bottom'
-        }).present();
-      }).catch(function(error) {
-        // An error happened.
-      });
-    })
+    firebase.auth().signOut().then(function() {
+      // Sign-out successful.
+  
+      this.nav.setRoot(LoginPage);
+      this.toastCtrl.create({
+        message: 'Logged Out Successfully',
+        duration: 2000,
+        position: 'bottom'
+      }).present();
+    }).catch(function(error) {
+      // An error happened.
+    });
 
 
  
@@ -241,16 +232,6 @@ export class MyApp {
     this.storage.remove('societyInfo');
     // this.rootPage = LoginPage;
 
-  }
-
-  displayLoader() {
-    this.loader = this.loadingCtrl.create({
-      content: "Please wait..."
-    });
-    this.loader.present();
-    setTimeout(() => {
-      this.performLogoutOperation();
-    }, 1000);
   }
 
   logout() {

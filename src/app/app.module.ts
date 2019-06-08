@@ -40,6 +40,7 @@ import { BackgroundMode } from '@ionic-native/background-mode';
 import { FCM } from '@ionic-native/fcm';
 import { SocietiesProvider } from '../providers/society/society';
 import { UserProvider } from '../providers/user/user';
+import { BookingProvider } from '../providers/booking/booking';
 
 
 @NgModule({
@@ -109,7 +110,8 @@ import { UserProvider } from '../providers/user/user';
     BackgroundMode,
     FCM,
     SocietiesProvider,
-    UserProvider
+    UserProvider,
+    BookingProvider
   ]
 })
 export class AppModule {

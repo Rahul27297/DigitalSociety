@@ -39,37 +39,57 @@ export class LoginPage {
       userName: ['', Validators.required],
       password: ['', Validators.required],
     });
-    this.appmodule = new SimplyBookClient(storage);
+    // this.appmodule = new SimplyBookClient(storage);
   }
 
   ionViewDidLoad() {
     this.splashScreen.hide();
   }
 
+
   displayLoader() {
+    // loader # 1
     this.loader = this.loadingCtrl.create({
       content: "Please wait..."
     });
     this.loader.present().then(() => {
-      this.loginForm();
-      this.loader.dismiss();
+      let userName = this.login.value.userName;
+      let password = this.login.value.password;
+      let invalidLoginCredsMessage = "Either the Email or Password provided was incorrect. Please try again.";
+      firebase.auth().signInWithEmailAndPassword(userName, password)
+      .then((user) => {
+        // loader # 1 close and navigate to home page from app.ts
+        this.loader.dismiss();
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.log(error)
+  
+        // loader # 1 close
+        this.loader.dismiss();
+  
+        this.invalidLoginAlert(invalidLoginCredsMessage);
+        // ...
+      });
     })
   }
-
+  
+  invalidLoginAlert(alertMessage: any) {
+    let invalidLoginAlert = this.alertCtrl.create({
+      title: 'Login Failure',
+      subTitle: alertMessage,
+      buttons: ['Dismiss'],
+    });
+    invalidLoginAlert.present();
+  }
 
   loginForm() {
-    let userName = this.login.value.userName;
-    let password = this.login.value.password;
-    let invalidLoginCredsMessage = "Either the Email or Password provided was incorrect. Please try again.";
-    firebase.auth().signInWithEmailAndPassword(userName, password).catch(function(error) {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      // ...
-    });
+
     //let serverErrorMessage = "Unable to connect to Server. Please try later";
-    this.clientinfo = this.appmodule.client.getClientInfoByLoginPassword(userName, password);
-    console.log(this.clientinfo)
+    // this.clientinfo = this.appmodule.client.getClientInfoByLoginPassword(userName, password);
+    // console.log(this.clientinfo)
     // if (this.clientinfo.code == -32065) {
     //   this.loader.dismiss();
     //   this.invalidLoginAlert(invalidLoginCredsMessage);
@@ -118,14 +138,7 @@ export class LoginPage {
     }*/
   }
 
-  invalidLoginAlert(alertMessage: any) {
-    let invalidLoginAlert = this.alertCtrl.create({
-      title: 'Login Failure',
-      subTitle: alertMessage,
-      buttons: ['Dismiss'],
-    });
-    invalidLoginAlert.present();
-  }
+
 
   loadSignupPage() {
     this.navCtrl.push(SignupPage);

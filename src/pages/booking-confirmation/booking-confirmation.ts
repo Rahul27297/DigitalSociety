@@ -5,6 +5,9 @@ import { AlertController } from 'ionic-angular';
 import { SimplyBookClient } from "../../providers/simplybook/client";
 import { BfacilityPage } from '../bfacility/bfacility';
 import { LoadingController } from 'ionic-angular';
+import { BookingProvider } from '../../providers/booking/booking';
+import { UserProvider } from '../../providers/user/user';
+
 /**
  * Generated class for the BookingConfirmationPage page.
  *
@@ -52,31 +55,48 @@ export class BookingConfirmationPage {
     "11": "Nov",
     "12": "Dec"
   };
-  constructor(public navCtrl: NavController, public navParams: NavParams,  private storage: Storage, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
+  constructor(public userProvider: UserProvider, public bookingProvider: BookingProvider, public navCtrl: NavController, public navParams: NavParams,  private storage: Storage, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
     // this.simplyBookClient = new SimplyBookClient();
     this.tnc = false;
     this.storage.get('Password').then((val) => {
       this.clientPassword = val;
-      this.storage.get('Info').then((val) => {
-        this.clientName = val.name;
-        this.clientPhone = val.phone;
-        this.clientEmail = val.email;
+      // this.storage.get('Info').then((val) => {
+        this.clientName = this.userProvider['userData']['name'];
+        this.clientPhone = this.userProvider['userData']['phone'];
+        this.clientEmail = this.userProvider['userData']['member_email'];
         this.clientData = {
           client_login: this.clientEmail,
           client_password: this.clientPassword
         };
+        console.log(this.bookingProvider)
         console.log(navParams)
-        this.facilityId = this.navParams.get("facilityId");
-        this.simplyBookDateFormat = this.navParams.get('simplyBookDateFormat');
-        this.serviceProviderIdInSimplybook = this.navParams.get("serviceProviderIdInSimplybook");
-        this.facilityName = this.navParams.get("facilityName");
-        this.startTime = this.navParams.get("startTime");
-        this.endTime = this.navParams.get('endTime');
-        console.log(this.endTime);
-        let dateArray = this.navParams.get("startDate").split("-");
+        console.log()
+
+        this.facilityId = this.bookingProvider['bookingData']['facilityId'];
+        this.simplyBookDateFormat = this.bookingProvider['bookingData']['simplyBookDateFormat'];
+        this.serviceProviderIdInSimplybook = this.bookingProvider['bookingData']['serviceProviderIdInSimplybook']
+        this.facilityName = this.bookingProvider['bookingData']['facilityName']
+        this.facilityTnC = this.bookingProvider['bookingData']['facilityTnC']
+        this.startTime = this.bookingProvider['bookingData']['startTime']
+        this.endTime = this.bookingProvider['bookingData']['endTime']
+        let dateArray = this.bookingProvider['bookingData']['startDate'].split("-")
         this.startDate = this.monthMap[dateArray[1]] + " " + dateArray[2] + ", " + dateArray[0];
-        this.societyId = this.navParams.get('societyId');
-        this.facilityTnC = this.navParams.get("facilityTnC");
+        this.societyId = this.bookingProvider['bookingData']['societyId']
+        // this.simplyBookDateFormat = this.navParams.get('simplyBookDateFormat');
+        // this.serviceProviderIdInSimplybook = this.navParams.get("serviceProviderIdInSimplybook");
+        // this.facilityName = this.navParams.get("facilityName");
+        // this.startTime = this.navParams.get("startTime");
+        // this.endTime = this.navParams.get('endTime');
+        // console.log(this.endTime);
+        // let dateArray = this.navParams.get("startDate").split("-");
+        // this.startDate = this.monthMap[dateArray[1]] + " " + dateArray[2] + ", " + dateArray[0];
+        // this.societyId = this.navParams.get('societyId');
+        // this.facilityTnC = this.navParams.get("facilityTnC");
+
+    
+
+
+
         console.log(this.facilityId, this.serviceProviderIdInSimplybook);
         this.storage.get('clientToken').then((val) => {
           console.log(val)
@@ -93,7 +113,7 @@ export class BookingConfirmationPage {
 
           this.loader.dismiss();
         });
-      });
+      // });
     });
   }
 

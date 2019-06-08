@@ -5,6 +5,9 @@ import { SimplyBookClient } from '../../providers/simplybook/client';
 import { BookingConfirmationPage } from '../booking-confirmation/booking-confirmation';
 import { LoadingController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+import { BookingProvider } from '../../providers/booking/booking';
+import { SocietiesProvider } from '../../providers/society/society';
+
 /**
  * Generated class for the BfacilityPage page.
  *
@@ -35,15 +38,17 @@ export class BfacilityPage {
 	public newClient: any;
 	private endTime: any;
 	public simplyBookDateFormat: any;
-	constructor(private navController:NavController, private navParams:NavParams, private loadingCtrl: LoadingController, private storage: Storage) {
-		this.societyId = navParams.get('societyId');
+	constructor(public societiesProvider: SocietiesProvider, public bookingProvider: BookingProvider, private navController:NavController, private navParams:NavParams, private loadingCtrl: LoadingController, private storage: Storage) {
+		this.societyId = this.societiesProvider['societyData']['society_id'];
+		
 		this.calendar = new CalendarPage();
 		this.selectedSlot = "transparent";
 		this.todayDate = new Date();
 		this.currentDate = this.todayDate.getDate();
 		this.calendar.selectedDate = this.currentDate;
 		//console.log(this.currentDate);
-		this.facility = this.navParams.get('facility');
+		this.facility = this.bookingProvider['facilityInfo'];
+		console.log(this.facility, this.societyId)
 		this.areSlotsAvailable = true;
 		//console.log(this.facility);
 	}
@@ -145,7 +150,7 @@ export class BfacilityPage {
 		let date = this.calendar.date.getFullYear().toString() + "-" + (this.calendar.date.getMonth()+1).toString() + "-" +this.calendar.selectedDate.toString();
 		console.log("booking date" + date+" "+this.selectedSlotTime);
 		// console.log(endTime)
-		this.navController.push(BookingConfirmationPage, {
+		this.bookingProvider.init({
 			facilityId: this.facility.service_id_in_simplybook,
 			serviceProviderIdInSimplybook: this.facility.service_provider_id_in_simplybook,
 			facilityName: this.facility.display_name,
@@ -156,7 +161,9 @@ export class BfacilityPage {
 			endTime: this.endTime,
 			societyId: this.societyId,
 			facilityTnC: this.facility.terms_and_conditions
-		});
+		})
+
+		this.navController.push(BookingConfirmationPage, {});
 	}
 
 	dateSelected(day,month,year){
