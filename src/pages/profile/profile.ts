@@ -35,7 +35,7 @@ export class ProfilePage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ProfilePage');
+    // console.log(('ionViewDidLoad ProfilePage');
     this.loader = this.loadingCtrl.create({
       content: "Please wait..."
     });

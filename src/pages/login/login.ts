@@ -65,7 +65,7 @@ export class LoginPage {
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
-        console.log(error)
+        // console.log((error)
   
         // loader # 1 close
         this.loader.dismiss();
@@ -89,7 +89,7 @@ export class LoginPage {
 
     //let serverErrorMessage = "Unable to connect to Server. Please try later";
     // this.clientinfo = this.appmodule.client.getClientInfoByLoginPassword(userName, password);
-    // console.log(this.clientinfo)
+    // // console.log((this.clientinfo)
     // if (this.clientinfo.code == -32065) {
     //   this.loader.dismiss();
     //   this.invalidLoginAlert(invalidLoginCredsMessage);
@@ -97,22 +97,22 @@ export class LoginPage {
     // else {//login considered successful --> Server can be down, this case has not been considered here
     //   firebase.database().ref('members').orderByChild('member_email').equalTo("" + userName).once('value',(snapshot) => {
     //     let childsnapshotkey = Object.keys(snapshot.val())[0];
-    //     // console.log(childsnapshotkey, userName);
+    //     // // console.log((childsnapshotkey, userName);
     //     this.societyId = Object.getOwnPropertyDescriptor(snapshot.val(), childsnapshotkey).value;
     //     this.societyId = this.societyId.society_id;
     //     this.storage.set("societyId", this.societyId);
     //     this.storage.set('userKey', childsnapshotkey);
     //     this.storage.set('emailId', userName);
-    //     console.log("Society Id: " + this.societyId);
+    //     // console.log(("Society Id: " + this.societyId);
     //     firebase.database().ref('societies').orderByChild('society_id').equalTo("" + this.societyId).on('value', (societysnapshot) => {
 
 
 
 
-    //       console.log("Information Stored");
+    //       // console.log(("Information Stored");
     //       let tempKey = Object.keys(societysnapshot.val())[0];
     //       this.societyInfo = Object.getOwnPropertyDescriptor(societysnapshot.val(),tempKey).value;
-    //       console.log(this.societyInfo);
+    //       // console.log((this.societyInfo);
 
     //       this.societiesProvider.init(this.societyInfo);
 

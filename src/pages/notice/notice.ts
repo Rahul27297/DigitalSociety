@@ -32,7 +32,7 @@ export class NoticePage {
   private downloadLoader: any;
   constructor(private platform: Platform, private iab: InAppBrowser,private actionSheetCtrl: ActionSheetController, public navCtrl: NavController, public navParams: NavParams, public http: Http,private file: File, private transfer: FileTransfer, private toastCtrl: ToastController, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
     this.notice = this.navParams.get('notice');
-    console.log(this.notice);
+    // console.log((this.notice);
       this.subject = this.notice.notice_title;
       this.date = this.notice.date;
       this.description = this.notice.notice_description;
@@ -44,7 +44,7 @@ export class NoticePage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad NoticePage');
+    // console.log(('ionViewDidLoad NoticePage');
 
  
   }
@@ -52,10 +52,10 @@ export class NoticePage {
   downloadAttachment(){
     /*let attach;
     let url = this.attachment;
-    console.log(url);
+    // console.log((url);
       const fileTransfer: FileTransferObject = this.transfer.create();
     fileTransfer.download(url,this.file.externalRootDirectory + '/Download/'+ "Noticefile.pdf").then((entry) => {
-      console.log('download complete: ' + entry.toURL());
+      // console.log(('download complete: ' + entry.toURL());
       this.toastCtrl.create({
         message: "Download Successful",
         duration: 2000
@@ -83,7 +83,7 @@ export class NoticePage {
           text: 'Cancel',
           role: 'cancel',
           handler: () => {
-            console.log('Cancel clicked');
+            // console.log(('Cancel clicked');
           }
         }
       ]
@@ -101,7 +101,7 @@ export class NoticePage {
             firebase.storage().ref(this.attachment).getDownloadURL().then((url) => {
               const fileTransfer: FileTransferObject = this.transfer.create();
               fileTransfer.download(url,this.file.externalRootDirectory + '/Download/'+ "Notice" + this.notice.searchid+".pdf").then((entry) => {
-                console.log('download complete: ' + entry.toURL());
+                // console.log(('download complete: ' + entry.toURL());
                 this.downloadLoader.dismiss();
                 this.alertCtrl.create({
                   title: "Download successful!",
@@ -113,7 +113,7 @@ export class NoticePage {
                   ]
                 }).present();
               }, (error) => {
-                console.log(error, url);
+                // console.log((error, url);
                 this.alertCtrl.create({
                   title: "Download error, try after some time",
                   buttons: [

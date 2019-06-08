@@ -68,9 +68,9 @@ export class BookingConfirmationPage {
           client_login: this.clientEmail,
           client_password: this.clientPassword
         };
-        console.log(this.bookingProvider)
-        console.log(navParams)
-        console.log()
+        // console.log((this.bookingProvider)
+        // console.log((navParams)
+        // console.log(()
 
         this.facilityId = this.bookingProvider['bookingData']['facilityId'];
         this.simplyBookDateFormat = this.bookingProvider['bookingData']['simplyBookDateFormat'];
@@ -87,7 +87,7 @@ export class BookingConfirmationPage {
         // this.facilityName = this.navParams.get("facilityName");
         // this.startTime = this.navParams.get("startTime");
         // this.endTime = this.navParams.get('endTime');
-        // console.log(this.endTime);
+        // // console.log((this.endTime);
         // let dateArray = this.navParams.get("startDate").split("-");
         // this.startDate = this.monthMap[dateArray[1]] + " " + dateArray[2] + ", " + dateArray[0];
         // this.societyId = this.navParams.get('societyId');
@@ -97,9 +97,9 @@ export class BookingConfirmationPage {
 
 
 
-        console.log(this.facilityId, this.serviceProviderIdInSimplybook);
+        // console.log((this.facilityId, this.serviceProviderIdInSimplybook);
         this.storage.get('clientToken').then((val) => {
-          console.log(val)
+          // console.log((val)
           this.newClient = new JSONRpcClient({
             'url': 'https://user-api.simplybook.me',
             'headers': {
@@ -134,7 +134,7 @@ export class BookingConfirmationPage {
   }
 
   displayTnC(){
-    console.log("displayTnc");
+    // console.log(("displayTnc");
     this.alertCtrl.create({
       title: "Terms & Conditions",
       subTitle: this.facilityTnC,
@@ -147,7 +147,7 @@ export class BookingConfirmationPage {
 
   confirmBooking(){
     let booking;
-    console.log("here");
+    // console.log(("here");
     if(this.tnc == true){
       this.alertCtrl.create({
         title: "Confirm Booking?",
@@ -158,7 +158,7 @@ export class BookingConfirmationPage {
               content: "Please wait..."
             });
             this.loader.present().then(() => {
-              console.log(this.startTime+":00")
+              // console.log((this.startTime+":00")
               booking = this.newClient.book(this.facilityId, this.serviceProviderIdInSimplybook, this.simplyBookDateFormat, this.startTime+":00", this.clientData, null , 1);
               if(Object.keys(booking)[1] == "bookings"){
                 this.loader.dismiss();
@@ -184,7 +184,7 @@ export class BookingConfirmationPage {
                 }).present();
               }		
             });
-            // console.log(this.simplyBookClient.client.book(this.facilityId, 1, this.startDate, this.startTime, this.clientData, null , 1));
+            // // console.log((this.simplyBookClient.client.book(this.facilityId, 1, this.startDate, this.startTime, this.clientData, null , 1));
 
           }
         },

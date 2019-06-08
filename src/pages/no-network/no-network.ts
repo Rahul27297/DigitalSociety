@@ -19,7 +19,7 @@ export class NoNetworkPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad NoNetworkPage');
+    // console.log(('ionViewDidLoad NoNetworkPage');
   }
 
 }

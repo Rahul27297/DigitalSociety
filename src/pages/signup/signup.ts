@@ -38,7 +38,7 @@ export class SignupPage {
     private clientObject: any;
     private disableFields: any = "no";
   constructor(public navCtrl: NavController, public navParams: NavParams, public http: Http, private formBuilder: FormBuilder, private loadingCtrl: LoadingController, private alertCtrl: AlertController, private storage: Storage) {
-    console.log('ionViewDidLoad SignupPage');
+    // console.log(('ionViewDidLoad SignupPage');
     this.loader = this.loadingCtrl.create({
       content: " Please wait..."
     });
@@ -84,7 +84,7 @@ export class SignupPage {
     else{
       let clientId = this.client[0].id;
       this.clientObject = this.simplyBookAdmin.admin.getClient(parseInt(clientId));
-      console.log(this.clientObject);
+      // console.log((this.clientObject);
       //extract last 4 digits of the client phone to compare with OTP
       let phone = this.clientObject.phone.toString();
       let last4= phone.substring(phone.length-4,phone.length);

@@ -42,21 +42,21 @@ export class FacilitiesPage {
     this.societyInfo = null;
     this.societyId = this.navParams.get('societyId');
     this.societyInfo = this.navParams.get('societyInfo');
-    console.log(this.societyId);
-    console.log(this.societyInfo);
-    console.log(this.societyInfo.facilities.list)
+    // console.log((this.societyId);
+    // console.log((this.societyInfo);
+    // console.log((this.societyInfo.facilities.list)
     this.facilitiesArray = [];
     for (let i = 0; i < this.societyInfo.facilities.list.length; i=i+1) {
       if (this.societyInfo.facilities.list[i] != null) {
         this.facilitiesArray.push(this.societyInfo.facilities.list[i]);
       }
     }
-    console.log(this.facilitiesArray);
+    // console.log((this.facilitiesArray);
 
   }
 
   // ionViewDidLoad() {
-  //   console.log('ionViewDidLoad FacilitiesPage');
+  //   // console.log(('ionViewDidLoad FacilitiesPage');
   //   this.loading = this.loadingCtrl.create({
   //     content:'Please wait...'
   //   });
@@ -77,7 +77,7 @@ export class FacilitiesPage {
   ionViewDidEnter(){
     this.getEventList();
     this.loading.dismiss();
-    console.log('ionViewDidLoad FacilitiesPag111e');
+    // console.log(('ionViewDidLoad FacilitiesPag111e');
     //this.getEventList();
   }
 

@@ -18,9 +18,9 @@ export class UserProvider {
   init(info: any) {
     // info is returns the society with a society ID. init function is called
     // in login.ts
-    // console.log(info)
+    // // console.log((info)
     this.userData = info;
-    console.log(this.userData);
+    // console.log((this.userData);
   }
 
 

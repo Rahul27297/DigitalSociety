@@ -41,14 +41,14 @@ export class HomePage {
     this.societyInfo = this.navParams.get('societyInfo');
     this.societyName = this.societyInfo.display_name;
     this.userKey = this.navParams.get('userKey');
-    console.log(this.societyId);
-    console.log(this.societyName);
+    // console.log((this.societyId);
+    // console.log((this.societyName);
     this.storage.get('emailId').then((val1) => {
-      console.log(val1);
+      // console.log((val1);
       this.storage.get('userKey').then((val2) => {
 
       if(this.societyId != null && val1 != null && val2 != null){
-        console.log("here23")
+        // console.log(("here23")
         this.fcm.getToken().then(token => {
           firebase.database().ref('tokens'+'/'+val2).set({
             "member_email": val1,
@@ -59,9 +59,9 @@ export class HomePage {
 
         this.fcm.onNotification().subscribe(data => {
           if(data.wasTapped){
-            console.log("Received in background");
+            // console.log(("Received in background");
           } else {
-            console.log("Received in foreground");
+            // console.log(("Received in foreground");
           };
         });
 

@@ -50,14 +50,14 @@ export class NewcomplaintPage {
     this.hasAttachment = false;
     this.societyId = navParams.get('societyId');
     this.societyInfo = navParams.get('societyInfo');
-    console.log(this.societyProvider);
+    // console.log((this.societyProvider);
     this.complaintForm = this.formBuilder.group({
       complaintTitle: ['', Validators.required],
       complaintDescription: ['', Validators.required],
       complaintLocation: ['', Validators.required]
     });
     // this.storage.get('Info').then((val) => {
-      console.log(this.userProvider)
+      // console.log((this.userProvider)
       this.clientEmail = this.userProvider['userData']['member_email'];
       this.clientName = this.userProvider['userData']['name'];
       this.clientFlatNo = this.userProvider['userData']['unit_no'];
@@ -89,7 +89,7 @@ export class NewcomplaintPage {
           text: 'Cancel',
           role: 'cancel',
           handler: () => {
-            console.log('Cancel clicked');
+            // console.log(('Cancel clicked');
           }
         }
       ]
@@ -129,7 +129,7 @@ export class NewcomplaintPage {
 
       }, (err) => {
         this.loader.dismiss();
-        console.log("ehrer", err);
+        // console.log(("ehrer", err);
       });
 
     })
@@ -158,13 +158,13 @@ export class NewcomplaintPage {
           this.backgroundMode.disable();
         });
       }, () => {
-        console.log("error");
+        // console.log(("error");
       });
     }
   }
 
   registerComplaint() {
-    console.log(this.clientFlatNo)
+    // console.log((this.clientFlatNo)
     this.loader = this.loadingCtrl.create({
       content: "Please Wait..."
     });
@@ -173,7 +173,7 @@ export class NewcomplaintPage {
     this.complaintDescription = this.complaintForm.value.complaintDescription;
     this.complaintLocation = this.complaintForm.value.complaintLocation;
 
-    // console.log({
+    // // console.log(({
     //   "attachment_url": "/complaints/" + this.societyId + "/" + this.complaintKey,
     //   "complainant_email": this.clientEmail,
     //   "complainant_name": this.clientName,
@@ -189,16 +189,16 @@ export class NewcomplaintPage {
     let attachment_url = null;
 
 
-    console.log(download_url, attachment_url)
+    // console.log((download_url, attachment_url)
     if(this.imageURI != undefined) {
-      console.log(download_url, attachment_url)
+      // console.log((download_url, attachment_url)
       download_url = this.imageURI;
       attachment_url = "/complaints/" + this.societyId + "/" + this.complaintKey
     }
     // converting epoch time to seconds
 
     let currentTime = Math.floor(((new Date).getTime())/1000);
-    console.log(this.clientEmail);
+    // console.log((this.clientEmail);
     firebase.database().ref('complaints/' + this.complaintKey).set({
         "attachment_url": attachment_url,
         "complainant_email": this.clientEmail,
@@ -248,9 +248,9 @@ export class NewcomplaintPage {
     let imagePathInStorage = "/complaints/" + this.societyId + "/" + this.complaintKey;
     let imageRef = this.firebaseComplaintStorageRed.child(imagePathInStorage);
     imageRef.delete().then(function(){
-      console.log("file deleted successfully")
+      // console.log(("file deleted successfully")
     }).catch(function(error){
-      console.log(error)
+      // console.log((error)
     })
     this.loader.dismiss();
     this.imageObtained = false;

@@ -71,20 +71,20 @@ export class BookingsPage {
     //   this.md5.appendStr(this.clientId).appendStr(this.clientHash).appendStr("2e92bf595e6cb07b56510c057026bf16e9d2ff5d741acaeb7e287e92116047d0");
     //   let sign = this.md5.end();
     //   this.simplyBookClient = new SimplyBookClient();
-    //   console.log(this.simplyBookClient.admin.getBookings({
+    //   // console.log((this.simplyBookClient.admin.getBookings({
     //     "client_id": "4"
     //   }), this.clientId)
     //   this.upComingBookings = this.simplyBookClient.client.getClientBookings(parseInt(this.clientId),sign,this.upcomingBookingsFilter); 
     //   this.pastBookings = this.simplyBookClient.client.getClientBookings(parseInt(this.clientId),sign,this.pastBookingsFilter);
     //   this.eventList = this.simplyBookClient.client.getEventList();
-    //   console.log(this.pastBookings);
-    //   console.log(this.eventList);
-    //   console.log(this.pastBookings.length);
+    //   // console.log((this.pastBookings);
+    //   // console.log((this.eventList);
+    //   // console.log((this.pastBookings.length);
     //   this.BookingsArray = [];
     //   let service_name:any, date: any, service_id;
     //   for(let i = this.pastBookings.length - 1 ; i >= 0 ; i=i-1){
     //     service_id = this.pastBookings[i].service_id;
-    //     console.log(service_id);
+    //     // console.log((service_id);
     //     service_name = this.eventList[service_id].name;
     //     date = this.pastBookings[i].start_date + " " + this.pastBookings[i].start_time;
     //     this.BookingsArray.push({
@@ -97,7 +97,7 @@ export class BookingsPage {
 
     // this.storage.get('Info').then((res) => {
     //   this.clientId = res.id;
-    //   console.log(this.simplyBookClient.admin.getBookings({
+    //   // console.log((this.simplyBookClient.admin.getBookings({
     //     "client_id": "1"
     //   }), this.clientId)    
     // })
@@ -108,9 +108,9 @@ export class BookingsPage {
       content: "Please wait..."
     });
     this.loader.present().then(() => {
-      console.log('ionViewDidLoad BookingsPage');
+      // console.log(('ionViewDidLoad BookingsPage');
       this.storage.get('adminToken').then((val) => {
-        console.log(val)
+        // console.log((val)
         this.newClient = new JSONRpcClient({
           'url': 'https://user-api.simplybook.me' + '/admin/',
           'headers': {
@@ -122,9 +122,9 @@ export class BookingsPage {
   
       // this.storage.get('Info').then((val) => {
         this.clientEmail = this.userProvider['userData']['member_email']
-        console.log(this.clientEmail)
+        // console.log((this.clientEmail)
         let currentDateAndTime = new Date();
-        console.log(currentDateAndTime)
+        // console.log((currentDateAndTime)
         let dd = currentDateAndTime.getDate();
         let mm = currentDateAndTime.getMonth()+1;
         let yyyy = currentDateAndTime.getFullYear();
@@ -142,22 +142,22 @@ export class BookingsPage {
           let eventName = BookingsTemp[i].event;
           let eventDateAndTime = (BookingsTemp[i].start_date).split(" ");
           let dateArray = eventDateAndTime[0].split("-");
-          console.log(dateArray);
+          // console.log((dateArray);
           eventDateAndTime[0] = this.monthMap[dateArray[1]] + " " + dateArray[2] + ", " + dateArray[0]; 
           let timeArray = eventDateAndTime[1].split(":");
           eventDateAndTime[1] = timeArray[0] + ":" + timeArray[1];
-          console.log(eventName, eventDateAndTime)
+          // console.log((eventName, eventDateAndTime)
           let nameAfterRemovingSocietyId = (eventName.split("-"))[0];
           this.facilityNames.push({
             "nameAfterRemovingSocietyId": nameAfterRemovingSocietyId,
             "eventDateAndTime": eventDateAndTime
           })
         }
-        console.log("hiii")
-        console.log(this.facilityNames)
+        // console.log(("hiii")
+        // console.log((this.facilityNames)
         this.BookingsArray = BookingsTemp;
-        console.log(dd,mm,yyyy,HH,MM,SS)
-        // console.log(this.newClient.getBookings({
+        // console.log((dd,mm,yyyy,HH,MM,SS)
+        // // console.log((this.newClient.getBookings({
         //   "client_email": this.clientEmail,
         //   "date_from": yyyy+"-"+mm+"-"+dd,
         //   // "time_from": HH+":"+MM+":"+SS,    // will fetch all bookings after this particular time, even for future dates 

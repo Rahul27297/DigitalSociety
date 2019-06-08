@@ -45,6 +45,10 @@ export class MyApp {
   private societyName: any; //used for sidemenu
   constructor(public userProvider: UserProvider, public societiesProvider: SocietiesProvider, public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, private alertCtrl: AlertController, private toastCtrl: ToastController, private loadingCtrl: LoadingController, private network: Network, private http: Http) {
     //this.checkInstall();
+    this.loader = this.loadingCtrl.create({
+      content: "Please wait..."
+    });
+    this.loader.present();
     firebase.initializeApp(environment.firebase);
     this.checkLogin();
     this.initializeApp();
@@ -75,37 +79,35 @@ export class MyApp {
     
         
     firebase.auth().onAuthStateChanged((user) => {
-      this.loader = this.loadingCtrl.create({
-        content: "Please wait..."
-      });
+
       
       if (user) {
         // User is signed in.
-        var displayName = user.displayName;
+        // var displayName = user.displayName;
         var email = user.email;
-        var emailVerified = user.emailVerified;
-        var photoURL = user.photoURL;
-        var isAnonymous = user.isAnonymous;
-        var uid = user.uid;
-        var providerData = user.providerData;
-        console.log(this.societiesProvider)
+        // var emailVerified = user.emailVerified;
+        // var photoURL = user.photoURL;
+        // var isAnonymous = user.isAnonymous;
+        // var uid = user.uid;
+        // var providerData = user.providerData;
+        // console.log((this.societiesProvider)
 
         firebase.database().ref('members').orderByChild('member_email').equalTo("" + email).once('value',(snapshot) => {
           let childsnapshotkey = Object.keys(snapshot.val())[0];
-          // console.log(childsnapshotkey, email);
+          // // console.log((childsnapshotkey, email);
           let userInfo = Object.getOwnPropertyDescriptor(snapshot.val(), childsnapshotkey).value;
           this.userProvider.init(userInfo)
           this.societyId = userInfo.society_id;
           this.storage.set("societyId", this.societyId);
           this.storage.set('userKey', childsnapshotkey);
           this.storage.set('emailId', email);
-          console.log("Society Id: " + this.societyId);
+          // console.log(("Society Id: " + this.societyId);
           firebase.database().ref('societies').orderByChild('society_id').equalTo("" + this.societyId).on('value', (societysnapshot) => {
   
-            console.log("Information Stored");
+            // console.log(("Information Stored");
             let tempKey = Object.keys(societysnapshot.val())[0];
             this.societyInfo = Object.getOwnPropertyDescriptor(societysnapshot.val(),tempKey).value;
-            console.log(this.societyInfo);
+            // console.log((this.societyInfo);
   
             this.societiesProvider.init(this.societyInfo);
   
@@ -116,6 +118,7 @@ export class MyApp {
               position: 'bottom'
             }).present();
             // this.storage.set('Info', this.clientinfo);
+            this.loader.dismiss();
             this.nav.setRoot(HomePage, {
               societyInfo: this.societyInfo,
               societyId: this.societyId
@@ -128,8 +131,9 @@ export class MyApp {
       } else {
         // User is signed out.
         // ...
+        this.loader.dismiss();
         this.nav.setRoot(LoginPage);
-        console.log("signedout", this)
+        // console.log(("signedout", this)
 
       }       
 
@@ -137,7 +141,7 @@ export class MyApp {
   }
 
   checkInstall() {
-    console.log("checkInstall");
+    // console.log(("checkInstall");
     this.storage.get('IntroDone').then((val) => {
       //if(val == null){
       this.rootPage = IntroPage;
@@ -154,10 +158,10 @@ export class MyApp {
         this.storage.get("societyId").then((val) => {
           this.societyId = val;
           firebase.database().ref('societies').orderByChild('society_id').equalTo("" + this.societyId).on('value', (societysnapshot) => {
-            console.log("Information Stored");
+            // console.log(("Information Stored");
             let tempKey = Object.keys(societysnapshot.val())[0];
             this.societyInfo = Object.getOwnPropertyDescriptor(societysnapshot.val(),tempKey).value;
-            console.log(this.societyInfo);
+            // console.log((this.societyInfo);
             this.societiesProvider.init(this.societyInfo);
             this.societyName = this.societyInfo.display_name;
             this.nav.push(HomePage, {
