@@ -10,6 +10,8 @@ import * as firebase from 'firebase';
 import { SimplyBookClient } from '../../providers/simplybook/client';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { FCM } from '@ionic-native/fcm';
+import { SocietiesProvider } from '../../providers/society/society';
+import { UserProvider } from '../../providers/user/user';
 
 /**
  * Generated class for the HomePage page.
@@ -36,47 +38,50 @@ export class HomePage {
   private hasComplaints: boolean;
   private societyName: any;
   private userKey: any;
-  constructor(private fcm: FCM, public splashScreen: SplashScreen, public navCtrl: NavController, public navParams: NavParams, private http: Http, private loadingCtrl: LoadingController, private storage: Storage) {
-    this.societyId = this.navParams.get('societyId');
-    this.societyInfo = this.navParams.get('societyInfo');
-    this.societyName = this.societyInfo.display_name;
-    this.userKey = this.navParams.get('userKey');
+  constructor(public userProvider: UserProvider, public societiesProvider: SocietiesProvider, private fcm: FCM, public splashScreen: SplashScreen, public navCtrl: NavController, public navParams: NavParams, private http: Http, private loadingCtrl: LoadingController, private storage: Storage) {
+    this.societyId = this.societiesProvider['societyData']['society_id'];
+    this.societyInfo = this.societiesProvider['societyData'];
+    this.societyName = this.societyInfo['display_name'];
+    // this.userKey = this.navParams.get('userKey');
     // console.log((this.societyId);
     // console.log((this.societyName);
-    this.storage.get('emailId').then((val1) => {
+
+    // notification token register code
+    // this.storage.get('emailId').then((val1) => {
       // console.log((val1);
-      this.storage.get('userKey').then((val2) => {
+      // this.storage.get('userKey').then((val2) => {
 
-      if(this.societyId != null && val1 != null && val2 != null){
+      // if(this.societyId != null && val1 != null && val2 != null){
         // console.log(("here23")
-        this.fcm.getToken().then(token => {
-          firebase.database().ref('tokens'+'/'+val2).set({
-            "member_email": val1,
-            "society_id": this.societyId.toString(),  // please test this
-            "token": token
-          })
-        })
+    console.log(this.userProvider)
+    this.fcm.getToken().then(token => {
+      firebase.database().ref('tokens'+'/'+this.userProvider['userKey']).set({
+        "member_email": this.userProvider['userData']['member_email'],
+        "society_id": this.societyId.toString(),  // please test this
+        "token": token
+      })
+    });
 
-        this.fcm.onNotification().subscribe(data => {
-          if(data.wasTapped){
-            // console.log(("Received in background");
-          } else {
-            // console.log(("Received in foreground");
-          };
-        });
+    // this.fcm.onNotification().subscribe(data => {
+    //   if(data.wasTapped){
+    //     // console.log(("Received in background");
+    //   } else {
+    //     // console.log(("Received in foreground");
+    //   };
+    // });
 
-        this.fcm.onTokenRefresh().subscribe(token => {
-          firebase.database().ref('tokens'+'/'+val2).set({
-            "member_email": val1,
-            "society_id": this.societyId.toString(),  // please test this
-            "token": token
-          })
-        });
-      }
-    })
-	});
+    // this.fcm.onTokenRefresh().subscribe(token => {
+    //   firebase.database().ref('tokens'+'/'+this.userProvider['userKey']).set({
+    //     "member_email": this.userProvider['userData']['member_email'],
+    //     "society_id": this.societyId.toString(),  // please test this
+    //     "token": token
+    //   })
+    // });
+  
+
     this.setUpHomeScreen();
-  }
+  
+}
 
   setUpHomeScreen() {
     
@@ -128,21 +133,21 @@ export class HomePage {
 
   facilities() {
     this.navCtrl.push(FacilitiesPage, {
-      societyId: this.societyId,
-      societyInfo: this.societyInfo
+      // societyId: this.societyId,
+      // societyInfo: this.societyInfo
     });
   }
 
   notices() {
     this.navCtrl.push(NoticesPage, {
-      societyId: this.societyId
+      // societyId: this.societyId
     });
   }
 
   complaints() {
     this.navCtrl.push(NewcomplaintPage, {
-      societyId: this.societyId,
-      societyInfo: this.societyInfo
+      // societyId: this.societyId,
+      // societyInfo: this.societyInfo
     });
   }
 

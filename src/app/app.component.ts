@@ -50,14 +50,13 @@ export class MyApp {
     });
     this.loader.present();
     firebase.initializeApp(environment.firebase);
-    this.checkLogin();
+    // this.checkLogin();
     this.initializeApp();
     this.network.onConnect().subscribe(() => {
       this.toastCtrl.create({
         message: "Network Connected",
         duration: 3000,
       }).present();
-      this.checkLogin();
 
     })
 
@@ -96,7 +95,7 @@ export class MyApp {
           let childsnapshotkey = Object.keys(snapshot.val())[0];
           // // console.log((childsnapshotkey, email);
           let userInfo = Object.getOwnPropertyDescriptor(snapshot.val(), childsnapshotkey).value;
-          this.userProvider.init(userInfo)
+          this.userProvider.init(userInfo, true, childsnapshotkey)
           this.societyId = userInfo.society_id;
           this.storage.set("societyId", this.societyId);
           this.storage.set('userKey', childsnapshotkey);
@@ -119,10 +118,8 @@ export class MyApp {
             }).present();
             // this.storage.set('Info', this.clientinfo);
             this.loader.dismiss();
-            this.nav.setRoot(HomePage, {
-              societyInfo: this.societyInfo,
-              societyId: this.societyId
-            });
+            this.splashScreen.hide();
+            this.nav.setRoot(HomePage, {});
   
   
           });
@@ -131,6 +128,7 @@ export class MyApp {
       } else {
         // User is signed out.
         // ...
+        this.splashScreen.hide();
         this.loader.dismiss();
         this.nav.setRoot(LoginPage);
         // console.log(("signedout", this)
@@ -150,35 +148,37 @@ export class MyApp {
     });
   }
 
-  checkLogin() {
-    this.storage.get('Info').then((val) => {
-      if (val == null) {
-        this.nav.setRoot(LoginPage);
-      } else {
-        this.storage.get("societyId").then((val) => {
-          this.societyId = val;
-          firebase.database().ref('societies').orderByChild('society_id').equalTo("" + this.societyId).on('value', (societysnapshot) => {
-            // console.log(("Information Stored");
-            let tempKey = Object.keys(societysnapshot.val())[0];
-            this.societyInfo = Object.getOwnPropertyDescriptor(societysnapshot.val(),tempKey).value;
-            // console.log((this.societyInfo);
-            this.societiesProvider.init(this.societyInfo);
-            this.societyName = this.societyInfo.display_name;
-            this.nav.push(HomePage, {
-              societyInfo: this.societyInfo,
-              societyId: this.societyId
-            });
-          })
-        });
-        //fetching values for sidemenu
-        this.storage.get('Info').then((val) => {
-          this.clientName = val.name;
-          this.clientAddress = val.address1;
-        });
-        //this.rootPage = HomePage;
-      }
-    });
-  }
+
+  // Redundant after firebase auth
+  // checkLogin() {
+  //   this.storage.get('Info').then((val) => {
+  //     if (val == null) {
+  //       this.nav.setRoot(LoginPage);
+  //     } else {
+  //       this.storage.get("societyId").then((val) => {
+  //         this.societyId = val;
+  //         firebase.database().ref('societies').orderByChild('society_id').equalTo("" + this.societyId).on('value', (societysnapshot) => {
+  //           // console.log(("Information Stored");
+  //           let tempKey = Object.keys(societysnapshot.val())[0];
+  //           this.societyInfo = Object.getOwnPropertyDescriptor(societysnapshot.val(),tempKey).value;
+  //           // console.log((this.societyInfo);
+  //           this.societiesProvider.init(this.societyInfo);
+  //           this.societyName = this.societyInfo.display_name;
+  //           this.nav.push(HomePage, {
+  //             societyInfo: this.societyInfo,
+  //             societyId: this.societyId
+  //           });
+  //         })
+  //       });
+  //       //fetching values for sidemenu
+  //       this.storage.get('Info').then((val) => {
+  //         this.clientName = val.name;
+  //         this.clientAddress = val.address1;
+  //       });
+  //       //this.rootPage = HomePage;
+  //     }
+  //   });
+  // }
 
   initializeApp() {
     this.splashScreen.show();
@@ -200,8 +200,8 @@ export class MyApp {
     }
     else if (page.title === "Home"){//navigate to home page
       this.nav.setRoot(HomePage,{
-        societyInfo: this.societyInfo,//used for dymanic fetching
-        societyId: this.societyId //used for layering the societies
+        // societyInfo: this.societyInfo,//used for dymanic fetching
+        // societyId: this.societyId //used for layering the societies
       });
     }
     else if (page.title === "My Bookings"){//navigate to my bookings page

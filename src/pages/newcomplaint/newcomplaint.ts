@@ -48,8 +48,8 @@ export class NewcomplaintPage {
     this.complaintKey = firebase.database().ref("complaints").push().key
     this.http = http;
     this.hasAttachment = false;
-    this.societyId = navParams.get('societyId');
-    this.societyInfo = navParams.get('societyInfo');
+    this.societyId = this.societyProvider['societyData']['society_id'];
+    this.societyInfo = this.societyProvider['societyData'];
     // console.log((this.societyProvider);
     this.complaintForm = this.formBuilder.group({
       complaintTitle: ['', Validators.required],

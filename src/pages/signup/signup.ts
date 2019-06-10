@@ -37,18 +37,18 @@ export class SignupPage {
     private client: any;
     private clientObject: any;
     private disableFields: any = "no";
-  constructor(public navCtrl: NavController, public navParams: NavParams, public http: Http, private formBuilder: FormBuilder, private loadingCtrl: LoadingController, private alertCtrl: AlertController, private storage: Storage) {
-    // console.log(('ionViewDidLoad SignupPage');
-    this.loader = this.loadingCtrl.create({
-      content: " Please wait..."
-    });
-    this.loader.present();
-    this.login = this.formBuilder.group({
-      userName: ['', Validators.required],
-      oneTimeCode: ['', Validators.required],
-      flatNumber: ['', Validators.required]
-    });
-  }
+    constructor(public navCtrl: NavController, public navParams: NavParams, public http: Http, private formBuilder: FormBuilder, private loadingCtrl: LoadingController, private alertCtrl: AlertController, private storage: Storage) {
+      // console.log(('ionViewDidLoad SignupPage');
+      this.loader = this.loadingCtrl.create({
+        content: " Please wait..."
+      });
+      this.loader.present();
+      this.login = this.formBuilder.group({
+        userName: ['', Validators.required],
+        oneTimeCode: ['', Validators.required],
+        flatNumber: ['', Validators.required]
+      });
+    }
 
   displayLoader(param){
     this.loader = this.loadingCtrl.create({

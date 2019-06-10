@@ -10,15 +10,19 @@ import * as firebase from 'firebase';
 @Injectable()
 export class UserProvider {
 
+  private isUserLoggedin: any = false;
+  private userKey: any = null;
   private userData: any;
   constructor() {
     this.userData = {}
   }
 
-  init(info: any) {
+  init(info: any, isUserLoggedin, userKey) {
     // info is returns the society with a society ID. init function is called
     // in login.ts
     // // console.log((info)
+    this.userKey = userKey;
+    this.isUserLoggedin = isUserLoggedin;
     this.userData = info;
     // console.log((this.userData);
   }
