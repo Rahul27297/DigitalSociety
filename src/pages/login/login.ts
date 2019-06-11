@@ -12,6 +12,7 @@ import { ToastController } from 'ionic-angular';
 import { HomePage } from '../home/home';
 import { LoadingController } from 'ionic-angular';
 import { SignupPage } from '../signup/signup';
+import { SignupPage2 } from '../signup2/signup2';
 import * as firebase from 'firebase';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { SocietiesProvider } from '../../providers/society/society';
@@ -141,7 +142,7 @@ export class LoginPage {
 
 
   loadSignupPage() {
-    this.navCtrl.push(SignupPage);
+    this.navCtrl.push(SignupPage2);
   }
 
 

@@ -41,6 +41,8 @@ import { FCM } from '@ionic-native/fcm';
 import { SocietiesProvider } from '../providers/society/society';
 import { UserProvider } from '../providers/user/user';
 import { BookingProvider } from '../providers/booking/booking';
+import { IonicSelectableModule } from 'ionic-selectable';
+import { SignupPage2 } from '../pages/signup2/signup2';
 
 
 @NgModule({
@@ -61,14 +63,16 @@ import { BookingProvider } from '../providers/booking/booking';
     SignupPage,
     LogoutPage,
     IntroPage,
-    NewcomplaintPage
+    NewcomplaintPage,
+    SignupPage2
   ],
   imports: [
     BrowserModule,
     HttpModule,
     IonicModule.forRoot(MyApp ),
     IonicStorageModule.forRoot(),
-    HttpClientModule
+    HttpClientModule,
+    IonicSelectableModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -88,7 +92,8 @@ import { BookingProvider } from '../providers/booking/booking';
     SignupPage,
     LogoutPage,
     IntroPage,
-    NewcomplaintPage
+    NewcomplaintPage,
+    SignupPage2
   ],
   providers: [
     StatusBar,

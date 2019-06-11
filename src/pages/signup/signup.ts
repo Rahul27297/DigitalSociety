@@ -8,13 +8,18 @@ import { AlertController } from 'ionic-angular'
 import { Storage } from '@ionic/storage';
 import { LoginPage } from '../login/login';
 import * as firebase from 'firebase';
+import { IonicSelectableComponent } from 'ionic-selectable';
+
 /**
  * Generated class for the SignupPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-
+class Port {
+  public id: number;
+  public name: string;
+}
 @IonicPage()
 @Component({
   selector: 'page-signup',
@@ -37,118 +42,83 @@ export class SignupPage {
     private client: any;
     private clientObject: any;
     private disableFields: any = "no";
+
+  
+    private signUpMemberForm: any;
+    private memberDataModel:any = {
+      society_id: null,
+      type: null,
+      unit_no: null,
+      member_email: null,
+      name: null,
+      phone: null,
+      is_approved: false
+    }
+
     constructor(public navCtrl: NavController, public navParams: NavParams, public http: Http, private formBuilder: FormBuilder, private loadingCtrl: LoadingController, private alertCtrl: AlertController, private storage: Storage) {
-      // console.log(('ionViewDidLoad SignupPage');
-      this.loader = this.loadingCtrl.create({
-        content: " Please wait..."
-      });
-      this.loader.present();
-      this.login = this.formBuilder.group({
-        userName: ['', Validators.required],
-        oneTimeCode: ['', Validators.required],
-        flatNumber: ['', Validators.required]
-      });
+      console.log(this.navParams.data.societyInfo);
+      this.memberDataModel.society_id = this.navParams.data.societyInfo.societySearch.id;
+      this.memberDataModel.type = this.navParams.data.societyInfo.type;
+      this.memberDataModel.unit_no = this.navParams.data.societyInfo.unitNo;
+
+
+    }
+    portChange(event: {
+      component: IonicSelectableComponent,
+      value: any 
+    }) {
+      console.log('port:', event.value);
     }
 
-  displayLoader(param){
-    this.loader = this.loadingCtrl.create({
-      content: " Please wait..."
-    });
-    this.loader.present();
-    if(param === "otp"){
-      setTimeout(() => {
-        this.verifyOtp();
-      }, 500);
+    ngOnInit() {
+      // this.loader = this.loadingCtrl.create({
+      //   content: " Please wait..."
+      // });
+      // this.loader.present();
+      this.signUpMemberForm = this.formBuilder.group({
+        name: ['', Validators.required],
+        phoneNo: ['', Validators.required],
+        member_email: ['', Validators.required],
+        password: ['', Validators.required],
+        confirmPassword: ['', Validators.required],
+      });    
     }
-    else{
 
-    setTimeout(() => {
-      this.signUp();
-    }, 500);
-  }
-  }
-
-  verifyOtp(){
-    this.userName = (this.login.value.userName).toString();
-    this.oneTimeCode = this.login.value.oneTimeCode;
-    this.flatNumber = this.login.value.flatNumber;
-
-    this.client = this.simplyBookAdmin.admin.getClientList(this.userName,1);
-    if(this.client.length === 0){
-      this.alertCtrl.create({
-        title: "The entered email is not registered. Please try again. If issue persists, please contact society admin",
-        buttons: ['Dismiss']
-      }).present();
-      this.loader.dismiss();
+    submitRequest() {
+      console.log(this.signUpMemberForm.value);
+      this.memberDataModel.name = this.signUpMemberForm.value.name;
+      this.memberDataModel.phone = this.signUpMemberForm.value.phoneNo;
+      this.memberDataModel.member_email = this.signUpMemberForm.value.member_email;
+      console.log(this.memberDataModel)
+      this.addRequestInFirebase();
     }
-    else{
-      let clientId = this.client[0].id;
-      this.clientObject = this.simplyBookAdmin.admin.getClient(parseInt(clientId));
-      // console.log((this.clientObject);
-      //extract last 4 digits of the client phone to compare with OTP
-      let phone = this.clientObject.phone.toString();
-      let last4= phone.substring(phone.length-4,phone.length);
 
-      // compare all the parameters and if matched then allow to set the password
-      if(this.userName === this.clientObject.email && this.flatNumber === this.clientObject.address1 
-        && this.oneTimeCode === last4){
-      this.loader.dismiss();
-      this.alertCtrl.create({
-        title: "OTP verified successfully. Please fill in further entries.",
-        buttons: ['Dismiss']
-      }).present();
-      this.visibility = "visible";
-      this.disableFields = "yes";
-      this.login = this.formBuilder.group({
-        Password: ['', Validators.required],
-        rePassword: ['', Validators.required],
-      });
+    addRequestInFirebase() {
+      // Add request in requests collection
+      firebase.database().ref('requests/').push(this.memberDataModel).then(() => {
+
+        firebase.database().ref('members/').push(this.memberDataModel).then(() => {
+          console.log("request and member added");
+
+          firebase.auth().createUserWithEmailAndPassword(this.memberDataModel.member_email, this.signUpMemberForm.value.password)
+          
+          .then((user) => {
+            console.log(user, " Created successfully!");
+            
+          })
+          
+          .catch((error) => {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.log(errorMessage);
+            // ...
+          });
+
+        })
+
+      })
     }
-    else{
-      this.loader.dismiss();
-      this.alertCtrl.create({
-        title: "The entered Email/Flat Number/OTP do not match",
-        buttons: ['Dismiss']
-      }).present();
-      
-    }
-    }
-    
-  }
 
-  signUp(){
-    this.Password = this.login.value.Password;
-    this.rePassword = this.login.value.rePassword;
-    if(this.rePassword === this.Password){
-      let client = this.simplyBookAdmin.admin.getClientList(this.userName,1);
-        this.simplyBookAdmin.admin.changeClientPassword(parseInt(this.client[0].id), this.Password, false);
-        this.loader.dismiss();
-        this.alertCtrl.create({
-          title: "Signed Up Succesfully!. Please Login to continue",
-          buttons: ['Ok']
-        }).present();
-        this.navCtrl.pop();
-    }
-    else{
-      this.loader.dismiss();
-      this.alertCtrl.create({
-        title: "The password values do not match",
-        buttons: ['Dismiss']
-      }).present();
-    }
-  }
-
-  ionViewDidEnter(){
-    this.simplyBookAdmin = new SimplyBookClient(this.storage);
-    this.loader.dismiss();
-  }
-
-  ionViewDidLoad() {
-    
-  }
-
-  loadLoginPage(){
-    this.navCtrl.pop();
-  }
-
+ 
 }

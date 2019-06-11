@@ -1,3 +1,26 @@
-1. add user related data in firebaes
-2. create member provider to access this data
-3. use this data reference in all pages
+1. Add auto filter component in signup2, which is the society search sign up page -> done 
+2. create form group and form control name for the same. -> done
+3. Apply styling -> done
+4. create client side search for society results -> done
+5. take unit no and type of resident(owner/tenant) if success -> done
+
+------------
+1. Add validation for sign up form fields
+2 . Upon success, please send welcome email to member - text to be confirmed
+a. write cloud function to send this email
+b. hit the cloud function endpoint after successful sign up of the user
+
+
+page 1) First Name, Last Name, email, phone number and password
+page 2) search and collect society name and display success/error message
+If success, collect unit number and type of resident, lease valid until ( if tenant)
+
+Upon success, please send welcome email to member - text to be confirmed
+
+Add user in firebase with status - isApproved false and also add in auth
+
+Upon approval, please send welcome email with email verification template (text to be changed)
+
+If member is not approved then do not allow to login ( app side logic)
+This is overall sign up flow … this removes all the google excel member collection and also script writing on back end. We will add OTP afterwards. Hence we are collecting phone.
+I’ve also updated sample member in firebase ( please review)

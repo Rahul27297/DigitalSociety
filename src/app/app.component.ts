@@ -101,28 +101,50 @@ export class MyApp {
           this.storage.set('userKey', childsnapshotkey);
           this.storage.set('emailId', email);
           // console.log(("Society Id: " + this.societyId);
-          firebase.database().ref('societies').orderByChild('society_id').equalTo("" + this.societyId).on('value', (societysnapshot) => {
+          // console.log(this.userProvider['userData']);
+          
+          if(this.userProvider['userData']['is_approved'] == false) {
+            console.log("user not approved")
+
+            this.alertCtrl.create({
+              title: "Your Request is Pending for Approval",
+              buttons: ['Ok']
+            }).present().then(() => {
+              // do nothing
+            });
+
+            firebase.auth().signOut().then(function() {
+              // Sign-out successful.
+            }).catch(function(error) {
+              // An error happened.
+              this.nav.setRoot(LoginPage);
+            });
+          } else {
+
+            firebase.database().ref('societies').orderByChild('society_id').equalTo("" + this.societyId).on('value', (societysnapshot) => {
   
-            // console.log(("Information Stored");
-            let tempKey = Object.keys(societysnapshot.val())[0];
-            this.societyInfo = Object.getOwnPropertyDescriptor(societysnapshot.val(),tempKey).value;
-            // console.log((this.societyInfo);
-  
-            this.societiesProvider.init(this.societyInfo);
-  
-            // this.storage.set('Password', password);
-            this.toastCtrl.create({
-              message: 'Login Successful',
-              duration: 2000,
-              position: 'bottom'
-            }).present();
-            // this.storage.set('Info', this.clientinfo);
-            this.loader.dismiss();
-            this.splashScreen.hide();
-            this.nav.setRoot(HomePage, {});
-  
-  
-          });
+              // console.log(("Information Stored");
+              let tempKey = Object.keys(societysnapshot.val())[0];
+              this.societyInfo = Object.getOwnPropertyDescriptor(societysnapshot.val(),tempKey).value;
+              // console.log((this.societyInfo);
+    
+              this.societiesProvider.init(this.societyInfo);
+    
+              // this.storage.set('Password', password);
+              this.toastCtrl.create({
+                message: 'Login Successful',
+                duration: 2000,
+                position: 'bottom'
+              }).present();
+              // this.storage.set('Info', this.clientinfo);
+              this.loader.dismiss();
+              this.splashScreen.hide();
+              this.nav.setRoot(HomePage, {});
+            });
+
+          }
+
+
         });
         // ...
       } else {
@@ -131,7 +153,7 @@ export class MyApp {
         this.splashScreen.hide();
         this.loader.dismiss();
         this.nav.setRoot(LoginPage);
-        // console.log(("signedout", this)
+        console.log("signedout")
 
       }       
 

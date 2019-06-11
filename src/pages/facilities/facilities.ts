@@ -8,6 +8,7 @@ import { BfacilityPage } from '../bfacility/bfacility';
 import { Http } from '@angular/http';
 import * as firebase from 'firebase';
 import { BookingProvider } from '../../providers/booking/booking';
+import { SocietiesProvider } from '../../providers/society/society';
 
 /**
  * Generated class for the FacilitiesPage page.
@@ -32,7 +33,7 @@ export class FacilitiesPage {
   private societyId :any;
   private societyInfo: any;
   private firebaseDatabase: any;
-  constructor(public bookingProvider: BookingProvider, public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, public http: Http) {
+  constructor(public societiesProvider: SocietiesProvider, public bookingProvider: BookingProvider, public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, public http: Http) {
     
   }
 
@@ -40,8 +41,8 @@ export class FacilitiesPage {
     // this.simplyBookClient = new SimplyBookClient();
     this.societyId = null;
     this.societyInfo = null;
-    this.societyId = this.navParams.get('societyId');
-    this.societyInfo = this.navParams.get('societyInfo');
+    this.societyId = this.societiesProvider['societyData']['society_id'];
+    this.societyInfo = this.societiesProvider['societyData'];
     // console.log((this.societyId);
     // console.log((this.societyInfo);
     // console.log((this.societyInfo.facilities.list)

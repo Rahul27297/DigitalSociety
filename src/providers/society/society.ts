@@ -22,6 +22,10 @@ export class SocietiesProvider {
     this.societyData = info;
   }
 
+  getAllSocietiesInfo() {
+
+  }
+
   getSocietyInfoByMemberEmailId() {
 
   }

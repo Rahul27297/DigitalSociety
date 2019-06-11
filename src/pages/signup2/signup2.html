@@ -38,25 +38,39 @@
     </form>
 -->
 
-  <form [formGroup]="signUpMemberForm" style="padding-top: 0px;">
+  <form [formGroup]="signUpSocietyForm" style="padding-top: 0px;">
+
     <ion-item>
-      <ion-input type="text" class="form-input-field" placeholder="Enter your Name" formControlName="name"></ion-input>
+      <ion-label>Find My Society</ion-label>
+      <ionic-selectable
+        item-content
+        formControlName="societySearch"
+        [items]="societies"
+        itemValueField="id"
+        itemTextField="name"
+        [canSearch]="true"
+        (onChange)="selectionChange($event)">
+      </ionic-selectable>
     </ion-item>
+
+
+
     <ion-item>
-      <ion-input type="text" class="form-input-field input-top-margin" placeholder="Phone No." formControlName="phoneNo"></ion-input>
+      <ion-input type="text" class="form-input-field input-top-margin" placeholder="Unit No" formControlName="unitNo"></ion-input>
     </ion-item>
-    <ion-item>
-      <ion-input type="text" class="form-input-field input-top-margin" placeholder="Email ID" formControlName="member_email"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-input type="password" class="form-input-field input-top-margin" placeholder="Password" formControlName="password"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-input type="password" class="form-input-field input-top-margin" placeholder="Confirm Password" formControlName="confirmPassword"></ion-input>
+
+    <ion-item class="resident-type">
+      <ion-label style="margin-right: 10px">Resident Type</ion-label>
+          <ion-select interface="popover" formControlName="type">
+            <ion-option value="owner">Owner</ion-option>
+            <ion-option value="tenant">Tenant</ion-option>
+          </ion-select>
     </ion-item>
 
   </form>
-  <button ion-button block large clear class="btn" style="margin-top: 24px;" (tap)=submitRequest()>Submit My Request</button>
+  <button ion-button block large clear class="btn" style="margin-top: 24px;" (tap)=loadMemberSignUpForm()>Continue</button>
 </div>
+
+
 
 </ion-content>

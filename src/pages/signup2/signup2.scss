@@ -1,0 +1,44 @@
+.submitBtn{ 
+    margin-top: 5%;
+}
+img{
+    width: auto;
+    height: auto;
+    max-width: 50%;
+    padding-bottom: 0;
+}
+.societyName{
+    font-size: 300%;
+    margin-top: 0;
+}
+.footer{
+    width: 100%;
+    font-size: 80%;
+    color: gray;
+    text-align: center;
+}
+
+.signupBtns{
+    background-color: color($colors, primary);
+    color: white;
+    width: 50%;
+    font-size: 18px;
+}
+
+.signuplabel{
+    color: blue;
+    width: 100%;
+    text-align: center;
+    margin-top: 10%;
+    font-size: 18px;
+}
+
+.resident-type {
+    margin-top: 15px;
+}
+
+// search results styling
+
+.ionic-selectable-item {
+    padding-left: 10px;
+}
