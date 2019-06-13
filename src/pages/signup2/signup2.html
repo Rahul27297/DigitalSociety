@@ -68,7 +68,7 @@
     </ion-item>
 
   </form>
-  <button ion-button block large clear class="btn" style="margin-top: 24px;" (tap)=loadMemberSignUpForm()>Continue</button>
+  <button ion-button block large clear class="btn" style="margin-top: 24px;" (tap)=loadMemberSignUpForm() [disabled]="!this.signUpSocietyForm.valid">Continue</button>
 </div>
 
 

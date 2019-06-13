@@ -170,38 +170,6 @@ export class MyApp {
     });
   }
 
-
-  // Redundant after firebase auth
-  // checkLogin() {
-  //   this.storage.get('Info').then((val) => {
-  //     if (val == null) {
-  //       this.nav.setRoot(LoginPage);
-  //     } else {
-  //       this.storage.get("societyId").then((val) => {
-  //         this.societyId = val;
-  //         firebase.database().ref('societies').orderByChild('society_id').equalTo("" + this.societyId).on('value', (societysnapshot) => {
-  //           // console.log(("Information Stored");
-  //           let tempKey = Object.keys(societysnapshot.val())[0];
-  //           this.societyInfo = Object.getOwnPropertyDescriptor(societysnapshot.val(),tempKey).value;
-  //           // console.log((this.societyInfo);
-  //           this.societiesProvider.init(this.societyInfo);
-  //           this.societyName = this.societyInfo.display_name;
-  //           this.nav.push(HomePage, {
-  //             societyInfo: this.societyInfo,
-  //             societyId: this.societyId
-  //           });
-  //         })
-  //       });
-  //       //fetching values for sidemenu
-  //       this.storage.get('Info').then((val) => {
-  //         this.clientName = val.name;
-  //         this.clientAddress = val.address1;
-  //       });
-  //       //this.rootPage = HomePage;
-  //     }
-  //   });
-  // }
-
   initializeApp() {
     this.splashScreen.show();
     this.statusBar.overlaysWebView(true);

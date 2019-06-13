@@ -53,15 +53,19 @@ export class SignupPage {
       name: null,
       phone: null,
       is_approved: false
+    };
+
+    private passwordErrors = {
+      passwordsNotMatchFlag: false,
+      passwordLengthTooShort: false
     }
+    private isPasswordValid: any = false;
 
     constructor(public navCtrl: NavController, public navParams: NavParams, public http: Http, private formBuilder: FormBuilder, private loadingCtrl: LoadingController, private alertCtrl: AlertController, private storage: Storage) {
       console.log(this.navParams.data.societyInfo);
       this.memberDataModel.society_id = this.navParams.data.societyInfo.societySearch.id;
       this.memberDataModel.type = this.navParams.data.societyInfo.type;
       this.memberDataModel.unit_no = this.navParams.data.societyInfo.unitNo;
-
-
     }
     portChange(event: {
       component: IonicSelectableComponent,
@@ -78,19 +82,53 @@ export class SignupPage {
       this.signUpMemberForm = this.formBuilder.group({
         name: ['', Validators.required],
         phoneNo: ['', Validators.required],
-        member_email: ['', Validators.required],
+        member_email: ['', [Validators.required, Validators.email]],
         password: ['', Validators.required],
         confirmPassword: ['', Validators.required],
       });    
     }
 
+    passwordValidations() {
+      this.isPasswordValid = false;
+      console.log(this.signUpMemberForm.value.password);
+      for(let i in this.passwordErrors) {
+        this.passwordErrors[i] = false
+      }
+
+      // validation # 1 for entered password = confirm password
+      if(this.signUpMemberForm.value.password != this.signUpMemberForm.value.confirmPassword) {
+        this.passwordErrors.passwordsNotMatchFlag = true;
+      }
+
+      // validation # 2 for password length greater than or eual to 6
+      if(this.signUpMemberForm.value.password.length < 6) {
+        this.passwordErrors.passwordLengthTooShort = true;
+      }
+
+
+      for(let i in this.passwordErrors) {
+        if(this.passwordErrors[i] == true) {
+          this.isPasswordValid = false;
+          return;
+        }
+      }
+
+      this.isPasswordValid = true;
+
+    }
+
     submitRequest() {
-      console.log(this.signUpMemberForm.value);
-      this.memberDataModel.name = this.signUpMemberForm.value.name;
-      this.memberDataModel.phone = this.signUpMemberForm.value.phoneNo;
-      this.memberDataModel.member_email = this.signUpMemberForm.value.member_email;
-      console.log(this.memberDataModel)
-      this.addRequestInFirebase();
+      this.passwordValidations();
+      console.log(this.isPasswordValid)
+      if(this.isPasswordValid) {
+        console.log(this.signUpMemberForm.value);
+        this.memberDataModel.name = this.signUpMemberForm.value.name;
+        this.memberDataModel.phone = this.signUpMemberForm.value.phoneNo;
+        this.memberDataModel.member_email = this.signUpMemberForm.value.member_email;
+        console.log(this.memberDataModel)
+        this.addRequestInFirebase();
+      }
+
     }
 
     addRequestInFirebase() {
