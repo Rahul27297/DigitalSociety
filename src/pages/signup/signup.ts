@@ -55,11 +55,12 @@ export class SignupPage {
       is_approved: false
     };
 
-    private passwordErrors = {
+    private Errors = {
       passwordsNotMatchFlag: false,
-      passwordLengthTooShort: false
+      passwordLengthTooShort: false,
+      emailIdAlreadyExists: false
     }
-    private isPasswordValid: any = false;
+    private isFormValid: any = false;
 
     constructor(public navCtrl: NavController, public navParams: NavParams, public http: Http, private formBuilder: FormBuilder, private loadingCtrl: LoadingController, private alertCtrl: AlertController, private storage: Storage) {
       console.log(this.navParams.data.societyInfo);
@@ -75,10 +76,6 @@ export class SignupPage {
     }
 
     ngOnInit() {
-      // this.loader = this.loadingCtrl.create({
-      //   content: " Please wait..."
-      // });
-      // this.loader.present();
       this.signUpMemberForm = this.formBuilder.group({
         name: ['', Validators.required],
         phoneNo: ['', Validators.required],
@@ -88,39 +85,55 @@ export class SignupPage {
       });    
     }
 
-    passwordValidations() {
-      this.isPasswordValid = false;
+    Validations() {
+      this.isFormValid = false;
+      this.Errors.passwordsNotMatchFlag = false;
+      this.Errors.passwordLengthTooShort = false;
+      this.Errors.emailIdAlreadyExists = false;
+
+
       console.log(this.signUpMemberForm.value.password);
-      for(let i in this.passwordErrors) {
-        this.passwordErrors[i] = false
+      for(let i in this.Errors) {
+        this.Errors[i] = false
       }
 
       // validation # 1 for entered password = confirm password
       if(this.signUpMemberForm.value.password != this.signUpMemberForm.value.confirmPassword) {
-        this.passwordErrors.passwordsNotMatchFlag = true;
+        this.Errors.passwordsNotMatchFlag = true;
       }
 
       // validation # 2 for password length greater than or eual to 6
       if(this.signUpMemberForm.value.password.length < 6) {
-        this.passwordErrors.passwordLengthTooShort = true;
+        this.Errors.passwordLengthTooShort = true;
       }
 
+      // validation # 3 email ID already exists
+      firebase.database().ref('members').orderByChild('member_email').equalTo(this.signUpMemberForm.value.member_email).once('value',(snapshot) => {
+        
+        // If user is present in firebase it'll not return null
+        if(snapshot.val() != null) {
+          this.Errors.emailIdAlreadyExists = true;
+        }
 
-      for(let i in this.passwordErrors) {
-        if(this.passwordErrors[i] == true) {
-          this.isPasswordValid = false;
+      });
+
+      // Check if there is no validation error
+      for(let i in this.Errors) {
+        if(this.Errors[i] == true) {
+          this.isFormValid = false;
           return;
         }
       }
 
-      this.isPasswordValid = true;
+      // No errors an
+      this.isFormValid = true;
 
     }
 
     submitRequest() {
-      this.passwordValidations();
-      console.log(this.isPasswordValid)
-      if(this.isPasswordValid) {
+      this.Validations();
+      console.log(this.isFormValid)
+      if(this.isFormValid) {
         console.log(this.signUpMemberForm.value);
         this.memberDataModel.name = this.signUpMemberForm.value.name;
         this.memberDataModel.phone = this.signUpMemberForm.value.phoneNo;

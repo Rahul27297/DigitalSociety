@@ -21,10 +21,11 @@
       <ion-input type="password" class="form-input-field input-top-margin" placeholder="Password" formControlName="password"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-input type="password" class="form-input-field input-top-margin" placeholder="Confirm Password" formControlName="confirmPassword"></ion-input>
+      <ion-input type="password" class="form-input-field input-top-margin" placeho lder="Confirm Password" formControlName="confirmPassword"></ion-input>
     </ion-item>
-    <p *ngIf="passwordErrors.passwordsNotMatchFlag" style="color: red">Passwords don't match, Try again?</p>
-    <p *ngIf="passwordErrors.passwordLengthTooShort" style="color: red">Password must be atleast 6 characters</p>
+    <p *ngIf="Errors.passwordsNotMatchFlag" style="color: red">Passwords don't match, Try again?</p>
+    <p *ngIf="Errors.passwordLengthTooShort" style="color: red">Password must be atleast 6 characters</p>
+    <p *ngIf="Errors.emailIdAlreadyExists" style="color: red">Email ID is already registered</p>
     <button ion-button block large clear class="btn" style="margin-top: 24px;" (tap)=submitRequest() [disabled]="!this.signUpMemberForm.valid">Submit My Request</button>
   </form>
 </div>
