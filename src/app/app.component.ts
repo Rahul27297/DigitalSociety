@@ -78,7 +78,6 @@ export class MyApp {
     
         
     firebase.auth().onAuthStateChanged((user) => {
-
       
       if (user) {
         // User is signed in.
@@ -91,7 +90,37 @@ export class MyApp {
         // var providerData = user.providerData;
         // console.log((this.societiesProvider)
 
-        firebase.database().ref('members').orderByChild('member_email').equalTo("" + email).once('value',(snapshot) => {
+        firebase.database().ref('members').orderByChild('member_email').equalTo(email).once('value',(snapshot) => {
+          
+          // no member with this email is present in database
+          // this is the case when, member is present in auth but is not there in realtime db
+          if(snapshot.val() == null) {
+
+            // Delete the use from auth
+            var user = firebase.auth().currentUser;
+
+            user.delete().then(function() {
+              // User deleted.
+              this.alertCtrl.create({
+                title: "This Email ID is not registered",
+                buttons: ['Ok']
+              }).present().then(() => {
+                // do nothing
+              });
+            }).catch(function(error) {
+              // An error happened.
+            });
+
+
+            console.log("no such member present")
+            firebase.auth().signOut().then(function() {
+              // Sign-out successful.
+            }).catch(function(error) {
+              // An error happened.
+              this.nav.setRoot(LoginPage);
+            });
+            return;
+          }
           let childsnapshotkey = Object.keys(snapshot.val())[0];
           // // console.log((childsnapshotkey, email);
           let userInfo = Object.getOwnPropertyDescriptor(snapshot.val(), childsnapshotkey).value;
@@ -155,8 +184,7 @@ export class MyApp {
         this.nav.setRoot(LoginPage);
         console.log("signedout")
 
-      }       
-
+      }
     });
   }
 
