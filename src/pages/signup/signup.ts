@@ -26,22 +26,22 @@ class Port {
   templateUrl: 'signup.html',
 })
 export class SignupPage {
-    public societyName: any;
-    public societyLogo: any;
-    private login: FormGroup;
-    private simplyBookAdmin: SimplyBookClient;
-    private loader: any;
-    private userName: any;
-    private Name: any;
-    private flatNumber: any;
-    private contactNumber: any;
-    private oneTimeCode: any;
-    private Password: any;
-    private rePassword: any;
-    private visibility: any = "none";
-    private client: any;
-    private clientObject: any;
-    private disableFields: any = "no";
+    // public societyName: any;
+    // public societyLogo: any;
+    // private login: FormGroup;
+    // private simplyBookAdmin: SimplyBookClient;
+    // private loader: any;
+    // private userName: any;
+    // private Name: any;
+    // private flatNumber: any;
+    // private contactNumber: any;
+    // private oneTimeCode: any;
+    // private Password: any;
+    // private rePassword: any;
+    // private visibility: any = "none";
+    // private client: any;
+    // private clientObject: any;
+    // private disableFields: any = "no";
 
   
     private signUpMemberForm: any;

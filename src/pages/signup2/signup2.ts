@@ -11,6 +11,9 @@ import * as firebase from 'firebase';
 import { IonicSelectableComponent } from 'ionic-selectable';
 import { SocietiesProvider } from '../../providers/society/society';
 import { SignupPage } from '../signup/signup';
+import { ModalController } from 'ionic-angular';
+import { SearchSocietyPage } from '../search-society/search-society';
+
 /**
  * Generated class for the SignupPage page.
  *
@@ -43,11 +46,11 @@ export class SignupPage2 {
 
 
     private societies: any = [];
-    private selectedSociety: any = -1;
+    private selectedSocietyNameLabel: any = "Search";
     private societiesInfo: any;
     private signUpSocietyForm: any;
 
-    constructor(public societiesProvider: SocietiesProvider, public navCtrl: NavController, public navParams: NavParams, public http: Http, private formBuilder: FormBuilder, private loadingCtrl: LoadingController, private alertCtrl: AlertController, private storage: Storage) {
+    constructor(public modalCtrl: ModalController, public societiesProvider: SocietiesProvider, public navCtrl: NavController, public navParams: NavParams, public http: Http, private formBuilder: FormBuilder, private loadingCtrl: LoadingController, private alertCtrl: AlertController, private storage: Storage) {
       // console.log(('ionViewDidLoad SignupPage');
 
     }
@@ -88,7 +91,7 @@ export class SignupPage2 {
       value: any 
     }) {
       console.log('selectedSociety:', event.value);
-      this.selectedSociety = event.value;
+      this.selectedSocietyNameLabel = event.value;
     }
 
     loadMemberSignUpForm() {
@@ -97,5 +100,25 @@ export class SignupPage2 {
         societyInfo: this.signUpSocietyForm.value
       });
     }
+
+    findSociety() {
+        const modal = this.modalCtrl.create(SearchSocietyPage, {
+          societies: this.societies
+        });
+        modal.present();
+
+        modal.onDidDismiss(data => {
+          console.log(data)
+          if(data != undefined){
+            this.selectedSocietyNameLabel = data.name;
+            this.signUpSocietyForm.patchValue({
+              societySearch: data
+            })
+            console.log(this.signUpSocietyForm);
+          }
+        })
+
+    }
+    
 
 }

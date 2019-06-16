@@ -43,7 +43,7 @@ import { UserProvider } from '../providers/user/user';
 import { BookingProvider } from '../providers/booking/booking';
 import { IonicSelectableModule } from 'ionic-selectable';
 import { SignupPage2 } from '../pages/signup2/signup2';
-
+import { SearchSocietyPage } from '../pages/search-society/search-society';
 
 @NgModule({
   declarations: [
@@ -64,7 +64,8 @@ import { SignupPage2 } from '../pages/signup2/signup2';
     LogoutPage,
     IntroPage,
     NewcomplaintPage,
-    SignupPage2
+    SignupPage2,
+    SearchSocietyPage
   ],
   imports: [
     BrowserModule,
@@ -93,7 +94,8 @@ import { SignupPage2 } from '../pages/signup2/signup2';
     LogoutPage,
     IntroPage,
     NewcomplaintPage,
-    SignupPage2
+    SignupPage2,
+    SearchSocietyPage
   ],
   providers: [
     StatusBar,

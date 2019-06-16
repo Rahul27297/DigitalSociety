@@ -40,6 +40,7 @@
 
   <form [formGroup]="signUpSocietyForm" style="padding-top: 0px;">
 
+    <!--
     <ion-item>
       <ion-label>Find My Society</ion-label>
       <ionic-selectable
@@ -52,7 +53,13 @@
         (onChange)="selectionChange($event)">
       </ionic-selectable>
     </ion-item>
+  -->
 
+  <ion-item class="resident-type">
+    <ion-label style="margin-right: 10px">{{selectedSocietyNameLabel}}</ion-label>
+    <ion-select (tap)="findSociety()" interface="popover" formControlName="societySearch">
+    </ion-select>
+  </ion-item>
 
 
     <ion-item>
