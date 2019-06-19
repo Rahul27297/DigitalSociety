@@ -86,58 +86,6 @@ export class LoginPage {
     invalidLoginAlert.present();
   }
 
-  loginForm() {
-
-    //let serverErrorMessage = "Unable to connect to Server. Please try later";
-    // this.clientinfo = this.appmodule.client.getClientInfoByLoginPassword(userName, password);
-    // // console.log((this.clientinfo)
-    // if (this.clientinfo.code == -32065) {
-    //   this.loader.dismiss();
-    //   this.invalidLoginAlert(invalidLoginCredsMessage);
-    // }
-    // else {//login considered successful --> Server can be down, this case has not been considered here
-    //   firebase.database().ref('members').orderByChild('member_email').equalTo("" + userName).once('value',(snapshot) => {
-    //     let childsnapshotkey = Object.keys(snapshot.val())[0];
-    //     // // console.log((childsnapshotkey, userName);
-    //     this.societyId = Object.getOwnPropertyDescriptor(snapshot.val(), childsnapshotkey).value;
-    //     this.societyId = this.societyId.society_id;
-    //     this.storage.set("societyId", this.societyId);
-    //     this.storage.set('userKey', childsnapshotkey);
-    //     this.storage.set('emailId', userName);
-    //     // console.log(("Society Id: " + this.societyId);
-    //     firebase.database().ref('societies').orderByChild('society_id').equalTo("" + this.societyId).on('value', (societysnapshot) => {
-
-
-
-
-    //       // console.log(("Information Stored");
-    //       let tempKey = Object.keys(societysnapshot.val())[0];
-    //       this.societyInfo = Object.getOwnPropertyDescriptor(societysnapshot.val(),tempKey).value;
-    //       // console.log((this.societyInfo);
-
-    //       this.societiesProvider.init(this.societyInfo);
-
-    //       this.storage.set('Password', password);
-    //       this.loader.dismiss();
-    //       this.toastCtrl.create({
-    //         message: 'Login Successful',
-    //         duration: 2000,
-    //         position: 'bottom'
-    //       }).present();
-    //       this.storage.set('Info', this.clientinfo);
-    //       this.navCtrl.setRoot(HomePage, {
-    //         societyInfo: this.societyInfo,
-    //         societyId: this.societyId
-    //       });
-
-
-    //     });
-    //   });
-    // }
-    /*else{
-      this.invalidLoginAlert(serverErrorMessage);
-    }*/
-  }
 
 
 
