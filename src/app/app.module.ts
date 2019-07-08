@@ -27,7 +27,6 @@ import { NoNetworkPage } from '../pages/no-network/no-network';
 import { BookingConfirmationPage } from '../pages/booking-confirmation/booking-confirmation';
 import { SignupPage } from '../pages/signup/signup';
 import { IntroPage } from '../pages/intro/intro';
-import { ComplaintsPage } from '../pages/complaints/complaints';
 import { NewcomplaintPage } from '../pages/newcomplaint/newcomplaint';
 import { Camera } from '@ionic-native/camera';
 import { ConstantsProvider } from '../providers/constants/constants';
@@ -39,7 +38,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { BackgroundMode } from '@ionic-native/background-mode';
 import { FCM } from '@ionic-native/fcm';
-
+import { SocietiesProvider } from '../providers/society/society';
+import { UserProvider } from '../providers/user/user';
+import { BookingProvider } from '../providers/booking/booking';
+import { IonicSelectableModule } from 'ionic-selectable';
+import { SignupPage2 } from '../pages/signup2/signup2';
+import { SearchSocietyPage } from '../pages/search-society/search-society';
 
 @NgModule({
   declarations: [
@@ -59,15 +63,17 @@ import { FCM } from '@ionic-native/fcm';
     SignupPage,
     LogoutPage,
     IntroPage,
-    ComplaintsPage,
-    NewcomplaintPage
+    NewcomplaintPage,
+    SignupPage2,
+    SearchSocietyPage
   ],
   imports: [
     BrowserModule,
     HttpModule,
     IonicModule.forRoot(MyApp ),
     IonicStorageModule.forRoot(),
-    HttpClientModule
+    HttpClientModule,
+    IonicSelectableModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -87,8 +93,9 @@ import { FCM } from '@ionic-native/fcm';
     SignupPage,
     LogoutPage,
     IntroPage,
-    ComplaintsPage,
-    NewcomplaintPage
+    NewcomplaintPage,
+    SignupPage2,
+    SearchSocietyPage
   ],
   providers: [
     StatusBar,
@@ -108,7 +115,10 @@ import { FCM } from '@ionic-native/fcm';
     FirebaseProvider,
     InAppBrowser,
     BackgroundMode,
-    FCM
+    FCM,
+    SocietiesProvider,
+    UserProvider,
+    BookingProvider
   ]
 })
 export class AppModule {

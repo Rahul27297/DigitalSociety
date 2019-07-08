@@ -6,6 +6,8 @@ import { LoadingController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import 'rxjs/add/operator/map';
 import * as firebase from 'firebase';
+import { SocietiesProvider } from '../../providers/society/society';
+
 /**
  * Generated class for the NoticesPage page.
  *
@@ -45,9 +47,9 @@ export class NoticesPage {
     "11": "Nov",
     "12": "Dec"
   }
-  constructor(public navCtrl: NavController, public navParams: NavParams, private http: Http, private loadingCtrl: LoadingController, private storage: Storage) {
-    this.societyId = navParams.get('societyId').toString();
-    console.log(this.monthMap)
+  constructor(public societiesProvider: SocietiesProvider, public navCtrl: NavController, public navParams: NavParams, private http: Http, private loadingCtrl: LoadingController, private storage: Storage) {
+    this.societyId = this.societiesProvider['societyData']['society_id']
+    // console.log((this.monthMap)
   }
 
   // function to sort notices by epoch_time in DESC order
@@ -65,22 +67,22 @@ export class NoticesPage {
 
   setup() {
     let date = new Date();
-    console.log(date);
+    // console.log((date);
     let day = date.getDate();
     let month = date.getMonth();
     let year = date.getFullYear();
     let hr = date.getHours();
     let min = date.getMinutes();
     let sec = date.getSeconds();
-    console.log(day + " " + month + " " + year + "  " + hr);
+    // console.log((day + " " + month + " " + year + "  " + hr);
     let epoch_recent = (new Date(year, month-1, day, hr, min, sec).getTime() )/ 1000;
     let epoch_archived = (new Date(year, month-3, day, hr, min, sec).getTime() )/ 1000;
-    console.log(epoch_recent);
-    console.log(epoch_archived);
+    // console.log((epoch_recent);
+    // console.log((epoch_archived);
     firebase.database().ref('notices').orderByChild('society_id').equalTo(this.societyId).on('value', (snapshot) => {
       this.recentNotices = [];
       this.archivedNotices = [];
-      console.log(snapshot.val());
+      // console.log((snapshot.val());
       snapshot.forEach((childSnapshot) => {
         let d = new Date(0);
         d.setUTCSeconds(childSnapshot.val().epoch_time)
@@ -89,7 +91,7 @@ export class NoticesPage {
         let year = d.getFullYear();
         let hh = d.getHours();
         let mm = d.getMinutes();
-        console.log(childSnapshot.val(),d)
+        // console.log((childSnapshot.val(),d)
         if(childSnapshot.val().epoch_time > epoch_recent) {
           this.recentNotices.unshift({
             notice_title: childSnapshot.val().notice_title,
@@ -119,7 +121,7 @@ export class NoticesPage {
 
       this.recentNoticesLength = this.recentNotices.length;
       this.archivedNoticesLength = this.archivedNotices.length;
-      console.log(this.archivedNoticesLength);
+      // console.log((this.archivedNoticesLength);
     });
 
     /*let url = "https://upgraded-server.herokuapp.com/getNoticesBySocietyId?society_id=" + this.societyId;
@@ -160,7 +162,7 @@ export class NoticesPage {
   }
 
   ionViewWillEnter() {
-    console.log("Enter");
+    // console.log(("Enter");
     this.loader = this.loadingCtrl.create({
       content: "Please wait..."
     });

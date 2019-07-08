@@ -24,7 +24,7 @@ export class ConstantsProvider {
   public static LOGOUT_SUCCESS = "Logged Out Successfully";
 
   constructor() {
-    console.log('Hello ConstantsProvider Provider');
+    // console.log(('Hello ConstantsProvider Provider');
   }
 
 }

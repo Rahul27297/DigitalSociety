@@ -20,7 +20,7 @@ export class LogoutPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad LogoutPage');
+    // console.log(('ionViewDidLoad LogoutPage');
   }
 
 }

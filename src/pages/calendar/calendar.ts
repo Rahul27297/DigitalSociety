@@ -45,7 +45,7 @@ export class CalendarPage {
     }
   
     var firstDayThisMonth = new Date(this.date.getFullYear(), this.date.getMonth(), 1).getDay();
-    //console.log(firstDayThisMonth);
+    //// console.log((firstDayThisMonth);
     var prevNumOfDays = new Date(this.date.getFullYear(), this.date.getMonth(), 0).getDate();
     for(var i = prevNumOfDays-(firstDayThisMonth-1); i <= prevNumOfDays; i++) {
       this.daysInLastMonth.push(i);
@@ -56,7 +56,7 @@ export class CalendarPage {
       this.daysInThisMonth.push(i+1);
     }
   
-    console.log(this.daysInThisMonth);
+    // console.log((this.daysInThisMonth);
     var lastDayThisMonth = new Date(this.date.getFullYear(), this.date.getMonth()+1, 0).getDay();
     var nextNumOfDays = new Date(this.date.getFullYear(), this.date.getMonth()+2, 0).getDate();
     for (let i = 0; i < (6-lastDayThisMonth); i++) {

@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform, NavParams, NavController } from 'ionic-angular';
+import { Nav, Platform, NavParams} from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { BookingsPage } from '../pages/bookings/bookings';
@@ -20,6 +20,8 @@ import { ToastsProvider } from '../providers/toasts/toasts';
 import { LoadersProvider } from '../providers/loaders/loaders';
 import * as firebase from 'firebase';
 import { environment } from '../providers/firebase/firebase';
+import { SocietiesProvider } from '../providers/society/society';
+import { UserProvider } from '../providers/user/user';
 
 
 import {enableProdMode} from '@angular/core';
@@ -41,17 +43,20 @@ export class MyApp {
   private clientName: any; //used for sidemenu
   private clientAddress: any; //used for sidemenu
   private societyName: any; //used for sidemenu
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, private alertCtrl: AlertController, private toastCtrl: ToastController, private loadingCtrl: LoadingController, private network: Network, private http: Http) {
+  constructor(public userProvider: UserProvider, public societiesProvider: SocietiesProvider, public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage, private alertCtrl: AlertController, private toastCtrl: ToastController, private loadingCtrl: LoadingController, private network: Network, private http: Http) {
     //this.checkInstall();
+    this.loader = this.loadingCtrl.create({
+      content: "Please wait..."
+    });
+    this.loader.present();
     firebase.initializeApp(environment.firebase);
-    this.checkLogin();
+    // this.checkLogin();
     this.initializeApp();
     this.network.onConnect().subscribe(() => {
       this.toastCtrl.create({
         message: "Network Connected",
         duration: 3000,
       }).present();
-      this.checkLogin();
 
     })
 
@@ -71,44 +76,125 @@ export class MyApp {
       { title: 'Logout', component: LogoutPage, icon_name: "log-out" }
     ];
     
+        
+    firebase.auth().onAuthStateChanged((user) => {
+      
+      if (user) {
+        // User is signed in.
+        // var displayName = user.displayName;
+        var email = user.email;
+        // var emailVerified = user.emailVerified;
+        // var photoURL = user.photoURL;
+        // var isAnonymous = user.isAnonymous;
+        // var uid = user.uid;
+        // var providerData = user.providerData;
+        // console.log((this.societiesProvider)
+
+        firebase.database().ref('members').orderByChild('member_email').equalTo(email).once('value',(snapshot) => {
+          
+          // no member with this email is present in database
+          // this is the case when, member is present in auth but is not there in realtime db
+          if(snapshot.val() == null) {
+
+            // Delete the use from auth
+            var user = firebase.auth().currentUser;
+
+            user.delete().then(function() {
+              // User deleted.
+              this.alertCtrl.create({
+                title: "This Email ID is not registered",
+                buttons: ['Ok']
+              }).present().then(() => {
+                // do nothing
+              });
+            }).catch(function(error) {
+              // An error happened.
+            });
+
+
+            console.log("no such member present")
+            firebase.auth().signOut().then(function() {
+              // Sign-out successful.
+            }).catch(function(error) {
+              // An error happened.
+              this.nav.setRoot(LoginPage);
+            });
+            return;
+          }
+          let childsnapshotkey = Object.keys(snapshot.val())[0];
+          // // console.log((childsnapshotkey, email);
+          let userInfo = Object.getOwnPropertyDescriptor(snapshot.val(), childsnapshotkey).value;
+          this.userProvider.init(userInfo, true, childsnapshotkey)
+          this.societyId = userInfo.society_id;
+          this.storage.set("societyId", this.societyId);
+          this.storage.set('userKey', childsnapshotkey);
+          this.storage.set('emailId', email);
+          // console.log(("Society Id: " + this.societyId);
+          // console.log(this.userProvider['userData']);
+          
+          if(this.userProvider['userData']['is_approved'] == false) {
+            console.log("user not approved")
+
+            this.alertCtrl.create({
+              title: "Your Request is Pending for Approval",
+              buttons: ['Ok']
+            }).present().then(() => {
+              // do nothing
+            });
+
+            firebase.auth().signOut().then(function() {
+              // Sign-out successful.
+            }).catch(function(error) {
+              // An error happened.
+              this.nav.setRoot(LoginPage);
+            });
+          } else {
+
+            firebase.database().ref('societies').orderByChild('society_id').equalTo("" + this.societyId).on('value', (societysnapshot) => {
+  
+              // console.log(("Information Stored");
+              let tempKey = Object.keys(societysnapshot.val())[0];
+              this.societyInfo = Object.getOwnPropertyDescriptor(societysnapshot.val(),tempKey).value;
+              // console.log((this.societyInfo);
+    
+              this.societiesProvider.init(this.societyInfo);
+    
+              // this.storage.set('Password', password);
+              this.toastCtrl.create({
+                message: 'Login Successful',
+                duration: 2000,
+                position: 'bottom'
+              }).present();
+              // this.storage.set('Info', this.clientinfo);
+              this.loader.dismiss();
+              this.splashScreen.hide();
+              this.nav.setRoot(HomePage, {});
+            });
+
+          }
+
+
+        });
+        // ...
+      } else {
+        // User is signed out.
+        // ...
+        this.splashScreen.hide();
+        this.loader.dismiss();
+        this.nav.setRoot(LoginPage);
+        console.log("signedout")
+
+      }
+    });
   }
 
   checkInstall() {
-    console.log("checkInstall");
+    // console.log(("checkInstall");
     this.storage.get('IntroDone').then((val) => {
       //if(val == null){
       this.rootPage = IntroPage;
       this.storage.set('IntroDone', "Yes");
       //}
-    });
-  }
-
-  checkLogin() {
-    this.storage.get('Info').then((val) => {
-      if (val == null) {
-        this.nav.setRoot(LoginPage);
-      } else {
-        this.storage.get("societyId").then((val) => {
-          this.societyId = val;
-          firebase.database().ref('societies').orderByChild('society_id').equalTo("" + this.societyId).on('value', (societysnapshot) => {
-            console.log("Information Stored");
-            let tempKey = Object.keys(societysnapshot.val())[0];
-            this.societyInfo = Object.getOwnPropertyDescriptor(societysnapshot.val(),tempKey).value;
-            console.log(this.societyInfo);
-            this.societyName = this.societyInfo.display_name;
-            this.nav.push(HomePage, {
-              societyInfo: this.societyInfo,
-              societyId: this.societyId
-            });
-          })
-        });
-        //fetching values for sidemenu
-        this.storage.get('Info').then((val) => {
-          this.clientName = val.name;
-          this.clientAddress = val.address1;
-        });
-        //this.rootPage = HomePage;
-      }
     });
   }
 
@@ -132,8 +218,8 @@ export class MyApp {
     }
     else if (page.title === "Home"){//navigate to home page
       this.nav.setRoot(HomePage,{
-        societyInfo: this.societyInfo,//used for dymanic fetching
-        societyId: this.societyId //used for layering the societies
+        // societyInfo: this.societyInfo,//used for dymanic fetching
+        // societyId: this.societyId //used for layering the societies
       });
     }
     else if (page.title === "My Bookings"){//navigate to my bookings page
@@ -145,27 +231,29 @@ export class MyApp {
   }
 
   performLogoutOperation() {
+    this.loader = this.loadingCtrl.create({
+      content: "Please wait..."
+    });
+    firebase.auth().signOut().then(function() {
+      // Sign-out successful.
+  
+      this.nav.setRoot(LoginPage);
+      this.toastCtrl.create({
+        message: 'Logged Out Successfully',
+        duration: 2000,
+        position: 'bottom'
+      }).present();
+    }).catch(function(error) {
+      // An error happened.
+    });
+
+
+ 
     this.storage.remove('Info');
     this.storage.remove('societyId');
     this.storage.remove('societyInfo');
     // this.rootPage = LoginPage;
-    this.nav.setRoot(LoginPage);
-    this.toastCtrl.create({
-      message: 'Logged Out Successfully',
-      duration: 2000,
-      position: 'bottom'
-    }).present();
-    this.loader.dismiss();
-  }
 
-  displayLoader() {
-    this.loader = this.loadingCtrl.create({
-      content: "Please wait..."
-    });
-    this.loader.present();
-    setTimeout(() => {
-      this.performLogoutOperation();
-    }, 1000);
   }
 
   logout() {
@@ -175,7 +263,7 @@ export class MyApp {
       buttons: [{
         text: "Yes",
         handler: () => {
-          this.displayLoader();
+          this.performLogoutOperation();
         }
       },
       {
@@ -185,4 +273,7 @@ export class MyApp {
     });
     this.logoutAlert.present();
   }
+
+  
+
 }

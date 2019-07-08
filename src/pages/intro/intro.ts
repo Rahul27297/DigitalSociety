@@ -19,7 +19,7 @@ export class IntroPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad IntroPage');
+    // console.log(('ionViewDidLoad IntroPage');
   }
 
   skip(){

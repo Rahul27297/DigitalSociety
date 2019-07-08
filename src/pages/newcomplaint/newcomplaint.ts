@@ -10,6 +10,8 @@ import { Storage } from '@ionic/storage';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { BackgroundMode } from '@ionic-native/background-mode';
+import { SocietiesProvider } from '../../providers/society/society';
+import { UserProvider } from '../../providers/user/user';
 
 /**
  * Generated class for the NewcomplaintPage page.
@@ -25,43 +27,48 @@ import { BackgroundMode } from '@ionic-native/background-mode';
 })
 export class NewcomplaintPage {
 
+  private complaintData = {
+    "attachment_url": "",
+    "complainant_email": "",
+    "complainant_name": "",
+    "complaint_description": "",
+    "complaint_title": "",
+    "download_url": "",
+    "is_attachment_present": false,
+    "location": "",
+    "society_id": "",
+    "time": -1,
+    "unit_no": ""  
+  }
+
   private complaintForm: FormGroup;
   public imageURI: any;
-  private complaintTitle: any;
-  private complaintDescription: any;
-  private complaintLocation: any;
   private selectedPhoto: any;
   private firebaseComplaintStorageRed: any;
   private complaintKey: any;
   private imageObtained: any = false;
   private societyId: any;
-  private clientName: any;
-  private clientEmail: any;
   private societyInfo: any;
   private loader: any;
   private hasAttachment: boolean;
-  private clientFlatNo: any;
-  private societyDisplayName: any;
-  constructor(public backgroundMode: BackgroundMode, public navCtrl: NavController, public navParams: NavParams, public camera: Camera, public loadingCtrl: LoadingController, public toastCtrl: ToastController, private formBuilder: FormBuilder, private actionSheetCtrl: ActionSheetController, private http: Http, private storage: Storage, private alertCtrl: AlertController, private httpClient: HttpClient) {
+  constructor(public userProvider: UserProvider, public societyProvider: SocietiesProvider, public backgroundMode: BackgroundMode, public navCtrl: NavController, public navParams: NavParams, public camera: Camera, public loadingCtrl: LoadingController, public toastCtrl: ToastController, private formBuilder: FormBuilder, private actionSheetCtrl: ActionSheetController, private http: Http, private storage: Storage, private alertCtrl: AlertController, private httpClient: HttpClient) {
     this.complaintKey = firebase.database().ref("complaints").push().key
     this.http = http;
     this.hasAttachment = false;
-    this.societyId = navParams.get('societyId');
-    this.societyInfo = navParams.get('societyInfo');
+    this.societyId = this.societyProvider['societyData']['society_id'];
+    this.societyInfo = this.societyProvider['societyData'];
+    console.log(this.societyProvider)
     this.complaintForm = this.formBuilder.group({
       complaintTitle: ['', Validators.required],
       complaintDescription: ['', Validators.required],
       complaintLocation: ['', Validators.required]
     });
-    this.storage.get('Info').then((val) => {
-      this.clientEmail = val.email;
-      this.clientName = val.name;
-      this.clientFlatNo = val.address1;
-    });
-    this.societyDisplayName = this.societyInfo.display_name;
     this.firebaseComplaintStorageRed = firebase.storage().ref();
     
   }
+
+
+
   presentActionSheet() {
     const actionSheet = this.actionSheetCtrl.create({
       title: "Select Image Using: ",
@@ -82,7 +89,7 @@ export class NewcomplaintPage {
           text: 'Cancel',
           role: 'cancel',
           handler: () => {
-            console.log('Cancel clicked');
+            // console.log(('Cancel clicked');
           }
         }
       ]
@@ -122,7 +129,7 @@ export class NewcomplaintPage {
 
       }, (err) => {
         this.loader.dismiss();
-        console.log("ehrer", err);
+        // console.log(("ehrer", err);
       });
 
     })
@@ -151,64 +158,49 @@ export class NewcomplaintPage {
           this.backgroundMode.disable();
         });
       }, () => {
-        console.log("error");
+        // console.log(("error");
       });
     }
   }
 
-  ionViewDidEnter() {
-    console.log('ionViewDidLoad NewcomplaintPage');
-  }
-
   registerComplaint() {
-    console.log(this.clientFlatNo)
+    // console.log((this.clientFlatNo)
     this.loader = this.loadingCtrl.create({
       content: "Please Wait..."
     });
     this.loader.present();
-    this.complaintTitle = this.complaintForm.value.complaintTitle;
-    this.complaintDescription = this.complaintForm.value.complaintDescription;
-    this.complaintLocation = this.complaintForm.value.complaintLocation;
-
-    // console.log({
-    //   "attachment_url": "/complaints/" + this.societyId + "/" + this.complaintKey,
-    //   "complainant_email": this.clientEmail,
-    //   "complainant_name": this.clientName,
-    //   "complaint_description": this.complaintDescription,
-    //   "complaint_title": this.complaintTitle,
-    //   "is_attachment_present": this.hasAttachment,
-    //   "location": this.complaintLocation,
-    //   "society_id": this.societyId,
-    //   "time": new Date()
-    // })
-
     let download_url = null;
     let attachment_url = null;
 
 
-    console.log(download_url, attachment_url)
+    // console.log((download_url, attachment_url)
     if(this.imageURI != undefined) {
-      console.log(download_url, attachment_url)
+      // console.log((download_url, attachment_url)
       download_url = this.imageURI;
       attachment_url = "/complaints/" + this.societyId + "/" + this.complaintKey
     }
     // converting epoch time to seconds
 
     let currentTime = Math.floor(((new Date).getTime())/1000);
+    // console.log((this.clientEmail);
+
+    this.complaintData['attachment_url'] = attachment_url;
+    this.complaintData['complaint_description'] = this.complaintForm.value.complaintDescription;
+    this.complaintData['complainant_email'] = this.userProvider['userData']['member_email'];
+    this.complaintData['complainant_name'] = this.userProvider['userData']['name'];
+    this.complaintData['complaint_title'] = this.complaintForm.value.complaintTitle;
+    this.complaintData['download_url'] = download_url;
+    this.complaintData['is_attachment_present'] = this.hasAttachment;
+    this.complaintData['location'] = this.complaintForm.value.complaintLocation;
+    this.complaintData['society_id'] = this.societyProvider['societyData']['society_id'];
+    this.complaintData['time'] = currentTime;
+    this.complaintData['unit_no'] = this.userProvider['userData']['unit_no'];
+    this.complaintData['state'] = this.societyProvider['societyData']['complaints']['workflow']['initial_state'];
+
     
-    firebase.database().ref('complaints/' + this.complaintKey).set({
-        "attachment_url": attachment_url,
-        "complainant_email": this.clientEmail,
-        "complainant_name": this.clientName,
-        "complaint_description": this.complaintDescription,
-        "complaint_title": this.complaintTitle,
-        "download_url": download_url,
-        "is_attachment_present": this.hasAttachment,
-        "location": this.complaintLocation,
-        "society_id": this.societyId,
-        "time": currentTime,
-        "unit_no": this.clientFlatNo
-    }).then(() => {
+
+
+    firebase.database().ref('complaints/' + this.complaintKey).set(this.complaintData).then(() => {
       this.loader.dismiss();
       this.alertCtrl.create({
         title: "Complaint successfully registered!",
@@ -218,21 +210,6 @@ export class NewcomplaintPage {
       });
     });
 
-    
-    // this.http.get(url).map(res => res.json()).subscribe((val) => {
-    //   if(val.data.flag && val.data.complaint_state === "COM"){
-    //     this.loader.dismiss();
-    //     this.alertCtrl.create({
-    //       title: "Complaint successfully registered!",
-    //       buttons: ['Ok']
-    //     }).present().then(() => {
-    //       this.navCtrl.popToRoot();
-    //     });
-    //   }
-    //   else{
-    //     this.loader.dismiss();
-    //   }
-    // });
 
   } 
 
@@ -245,9 +222,9 @@ export class NewcomplaintPage {
     let imagePathInStorage = "/complaints/" + this.societyId + "/" + this.complaintKey;
     let imageRef = this.firebaseComplaintStorageRed.child(imagePathInStorage);
     imageRef.delete().then(function(){
-      console.log("file deleted successfully")
+      // console.log(("file deleted successfully")
     }).catch(function(error){
-      console.log(error)
+      // console.log((error)
     })
     this.loader.dismiss();
     this.imageObtained = false;

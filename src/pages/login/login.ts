@@ -12,8 +12,10 @@ import { ToastController } from 'ionic-angular';
 import { HomePage } from '../home/home';
 import { LoadingController } from 'ionic-angular';
 import { SignupPage } from '../signup/signup';
+import { SignupPage2 } from '../signup2/signup2';
 import * as firebase from 'firebase';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { SocietiesProvider } from '../../providers/society/society';
 
 
 @IonicPage()
@@ -31,76 +33,50 @@ export class LoginPage {
   private societyId: any;
   private societyInfo: any;
   private societyReady: boolean;
-  constructor(public splashScreen: SplashScreen, public navCtrl: NavController, private toastCtrl: ToastController, private storage: Storage, public http: Http, private formBuilder: FormBuilder, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private keyboard: Keyboard) {
+  constructor(public societiesProvider: SocietiesProvider, public splashScreen: SplashScreen, public navCtrl: NavController, private toastCtrl: ToastController, private storage: Storage, public http: Http, private formBuilder: FormBuilder, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private keyboard: Keyboard) {
     this.societyReady = false;
     this.societyName = "gully";
     this.login = this.formBuilder.group({
       userName: ['', Validators.required],
       password: ['', Validators.required],
     });
-    this.appmodule = new SimplyBookClient(storage);
+    // this.appmodule = new SimplyBookClient(storage);
   }
 
   ionViewDidLoad() {
     this.splashScreen.hide();
   }
 
+
   displayLoader() {
+    // loader # 1
     this.loader = this.loadingCtrl.create({
       content: "Please wait..."
     });
-    this.loader.present();
-    setTimeout(() => {
-      this.loginForm();
-    }, 1000);
-  }
-
-
-  loginForm() {
-    let userName = this.login.value.userName;
-    let password = this.login.value.password;
-    let invalidLoginCredsMessage = "Either the Email or Password provided was incorrect. Please try again.";
-    //let serverErrorMessage = "Unable to connect to Server. Please try later";
-    this.clientinfo = this.appmodule.client.getClientInfoByLoginPassword(userName, password);
-    if (this.clientinfo.code == -32065) {
-      this.loader.dismiss();
-      this.invalidLoginAlert(invalidLoginCredsMessage);
-    }
-    else {//login considered successful --> Server can be down, this case has not been considered here
-      firebase.database().ref('members').orderByChild('member_email').equalTo("" + userName).once('value',(snapshot) => {
-        let childsnapshotkey = Object.keys(snapshot.val())[0];
-        // console.log(childsnapshotkey, userName);
-        this.societyId = Object.getOwnPropertyDescriptor(snapshot.val(), childsnapshotkey).value;
-        this.societyId = this.societyId.society_id;
-        this.storage.set("societyId", this.societyId);
-        this.storage.set('userKey', childsnapshotkey);
-        this.storage.set('emailId', userName);
-        console.log("Society Id: " + this.societyId);
-        firebase.database().ref('societies').orderByChild('society_id').equalTo("" + this.societyId).on('value', (societysnapshot) => {
-          console.log("Information Stored");
-            let tempKey = Object.keys(societysnapshot.val())[0];
-            this.societyInfo = Object.getOwnPropertyDescriptor(societysnapshot.val(),tempKey).value;
-            console.log(this.societyInfo);
-            this.storage.set('Password', password);
-            this.loader.dismiss();
-            this.toastCtrl.create({
-              message: 'Login Successful',
-              duration: 2000,
-              position: 'bottom'
-            }).present();
-            this.storage.set('Info', this.clientinfo);
-              this.navCtrl.setRoot(HomePage, {
-                societyInfo: this.societyInfo,
-                societyId: this.societyId
-              });
-        });
+    this.loader.present().then(() => {
+      let userName = this.login.value.userName;
+      let password = this.login.value.password;
+      let invalidLoginCredsMessage = "Either the Email or Password provided was incorrect. Please try again.";
+      firebase.auth().signInWithEmailAndPassword(userName, password)
+      .then((user) => {
+        // loader # 1 close and navigate to home page from app.ts
+        this.loader.dismiss();
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // console.log((error)
+  
+        // loader # 1 close
+        this.loader.dismiss();
+  
+        this.invalidLoginAlert(invalidLoginCredsMessage);
+        // ...
       });
-    }
-    /*else{
-      this.invalidLoginAlert(serverErrorMessage);
-    }*/
+    })
   }
-
+  
   invalidLoginAlert(alertMessage: any) {
     let invalidLoginAlert = this.alertCtrl.create({
       title: 'Login Failure',
@@ -110,8 +86,11 @@ export class LoginPage {
     invalidLoginAlert.present();
   }
 
+
+
+
   loadSignupPage() {
-    this.navCtrl.push(SignupPage);
+    this.navCtrl.push(SignupPage2);
   }
 
 

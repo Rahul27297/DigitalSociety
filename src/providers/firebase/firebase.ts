@@ -11,7 +11,7 @@ import { Injectable } from '@angular/core';
 export class FirebaseProvider {
 
   constructor(public http: HttpClient) {
-    console.log('Hello FirebaseProvider Provider');
+    // console.log(('Hello FirebaseProvider Provider');
   }
 
 }

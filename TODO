@@ -1,0 +1,25 @@
+1. Add auto filter component in signup2, which is the society search sign up page -> done 
+2. create form group and form control name for the same. -> done
+3. Apply styling -> done
+4. create client side search for society results -> done
+5. take unit no and type of resident(owner/tenant) if success -> done
+
+------------
+1. Add validation for sign up form fields -> done
+a. password validation done
+b. email validation done
+c. all ip field compulsory in sign up form
+
+2. 
+a. Magnifying glass in find my society
+b. Removing Radio button from society list
+
+
+2 . Upon success, please send welcome email to member - text to be confirmed
+a. write cloud function to send this email
+b. hit the cloud function endpoint after successful sign up of the user
+
+
+Upon success, please send welcome email to member - text to be confirmed
+
+Upon approval, please send welcome email with email verification template (text to be changed)

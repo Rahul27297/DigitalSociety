@@ -23,11 +23,11 @@ export class SimplyBookClient {
             },
             'onerror': function (error) {}
         });
-        // console.log(this.client.getEventList());
-        // console.log(this.client.getUnitList());
+        // // console.log((this.client.getEventList());
+        // // console.log((this.client.getUnitList());
         storage.set("clientToken", clienttoken)
         let token = this.loginClient.getUserToken('gully', 'admin' ,'digisoc123');
-        console.log(token);
+        // console.log((token);
         storage.set("adminToken", token)
         this.admin = new JSONRpcClient({
             'url': 'https://user-api.simplybook.me' + '/admin/',

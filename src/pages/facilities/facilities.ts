@@ -7,6 +7,9 @@ import  { CalendarPage } from '../calendar/calendar';
 import { BfacilityPage } from '../bfacility/bfacility';
 import { Http } from '@angular/http';
 import * as firebase from 'firebase';
+import { BookingProvider } from '../../providers/booking/booking';
+import { SocietiesProvider } from '../../providers/society/society';
+
 /**
  * Generated class for the FacilitiesPage page.
  *
@@ -30,7 +33,7 @@ export class FacilitiesPage {
   private societyId :any;
   private societyInfo: any;
   private firebaseDatabase: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, public http: Http) {
+  constructor(public societiesProvider: SocietiesProvider, public bookingProvider: BookingProvider, public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, public http: Http) {
     
   }
 
@@ -38,23 +41,23 @@ export class FacilitiesPage {
     // this.simplyBookClient = new SimplyBookClient();
     this.societyId = null;
     this.societyInfo = null;
-    this.societyId = this.navParams.get('societyId');
-    this.societyInfo = this.navParams.get('societyInfo');
-    console.log(this.societyId);
-    console.log(this.societyInfo);
-    console.log(this.societyInfo.facilities.list)
+    this.societyId = this.societiesProvider['societyData']['society_id'];
+    this.societyInfo = this.societiesProvider['societyData'];
+    // console.log((this.societyId);
+    // console.log((this.societyInfo);
+    // console.log((this.societyInfo.facilities.list)
     this.facilitiesArray = [];
     for (let i = 0; i < this.societyInfo.facilities.list.length; i=i+1) {
       if (this.societyInfo.facilities.list[i] != null) {
         this.facilitiesArray.push(this.societyInfo.facilities.list[i]);
       }
     }
-    console.log(this.facilitiesArray);
+    // console.log((this.facilitiesArray);
 
   }
 
   // ionViewDidLoad() {
-  //   console.log('ionViewDidLoad FacilitiesPage');
+  //   // console.log(('ionViewDidLoad FacilitiesPage');
   //   this.loading = this.loadingCtrl.create({
   //     content:'Please wait...'
   //   });
@@ -75,11 +78,12 @@ export class FacilitiesPage {
   ionViewDidEnter(){
     this.getEventList();
     this.loading.dismiss();
-    console.log('ionViewDidLoad FacilitiesPag111e');
+    // console.log(('ionViewDidLoad FacilitiesPag111e');
     //this.getEventList();
   }
 
   facilitySelected(item){
+    this.bookingProvider['facilityInfo'] = item;
     if(!item.is_bookable){
       this.navCtrl.push(NbfacilityPage,{
         facility: item,
