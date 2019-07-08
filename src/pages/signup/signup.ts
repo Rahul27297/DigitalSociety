@@ -30,7 +30,6 @@ export class SignupPage {
     // public societyLogo: any;
     // private login: FormGroup;
     // private simplyBookAdmin: SimplyBookClient;
-    // private loader: any;
     // private userName: any;
     // private Name: any;
     // private flatNumber: any;
@@ -43,7 +42,8 @@ export class SignupPage {
     // private clientObject: any;
     // private disableFields: any = "no";
 
-  
+    private loader: any;
+
     private signUpMemberForm: any;
     private memberDataModel:any = {
       society_id: null,
@@ -107,68 +107,102 @@ export class SignupPage {
         this.Errors.passwordLengthTooShort = true;
       }
 
-      // validation # 3 email ID already exists
-      firebase.database().ref('members').orderByChild('member_email').equalTo(this.signUpMemberForm.value.member_email).once('value',(snapshot) => {
-        
-        // If user is present in firebase it'll not return null
-        if(snapshot.val() != null) {
-          this.Errors.emailIdAlreadyExists = true;
-        }
+      // validation # 3 email ID already exists (Keep this rule as last rule because it has asynch check 
+      // of already present email ID in firebase)
+
+      // Also it calls this.addRequestInFirebase(); which adds actual user in firebase after all validations
+      let loader = this.loadingCtrl.create({
+        content: "Please wait..."
+      });
+      loader.present().then(() => {
+        firebase.database().ref('members').orderByChild('member_email').equalTo(this.signUpMemberForm.value.member_email).once('value',(snapshot) => {
+          
+          // If user is present in firebase it'll not return null
+          console.log(snapshot.val());
+          if(snapshot.val() != null) {
+            this.Errors.emailIdAlreadyExists = true;
+          }
+          // Check if there is no validation error
+          console.log(this.Errors)
+          for(let i in this.Errors) {
+            if(this.Errors[i] == true) {
+              this.isFormValid = false;
+              loader.dismiss();
+              return;
+            }
+          }
+
+          // No errors an
+          this.isFormValid = true;
+
+          if(this.isFormValid) {
+            console.log(this.signUpMemberForm.value);
+            this.memberDataModel.name = this.signUpMemberForm.value.name;
+            this.memberDataModel.phone = this.signUpMemberForm.value.phoneNo;
+            this.memberDataModel.member_email = this.signUpMemberForm.value.member_email;
+            console.log(this.memberDataModel)
+    
+    
+            this.addRequestInFirebase();
+          }
+
+          loader.dismiss();
+        });
 
       });
 
-      // Check if there is no validation error
-      for(let i in this.Errors) {
-        if(this.Errors[i] == true) {
-          this.isFormValid = false;
-          return;
-        }
-      }
 
-      // No errors an
-      this.isFormValid = true;
 
     }
 
     submitRequest() {
       this.Validations();
       console.log(this.isFormValid)
-      if(this.isFormValid) {
-        console.log(this.signUpMemberForm.value);
-        this.memberDataModel.name = this.signUpMemberForm.value.name;
-        this.memberDataModel.phone = this.signUpMemberForm.value.phoneNo;
-        this.memberDataModel.member_email = this.signUpMemberForm.value.member_email;
-        console.log(this.memberDataModel)
-        this.addRequestInFirebase();
-      }
-
     }
 
     addRequestInFirebase() {
-      // Add request in requests collection
-      firebase.database().ref('requests/').push(this.memberDataModel).then(() => {
+      let loader = this.loadingCtrl.create({
+        content: "Please wait..."
+      });
+      loader.present().then(() => {
+        firebase.database().ref('requests/').push(this.memberDataModel)
+        .then(() => {
 
-        firebase.database().ref('members/').push(this.memberDataModel).then(() => {
-          console.log("request and member added");
-
-          firebase.auth().createUserWithEmailAndPassword(this.memberDataModel.member_email, this.signUpMemberForm.value.password)
-          
-          .then((user) => {
-            console.log(user, " Created successfully!");
+          firebase.database().ref('members/').push(this.memberDataModel)
+          .then(() => {
+            console.log("request and member added");
+  
+            firebase.auth().createUserWithEmailAndPassword(this.memberDataModel.member_email, this.signUpMemberForm.value.password)
             
+            .then((user) => {
+              console.log(user, " Created successfully!");
+              loader.dismiss();
+            })
+            
+            .catch((error) => {
+              // Handle Errors here.
+              var errorCode = error.code;
+              var errorMessage = error.message;
+              console.log(errorMessage);
+              loader.dismiss();
+              // ...
+            });
+  
           })
-          
           .catch((error) => {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            console.log(errorMessage);
-            // ...
-          });
+            console.log(error)
+            loader.dismiss();
+          })
 
         })
+        .catch((error) => {
+          console.log(error);
+          loader.dismiss();
+        })
+      });
+      // Add request in requests collection
 
-      })
+
     }
 
  
