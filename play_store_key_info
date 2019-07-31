@@ -1,4 +1,4 @@
-located at -> ./my-release-key.keystore
+located at -> ./my-release-key-final.keystore
 
 Keystore type: JKS
 Keystore provider: SUN
@@ -6,27 +6,3 @@ Keystore provider: SUN
 Your keystore contains 1 entry
 
 Alias name: alias_name
-Creation date: 9 Mar, 2019
-Entry type: PrivateKeyEntry
-Certificate chain length: 1
-Certificate[1]:
-Owner: CN=sd, OU=gully, O=gully, L=pune, ST=maharashtra, C=in
-Issuer: CN=sd, OU=gully, O=gully, L=pune, ST=maharashtra, C=in
-Serial number: c635bab
-Valid from: Sat Mar 09 18:30:47 IST 2019 until: Wed Jul 25 18:30:47 IST 2046
-Certificate fingerprints:
-         MD5:  0F:1A:02:46:E2:AF:12:48:5E:1A:C5:B8:C0:A9:00:16
-         SHA1: AA:D8:CF:DF:11:35:A7:32:00:CB:A4:E1:A1:BA:6F:66:BD:88:14:3B
-         SHA256: E5:B5:F3:67:5D:AB:47:24:38:EA:CA:5A:84:B2:EF:59:D2:5C:EE:A0:EE:8D:3F:18:D8:AC:F1:91:8F:E7:0A:26
-         Signature algorithm name: SHA256withRSA
-         Version: 3
-
-Extensions: 
-
-#1: ObjectId: 2.5.29.14 Criticality=false
-SubjectKeyIdentifier [
-KeyIdentifier [
-0000: 0A 3D 51 A1 32 CB E8 6D   2B 6E 7C 6B 1F 73 9C 12  .=Q.2..m+n.k.s..
-0010: 6B 14 5C 41                                        k.\A
-]
-]

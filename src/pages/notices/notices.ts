@@ -82,7 +82,7 @@ export class NoticesPage {
     firebase.database().ref('notices').orderByChild('society_id').equalTo(this.societyId).on('value', (snapshot) => {
       this.recentNotices = [];
       this.archivedNotices = [];
-      console.log(snapshot.val());
+      // console.log(snapshot.val());
       snapshot.forEach((childSnapshot) => {
         let d = new Date(0);
         d.setUTCSeconds(childSnapshot.val().epoch_time)
@@ -91,19 +91,20 @@ export class NoticesPage {
         let year = d.getFullYear();
         let hh = d.getHours();
         let mm = d.getMinutes();
-        console.log(mm, typeof(mm))
+        // console.log(mm, typeof(mm))
+        let hhstring = '';
+        let mmstring = '';
         if(hh < 10) {
-          hh = "0" + hh;
+          hhstring = "0" + hh;
         }
         if(mm < 10) {
-          mm = "0" + mm;
+          mmstring = "0" + mm;
         }
-        console.log(hh, mm)
         // console.log((childSnapshot.val(),d)
         if(childSnapshot.val().epoch_time > epoch_recent) {
           this.recentNotices.unshift({
             notice_title: childSnapshot.val().notice_title,
-            date: month + " " + date + ", " + year + " " + hh + ":" + mm,
+            date: month + " " + date + ", " + year + " " + hhstring + ":" + mmstring,
             notice_description: childSnapshot.val().notice_description,
             notice_url: childSnapshot.val().notice_url,
             searchid: childSnapshot.key,
